@@ -10,19 +10,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --navy-900: #0b2142; --navy-800: #0f2d57; --navy-700: #16396b; --navy-600: #1f4d8c;
-      --gold: #c29b45; --ink: #162033; --ink-2: #34445c; --muted: #66758b;
-      --line: #e3e9f1; --line-2: #edf1f6; --canvas: #f3f6fa; --surface: #ffffff;
-      --pending-bg: #fff7de; --pending-bd: #f1d37a; --pending-fg: #8a5a00; --pending-dot: #e0a526;
-      --done-bg: #e3f6ea; --done-bd: #8fd3a8; --done-fg: #13693a; --done-dot: #22a15b;
-      --danger: #b42335; --danger-bg: #fdecee; --radius: 14px;
+      --navy-900: #0b2142;
+      --navy-800: #0f2d57;
+      --navy-700: #16396b;
+      --navy-600: #1f4d8c;
+      --gold: #c29b45;
+      --ink: #162033;
+      --ink-2: #34445c;
+      --muted: #66758b;
+      --line: #e3e9f1;
+      --line-2: #edf1f6;
+      --canvas: #f3f6fa;
+      --surface: #ffffff;
+      --pending-bg: #fff7de;
+      --pending-bd: #f1d37a;
+      --pending-fg: #8a5a00;
+      --pending-dot: #e0a526;
+      --done-bg: #e3f6ea;
+      --done-bd: #8fd3a8;
+      --done-fg: #13693a;
+      --done-dot: #22a15b;
+      --danger: #b42335;
+      --danger-bg: #fdecee;
+      --radius: 14px;
       --shadow: 0 1px 2px rgba(15, 35, 65, .05), 0 8px 24px rgba(15, 35, 65, .06);
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     }
     *, *::before, *::after { box-sizing: border-box; }
     [hidden] { display: none !important; }
     html { -webkit-text-size-adjust: 100%; }
-    body { margin: 0; min-width: 320px; background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
     body.modal-open { overflow: hidden; }
     h1, h2, h3, p { margin: 0; }
     button, input, select { font: inherit; color: inherit; }
@@ -46,12 +72,14 @@
     .date-chip small { display: block; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: #b9c9e2; font-weight: 600; }
     .date-chip strong { display: block; font-size: .95rem; font-weight: 700; white-space: nowrap; }
 
-    /* ---------- Layout & Summary ---------- */
+    /* ---------- Layout ---------- */
     .main { padding: 28px 0 48px; }
     .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
     .stack > * + * { margin-top: 20px; }
     .section-title { font-size: 1.02rem; font-weight: 700; letter-spacing: -.01em; color: var(--navy-800); }
     .section-caption { margin-top: 2px; font-size: .84rem; color: var(--muted); }
+
+    /* ---------- Summary ---------- */
     .summary { padding: 22px 24px; }
     .summary-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .summary-pct { font-size: 2rem; font-weight: 800; line-height: 1; color: var(--navy-800); letter-spacing: -.03em; }
@@ -66,7 +94,7 @@
     .stat-label { font-size: .75rem; color: var(--muted); font-weight: 600; line-height: 1.2; }
     .stat-value { font-size: 1.5rem; font-weight: 800; line-height: 1.15; color: var(--ink); letter-spacing: -.02em; }
 
-    /* ---------- Toolbar & Buttons ---------- */
+    /* ---------- Toolbar ---------- */
     .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; }
     .search { position: relative; flex: 1 1 260px; min-width: 0; }
     .search .icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
@@ -76,6 +104,8 @@
     .segmented button b { font-weight: 700; margin-left: 4px; color: var(--muted); }
     .segmented button.active { background: #fff; color: var(--navy-800); box-shadow: 0 1px 3px rgba(15,35,65,.12); }
     .toolbar-actions { display: flex; gap: 8px; margin-left: auto; }
+
+    /* ---------- Buttons ---------- */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 42px; padding: 0 16px; border-radius: 10px; border: 1px solid transparent; font-weight: 600; font-size: .88rem; cursor: pointer; transition: background .15s, border-color .15s, box-shadow .15s; white-space: nowrap; }
     .btn:disabled { opacity: .55; cursor: not-allowed; }
     .btn-primary { background: var(--navy-700); color: #fff; }
@@ -84,19 +114,20 @@
     .btn-ghost:hover:not(:disabled) { background: #f4f7fb; border-color: #bccadd; }
     .btn-sm { height: 36px; padding: 0 13px; font-size: .82rem; }
     .btn:focus-visible, .segmented button:focus-visible { outline: 2px solid var(--navy-600); outline-offset: 2px; }
-    
-    .action-group { display: flex; gap: 8px; justify-content: flex-end; }
 
-    /* ---------- Notices & Table ---------- */
+    /* ---------- Notices ---------- */
     .notice { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 18px; border-radius: 12px; border: 1px solid; }
     .notice strong { display: block; margin-bottom: 2px; }
     .notice p { font-size: .88rem; }
+    .notice code { font-family: var(--mono); font-size: .82rem; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 5px; }
     .notice-error { background: var(--danger-bg); border-color: #f1b7be; color: #7d1824; }
     .notice-info { background: #eef4fd; border-color: #c4d7f2; color: #1b3d6e; }
     .loading-card { padding: 22px 24px; }
     .loading-line { height: 3px; margin-top: 14px; overflow: hidden; background: var(--line-2); border-radius: 99px; }
     .loading-line::after { content: ''; display: block; height: 100%; width: 35%; background: var(--navy-600); border-radius: 99px; animation: slide 1.2s ease-in-out infinite; }
     @keyframes slide { from { transform: translateX(-110%); } to { transform: translateX(310%); } }
+
+    /* ---------- Group & table ---------- */
     .group { overflow: hidden; }
     .group-head { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f6f9fd); }
     .group-letter { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--navy-700); color: #fff; font-weight: 800; font-size: .9rem; flex: 0 0 auto; }
@@ -114,6 +145,7 @@
     .dev-table tbody tr.is-done td:first-child { box-shadow: inset 3px 0 0 var(--done-dot); }
     .col-no { width: 56px; color: var(--muted); font-variant-numeric: tabular-nums; }
     .col-status { width: 170px; }
+    .col-action { width: 150px; text-align: right; }
     .serial { font-family: var(--mono); font-size: .86rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
     .note { font-size: .84rem; color: var(--ink-2); }
     .badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 99px; font-size: .72rem; font-weight: 700; letter-spacing: .02em; border: 1px solid; white-space: nowrap; }
@@ -124,10 +156,10 @@
     .badge-done i { background: var(--done-dot); }
     .empty-state { padding: 38px 20px; text-align: center; color: var(--muted); border: 1px dashed #c9d5e4; border-radius: var(--radius); background: #fff; }
 
-    /* ---------- Modal ---------- */
+    /* ---------- Modal & Photo Pop-up ---------- */
     .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(11, 33, 66, .55); backdrop-filter: blur(2px); }
     .modal-card { width: min(660px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(5, 18, 38, .35); overflow: hidden; }
-    .modal-card.sm { width: min(440px, 100%); }
+    .modal-card.sm { width: min(400px, 100%); }
     .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f4f8fd); }
     .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
     .modal-head h2 { margin-top: 2px; font-family: var(--mono); font-size: 1.02rem; font-weight: 700; color: var(--navy-800); overflow-wrap: anywhere; }
@@ -144,8 +176,7 @@
     select.control { appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2366758b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
     .control:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 77, 140, .14); }
     .hint { margin-top: 5px; font-size: .75rem; color: var(--muted); }
-    
-    /* ---------- Photos & Kamera ---------- */
+    .hint.right { text-align: right; }
     .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .photo-slot { padding: 11px; border: 1.5px dashed #b9c7d8; border-radius: 12px; background: #fafcfe; min-width: 0; }
     .photo-slot.has-photo { border-style: solid; border-color: var(--done-bd); background: #f6fcf8; }
@@ -156,55 +187,154 @@
     .photo-empty .icon { width: 22px; height: 22px; }
     .photo-actions { display: flex; gap: 6px; margin-top: 9px; }
     .photo-actions .btn { flex: 1 1 0; padding: 0 8px; }
+
+    /* Pop-up Modal Khusus Preview Foto Laporan */
     .photo-preview-overlay { position: fixed; inset: 0; z-index: 4000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.9); padding: 20px; }
     .photo-preview-overlay img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-    .close-preview-btn { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; display: grid; place-items: center; cursor: pointer; }
+    .close-preview-btn { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; display: grid; place-items: center; cursor: pointer; transition: background 0.2s; }
+    .close-preview-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* ---------- Camera ---------- */
     .camera-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(5, 14, 28, .88); }
-    .camera-box { width: min(720px, 100%); padding: 16px; background: #fff; border-radius: 18px; }
-    .camera-video-wrap { display: grid; place-items: center; min-height: 220px; overflow: hidden; border-radius: 12px; background: #0d151f; margin-bottom: 12px; }
+    .camera-box { width: min(720px, 100%); padding: 16px; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(0,0,0,.4); }
+    .camera-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .camera-head strong { display: block; }
+    .camera-head span { font-size: .82rem; color: var(--muted); }
+    .camera-video-wrap { display: grid; place-items: center; min-height: 220px; overflow: hidden; border-radius: 12px; background: #0d151f; }
     .camera-video-wrap video { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
+    .camera-status { margin: 10px 0; font-size: .82rem; color: var(--muted); }
     .camera-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
-    
+    .camera-actions .right { display: flex; gap: 8px; margin-left: auto; }
+
+    /* ---------- Toast ---------- */
     .toast { position: fixed; left: 50%; bottom: 22px; z-index: 3000; transform: translateX(-50%); width: min(460px, calc(100vw - 28px)); padding: 13px 16px; border-radius: 12px; background: var(--navy-800); color: #fff; font-size: .88rem; box-shadow: 0 14px 40px rgba(8, 24, 48, .3); border-left: 4px solid #5aa0e6; }
     .toast.success { border-left-color: #35b873; }
     .toast.error { background: #8e1f2c; border-left-color: #ff8d98; }
+    .toast.warning { background: #6f4e05; border-left-color: #f0c34e; }
 
-    /* ---------- Laporan & Footer ---------- */
+    /* ---------- Report ---------- */
     #reportView { display: none; }
     #reportView.active { display: block; }
     .report-sheet { overflow: hidden; }
     .report-head { padding: 26px 28px 18px; border-bottom: 2px solid var(--navy-800); text-align: center; }
+    .report-org { font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); font-weight: 700; }
+    .report-title { margin: 10px 0 6px; font-size: 1.3rem; font-weight: 800; line-height: 1.25; color: var(--navy-800); }
+    .report-meta { font-size: .84rem; color: var(--ink-2); }
+    .report-body { padding: 20px 24px 28px; }
+    .report-controls { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-start; gap: 14px; margin-bottom: 16px; }
+    .report-controls .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .report-summary { margin-bottom: 12px; font-size: .84rem; color: var(--ink-2); }
+    .table-wrap { overflow-x: auto; }
+    
+    /* Strict layout control for print optimization */
     .report-table { width: 100%; max-width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .report-table th, .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; word-wrap: break-word; overflow-wrap: break-word; }
-    .report-table th { background: #eaf0f8; color: var(--navy-800); font-size: .7rem; text-transform: uppercase; text-align: left; }
-    .report-photo { display: block; width: 100%; max-width: 90px; height: 70px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; }
-    .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
+    .report-table th { padding: 9px 8px; border: 1px solid #d3dce9; background: #eaf0f8; color: var(--navy-800); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; text-align: left; }
+    .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; word-wrap: break-word; overflow-wrap: break-word; }
+    .report-table tbody tr:nth-child(even) { background: #fafbfd; }
+    
+    /* Gambar di tabel laporan dibuat utuh (contain) dan dapat di-klik */
+    .report-photo { display: block; width: 100%; max-width: 90px; height: 70px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; transition: opacity 0.2s; }
+    .report-photo:hover { opacity: 0.85; border-color: var(--navy-600); }
+    .photo-cell { text-align: center; }
+    .photo-fallback { display: block; font-size: .72rem; color: var(--muted); }
+    
+    .report-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+    
+    .signature { display: none; }
 
-    /* ---------- Responsif & Cetak ---------- */
+    /* ---------- Footer ---------- */
+    .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
+    .app-footer strong { display: block; color: #fff; font-size: .9rem; margin-bottom: 2px; }
+    .app-footer .small { margin-top: 8px; font-size: .74rem; color: #8ea3c4; }
+
+    /* ---------- Responsif ---------- */
     @media (max-width: 720px) {
-      .action-group { flex-direction: column; width: 100%; }
-      .action-group .btn { width: 100%; }
+      .wrap { padding: 0 16px; }
+      .header-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 0 24px; }
+      .emblem { width: 56px; height: 56px; }
+      .brand { gap: 14px; }
+      .date-chip { text-align: left; width: 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+      .main { padding-top: 18px; }
+      .summary { padding: 18px 16px; }
+      .stats { gap: 8px; }
+      .stat { flex-direction: column; align-items: flex-start; gap: 8px; padding: 11px; }
+      .stat-icon { width: 32px; height: 32px; }
+      .stat-value { font-size: 1.3rem; }
+      .toolbar { padding: 12px; }
+      .toolbar-actions { width: 100%; margin-left: 0; }
+      .toolbar-actions .btn { flex: 1 1 0; }
+      .segmented { width: 100%; }
+      .segmented button { flex: 1 1 0; padding: 8px 6px; }
+      .group-head { padding: 14px 16px; }
+      .group-meter { display: none; }
+
       .dev-table thead { display: none; }
       .dev-table, .dev-table tbody { display: block; }
-      .dev-table tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line-2); }
-      .dev-table td { display: block; padding: 0; border: 0; width: auto; }
+      .dev-table tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line-2); box-shadow: inset 3px 0 0 var(--pending-dot); }
+      .dev-table tbody tr.is-done { box-shadow: inset 3px 0 0 var(--done-dot); }
+      .dev-table tbody tr:last-child { border-bottom: 0; }
+      .dev-table td, .dev-table tbody tr td:first-child, .dev-table tbody tr.is-done td:first-child { display: block; padding: 0; border: 0; box-shadow: none; width: auto; }
       .col-no { display: none !important; }
       .col-serial { grid-column: 1; grid-row: 1; align-self: center; }
       .col-status { grid-column: 2; grid-row: 1; }
       .col-note { grid-column: 1 / -1; }
-      .col-action { grid-column: 1 / -1; }
+      .col-action { grid-column: 1 / -1; text-align: left; }
+      .col-action .btn { width: 100%; }
+
       .modal { padding: 0; align-items: flex-end; }
       .modal-card { width: 100%; max-height: 94vh; border-radius: 18px 18px 0 0; }
+      .modal-head, .modal-body, .modal-foot { padding-left: 16px; padding-right: 16px; }
+      .modal-foot { flex-direction: column-reverse; align-items: stretch; }
+      .photo-grid { gap: 10px; }
+      .photo-preview { height: 108px; }
+      .photo-actions { flex-direction: column; }
+      .report-head { padding: 20px 14px 14px; }
+      .report-body { padding: 14px 12px 20px; }
+      .report-actions { flex-direction: column; gap: 8px; }
+      .report-actions .btn { width: 100%; }
     }
+    @media screen and (max-width: 720px) {
+      .table-wrap { overflow: visible; }
+      .report-table thead { display: none; }
+      .report-table, .report-table tbody, .report-table tr, .report-table td { display: block; width: 100%; }
+      .report-table tbody tr, .report-table tbody tr:nth-child(even) { margin-bottom: 12px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+      .report-table td { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; border: 0; }
+      .report-table td[data-label]::before { content: attr(data-label); flex: 0 0 92px; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+      .report-table .cell-val { flex: 1 1 auto; min-width: 0; }
+      .report-table .photo-cell { text-align: left; }
+      .report-photo { margin: 0 0 4px; }
+    }
+
+    /* ---------- Cetak / PDF ---------- */
+    @page { size: A4 landscape; margin: 8mm; }
     @media print {
-      html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; }
-      .app-header, .app-footer, #inventoryView, .no-print, .modal, .toast { display: none !important; }
+      html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; min-width: 0 !important; font-size: 9pt !important; }
+      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #officerModal, #cameraModal, #toast, .photo-preview-overlay { display: none !important; }
+      .wrap { max-width: none !important; padding: 0 !important; }
+      .main { padding: 0 !important; }
       #reportView, #reportView[hidden] { display: block !important; }
-      .report-table th, .report-table td { border: 1px solid #555 !important; font-size: 7.2pt !important; }
+      .card.report-sheet { border: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+      .report-head { padding: 0 0 8px !important; border-bottom: 2px solid #222 !important; }
+      .report-org { font-size: 8pt !important; color: #222 !important; }
+      .report-title { font-size: 15pt !important; color: #111 !important; margin: 4px 0 !important; }
+      .report-meta, .report-summary { font-size: 8pt !important; color: #222 !important; }
+      .report-body { padding: 8px 0 0 !important; }
+      .table-wrap { overflow: visible !important; }
+      
+      /* Pastikan tabel terkunci lebarnya agar tidak terpotong ke kanan */
+      .report-table { width: 100% !important; max-width: 100% !important; table-layout: fixed !important; }
+      .report-table thead { display: table-header-group; }
+      .report-table tr { break-inside: avoid; page-break-inside: avoid; }
+      .report-table th, .report-table td { border: 1px solid #555 !important; padding: 4px !important; font-size: 7.2pt !important; color: #111 !important; word-wrap: break-word !important; overflow-wrap: break-word !important; }
+      .report-table th { background: #e9e9e9 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .report-table tbody tr:nth-child(even) { background: #fff !important; }
+      
+      /* Perkecil gambar saat dicetak agar tidak merusak lebar kolom tabel */
+      .report-photo { width: 55px !important; height: auto !important; max-height: 45px !important; border: 0 !important; background: transparent !important; border-radius: 0 !important; }
       .print-only { display: block !important; }
-      .signature { display: block !important; width: 260px; margin: 18px 0 0 auto; text-align: center; }
+      .signature { display: block !important; width: 260px; margin: 18px 0 0 auto; text-align: center; font-size: 8.5pt; break-inside: avoid; }
     }
-    .print-only, .signature { display: none; }
+    .print-only { display: none; }
   </style>
 </head>
 <body>
@@ -214,9 +344,7 @@
     <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
     <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
-    <symbol id="i-move-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
-    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
-    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
@@ -231,74 +359,138 @@
   <header class="app-header">
     <div class="wrap header-inner">
       <div class="brand">
-        <div class="emblem"><img src="logo-imigrasi.png" alt="Logo" onerror="this.parentNode.classList.add('fallback')"><svg class="icon"><use href="#i-clipboard"/></svg></div>
+        <div class="emblem">
+          <img src="logo-imigrasi.png" alt="Logo Imigrasi" onerror="this.parentNode.classList.add('fallback')">
+          <svg class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg>
+        </div>
         <div>
           <div class="kicker">Kantor Imigrasi Kelas II TPI Kediri</div>
-          <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023</h1>
+          <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023<br>DI KANTOR IMIGRASI KEDIRI</h1>
           <p class="app-subtitle">Pencatatan kondisi, posisi, dan dokumentasi foto perangkat sewa harian</p>
         </div>
       </div>
-      <div class="date-chip"><small>Tanggal Cetak</small><strong id="headerDate">—</strong></div>
+      <div class="date-chip">
+        <small>Tanggal Cetak</small>
+        <strong id="headerDate">—</strong>
+      </div>
     </div>
   </header>
 
   <main class="wrap main">
-    <section id="inventoryView" class="stack">
-      <div id="loadingState" class="card loading-card" hidden><div class="section-title">Memuat daftar...</div><div class="loading-line"></div></div>
-      <div id="pageError" class="notice notice-error" hidden role="alert"><div><strong>Gagal memuat</strong><p id="pageErrorText"></p></div><button type="button" id="retryButton" class="btn btn-ghost btn-sm">Coba Lagi</button></div>
+    <noscript><div class="notice notice-error"><div><strong>JavaScript dinonaktifkan</strong><p>Aplikasi ini membutuhkan JavaScript. Aktifkan JavaScript pada browser Anda.</p></div></div></noscript>
 
-      <section class="card summary">
+    <section id="inventoryView" class="stack">
+      <div id="configNotice" class="notice notice-info" hidden>
+        <div>
+          <strong>Aplikasi belum terhubung ke Google Apps Script</strong>
+          <p>Buka berkas <code>index.html</code>, cari konstanta <code>API_URL</code> di bagian awal skrip, lalu isi dengan URL Web App yang berakhiran <code>/exec</code>.</p>
+        </div>
+      </div>
+
+      <div id="loadingState" class="card loading-card" hidden>
+        <div class="section-title">Memuat daftar perangkat</div>
+        <div class="section-caption">Mengambil status terbaru dari Google Sheets…</div>
+        <div class="loading-line"></div>
+      </div>
+
+      <div id="pageError" class="notice notice-error" hidden role="alert">
+        <div><strong>Data tidak dapat dimuat</strong><p id="pageErrorText"></p></div>
+        <button type="button" id="retryButton" class="btn btn-ghost btn-sm">Coba Lagi</button>
+      </div>
+
+      <section class="card summary" aria-label="Ringkasan opname">
         <div class="summary-top">
-          <div><h2 class="section-title">Ringkasan Opname</h2><p class="section-caption">Status diperiksa berdasarkan semua data yang terekam.</p></div>
+          <div>
+            <h2 class="section-title">Ringkasan Opname</h2>
+            <p class="section-caption" id="todayCaption">Status diperiksa berdasarkan semua data yang terekam.</p>
+          </div>
           <div class="summary-pct"><span id="pctValue">0</span><small>%</small></div>
         </div>
-        <div class="progress"><i id="progressFill"></i></div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><i id="progressFill"></i></div>
         <div class="stats">
-          <div class="stat"><div class="stat-icon"><svg class="icon"><use href="#i-box"/></svg></div><div><div class="stat-label">Total Barang</div><div class="stat-value" id="statTotal">—</div></div></div>
-          <div class="stat done"><div class="stat-icon"><svg class="icon"><use href="#i-check"/></svg></div><div><div class="stat-label">Sudah Opname</div><div class="stat-value" id="statDone">—</div></div></div>
-          <div class="stat pending"><div class="stat-icon"><svg class="icon"><use href="#i-clock"/></svg></div><div><div class="stat-label">Belum Opname</div><div class="stat-value" id="statPending">—</div></div></div>
+          <div class="stat">
+            <div class="stat-icon"><svg class="icon"><use href="#i-box"/></svg></div>
+            <div><div class="stat-label">Total Barang</div><div class="stat-value" id="statTotal">—</div></div>
+          </div>
+          <div class="stat done">
+            <div class="stat-icon"><svg class="icon"><use href="#i-check"/></svg></div>
+            <div><div class="stat-label">Sudah Opname</div><div class="stat-value" id="statDone">—</div></div>
+          </div>
+          <div class="stat pending">
+            <div class="stat-icon"><svg class="icon"><use href="#i-clock"/></svg></div>
+            <div><div class="stat-label">Belum Opname</div><div class="stat-value" id="statPending">—</div></div>
+          </div>
         </div>
       </section>
 
-      <section class="card toolbar">
-        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Cari jenis atau seri..."></label>
-        <div class="segmented" id="filterGroup">
+      <section class="card toolbar" aria-label="Pencarian dan filter">
+        <label class="search">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input id="searchInput" type="search" placeholder="Cari jenis atau nomor seri…" aria-label="Cari barang" autocomplete="off">
+        </label>
+        <div class="segmented" id="filterGroup" role="group" aria-label="Filter status">
           <button type="button" class="active" data-filter="all">Semua<b id="cntAll">0</b></button>
           <button type="button" data-filter="pending">Belum<b id="cntPending">0</b></button>
           <button type="button" data-filter="done">Sudah<b id="cntDone">0</b></button>
         </div>
         <div class="toolbar-actions">
           <button id="refreshButton" class="btn btn-ghost" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Perbarui</button>
-          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan Lengkap</button>
+          <!-- Tab Laporan Daftar Lengkap -->
+          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan Daftar Lengkap</button>
         </div>
       </section>
 
       <div id="groupsContainer" class="stack"></div>
-      <div id="searchEmpty" class="empty-state" hidden>Tidak ada barang yang sesuai.</div>
+      <div id="searchEmpty" class="empty-state" hidden>Tidak ada barang yang sesuai dengan pencarian atau filter.</div>
     </section>
 
-    <!-- Modal Laporan -->
-    <section id="reportView" hidden>
+    <section id="reportView" aria-label="Laporan opname" hidden>
       <div class="card report-sheet">
         <div class="report-head">
+          <div class="report-org">Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia</div>
           <div class="report-org">Kantor Imigrasi Kelas II TPI Kediri</div>
           <h2 class="report-title">LAPORAN OPNAME PERANGKAT SEWA DITJEN IMIGRASI 2023</h2>
-          <div class="report-meta">Tanggal cetak laporan: <strong id="reportDateLabel">—</strong></div>
+          <div class="report-meta">Lokasi: Kantor Imigrasi Kediri · Tanggal cetak laporan: <strong id="reportDateLabel">—</strong></div>
+          <div class="report-meta print-only" id="reportGeneratedPrint">Dicetak pada: —</div>
         </div>
         <div class="report-body">
-          <div class="report-controls no-print"><button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button></div>
+          <div class="report-controls no-print">
+            <div class="row">
+              <button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button>
+            </div>
+          </div>
+          <div id="reportLoading" class="loading-line no-print" hidden style="margin:0 0 14px"></div>
+          <div id="reportError" class="notice notice-error no-print" hidden role="alert" style="margin-bottom:14px"><div><strong>Laporan tidak dapat dimuat</strong><p id="reportErrorText"></p></div></div>
+          <div class="report-summary" id="reportSummary">Memuat data laporan lengkap…</div>
           <div class="table-wrap">
             <table class="report-table">
-              <thead><tr><th>No.</th><th>Jenis Barang</th><th>Nomor Seri</th><th>Status</th><th>Kondisi</th><th>Detail Posisi</th><th>Foto Barang</th><th>Foto Kode</th></tr></thead>
-              <tbody id="reportTableBody"><tr><td colspan="8" style="text-align:center;">Memuat...</td></tr></tbody>
+              <thead>
+                <tr>
+                  <th style="width:4%">No.</th>
+                  <th style="width:14%">Jenis Barang</th>
+                  <th style="width:16%">Nomor Seri</th>
+                  <th style="width:12%">Status</th>
+                  <th style="width:14%">Kondisi</th>
+                  <th style="width:16%">Detail Posisi</th>
+                  <th style="width:12%">Foto Barang</th>
+                  <th style="width:12%">Foto Kode</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody">
+                <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">Memuat…</td></tr>
+              </tbody>
             </table>
           </div>
+          
+          <!-- Tombol Aksi di Bawah Laporan -->
           <div class="report-actions no-print">
             <button type="button" id="openOfficerBtn" class="btn btn-ghost"><svg class="icon"><use href="#i-user"/></svg>Petugas Pemeriksa</button>
-            <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan</button>
+            <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan / PDF</button>
           </div>
+
           <div class="signature">
-            Kediri, <span id="signatureDate">—</span><br>Petugas Pemeriksa,<br><br><br><br>
+            Kediri, <span id="signatureDate">—</span><br>
+            Petugas Pemeriksa,<br><br><br><br>
             <strong style="text-decoration: underline;"><span id="printPetugasName">RISKY DIAH OKTAVIANTI</span></strong><br>
             NIP. <span id="printPetugasNIP">198710012012122001</span>
           </div>
@@ -310,54 +502,70 @@
   <footer class="app-footer">
     <strong>Kantor Imigrasi Kelas II TPI Kediri</strong>
     <div>Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
-    <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa</div>
+    <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa · Data tersimpan pada Google Sheets dan Google Drive</div>
   </footer>
 
-  <!-- Modal Pindahkan Data -->
-  <div id="moveModal" class="modal" hidden role="dialog" aria-modal="true">
+  <!-- Modal Petugas Pemeriksa -->
+  <div id="officerModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="officerTitle">
     <div class="modal-card sm">
       <div class="modal-head">
-        <div><h2 id="moveTitle">Pindahkan Data Opname</h2><div class="eyebrow" style="margin-top:4px;">Transfer ke barang lain</div></div>
-        <button type="button" class="icon-btn" id="closeMoveBtn"><svg class="icon"><use href="#i-x"/></svg></button>
+        <div>
+          <h2 id="officerTitle">Data Petugas Pemeriksa</h2>
+          <div class="eyebrow" style="margin-top:4px;">Digunakan untuk tanda tangan laporan</div>
+        </div>
+        <button type="button" class="icon-btn" id="closeOfficerBtn" aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button>
       </div>
       <div class="modal-body">
         <div class="field">
-          <label>Data Asal (Saat ini: Sudah Opname)</label>
-          <div class="control" style="background:#f3f6fa; display:flex; flex-direction:column; justify-content:center; height: auto; padding: 12px 14px; line-height: 1.4;" id="moveSourceLabel"></div>
-        </div>
-        <div style="display: flex; justify-content: center; margin: 16px 0;">
-          <div style="background: var(--line-2); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: var(--navy-600);">
-            <svg class="icon"><use href="#i-arrow-down"/></svg>
-          </div>
+          <label for="inputOfficerName">Nama Petugas</label>
+          <input id="inputOfficerName" class="control" type="text" value="RISKY DIAH OKTAVIANTI" autocomplete="off">
         </div>
         <div class="field">
-          <label for="moveTargetSelect">Pilih Barang Tujuan <span class="req">*</span></label>
-          <select id="moveTargetSelect" class="control"></select>
-          <div class="hint">Hanya menampilkan barang yang <strong>belum diopname</strong>.</div>
-        </div>
-        <div class="form-note" style="margin-top: 22px; background: var(--pending-bg); border-color: var(--pending-bd); color: var(--pending-fg);">
-          <svg class="icon" style="flex: 0 0 auto;"><use href="#i-info"/></svg>
-          <span>Semua data (kondisi, posisi, dan foto) akan dialihkan ke barang tujuan. Status barang asal akan kembali menjadi <strong>"Belum Opname"</strong>.</span>
+          <label for="inputOfficerNIP">NIP Petugas</label>
+          <input id="inputOfficerNIP" class="control" type="text" value="198710012012122001" autocomplete="off">
         </div>
       </div>
       <div class="modal-foot">
         <div class="actions">
-          <button type="button" class="btn btn-ghost" id="cancelMoveBtn">Batal</button>
-          <button type="button" class="btn btn-primary" id="confirmMoveBtn"><svg class="icon"><use href="#i-move-arrow"/></svg>Konfirmasi Pindah</button>
+          <button type="button" class="btn btn-ghost" id="cancelOfficerBtn">Batal</button>
+          <button type="button" class="btn btn-primary" id="saveOfficerBtn">Terapkan</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Formulir Opname (Hanya Form Standar, tanpa dropdown pindah) -->
-  <div id="formModal" class="modal" hidden role="dialog" aria-modal="true">
+  <!-- Modal Pop-up Khusus Preview Foto Laporan -->
+  <div id="photoPreviewModal" class="photo-preview-overlay" hidden role="dialog" aria-modal="true">
+    <button type="button" class="close-preview-btn" id="closePhotoPreview" aria-label="Tutup foto"><svg class="icon" style="width: 24px; height: 24px;"><use href="#i-x"/></svg></button>
+    <img id="photoPreviewImg" src="" alt="Foto Diperbesar">
+  </div>
+
+  <!-- Formulir opname -->
+  <div id="formModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="formTitle">
     <div class="modal-card">
       <div class="modal-head">
-        <div><div class="eyebrow" id="formType">Jenis</div><h2 id="formTitle">—</h2></div>
-        <button type="button" class="icon-btn" id="closeFormButton"><svg class="icon"><use href="#i-x"/></svg></button>
+        <div>
+          <div class="eyebrow" id="formType">Jenis Barang</div>
+          <h2 id="formTitle">—</h2>
+        </div>
+        <button type="button" class="icon-btn" id="closeFormButton" aria-label="Tutup formulir"><svg class="icon"><use href="#i-x"/></svg></button>
       </div>
       <div class="modal-body">
-        <div class="form-note" id="formNote" hidden><svg class="icon"><use href="#i-info"/></svg><span id="formNoteText"></span></div>
+        
+        <!-- FITUR PINDAH TARGET BARANG -->
+        <div class="field" style="padding: 14px; background: #f3f6fa; border: 1.5px dashed #b9c7d8; border-radius: 12px; margin-bottom: 22px;">
+          <label for="moveSerialSelect" style="display: flex; align-items: center; gap: 8px; color: var(--navy-800); margin-bottom: 8px; font-weight: 700; font-size: .8rem;">
+            <svg class="icon" style="color: var(--navy-600);"><use href="#i-refresh"/></svg> 
+            Pindah Target Barang (Bila Salah Klik)
+          </label>
+          <select id="moveSerialSelect" class="control" style="background-color: #fff; border-color: #c4d7f2;"></select>
+          <div class="hint" style="margin-top: 6px;">Ubah pilihan ini untuk memindahkan semua isian dan foto pada form ini ke nomor seri lain.</div>
+        </div>
+
+        <div class="form-note" id="formNote" hidden>
+          <svg class="icon"><use href="#i-info"/></svg>
+          <span id="formNoteText"></span>
+        </div>
         <div class="field">
           <label for="fCondition">Kondisi Barang <span class="req">*</span></label>
           <select id="fCondition" class="control"><option value="">Pilih kondisi…</option></select>
@@ -372,18 +580,32 @@
           <div class="photo-grid">
             <div class="photo-slot" id="slot-barang">
               <div class="photo-title">Foto Barang</div>
-              <div class="photo-preview"><img id="img-barang" hidden><span class="photo-empty" id="ph-barang"><svg class="icon"><use href="#i-image"/></svg>Belum ada</span></div>
-              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="barang">Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="barang">Galeri</button></div>
+              <div class="photo-preview">
+                <img id="img-barang" alt="Pratinjau Foto Barang" hidden>
+                <span class="photo-empty" id="ph-barang"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span>
+              </div>
+              <div class="photo-actions">
+                <button type="button" class="btn btn-primary btn-sm" data-camera="barang"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-gallery="barang"><svg class="icon"><use href="#i-image"/></svg>Galeri</button>
+              </div>
             </div>
             <div class="photo-slot" id="slot-kode">
               <div class="photo-title">Foto Kode Barang</div>
-              <div class="photo-preview"><img id="img-kode" hidden><span class="photo-empty" id="ph-kode"><svg class="icon"><use href="#i-image"/></svg>Belum ada</span></div>
-              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="kode">Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="kode">Galeri</button></div>
+              <div class="photo-preview">
+                <img id="img-kode" alt="Pratinjau Foto Kode Barang" hidden>
+                <span class="photo-empty" id="ph-kode"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span>
+              </div>
+              <div class="photo-actions">
+                <button type="button" class="btn btn-primary btn-sm" data-camera="kode"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-gallery="kode"><svg class="icon"><use href="#i-image"/></svg>Galeri</button>
+              </div>
             </div>
           </div>
+          <div class="hint">Wajib melampirkan kedua foto. Setiap foto otomatis dikompres hingga maksimal 1 MB.</div>
         </div>
       </div>
       <div class="modal-foot">
+        <div class="hint" style="margin:0">Data disimpan sebagai log baru.</div>
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="cancelFormButton">Batal</button>
           <button type="button" class="btn btn-primary" id="saveButton">Simpan Opname</button>
@@ -392,58 +614,65 @@
     </div>
   </div>
 
-  <!-- Komponen Pendukung: Kamera, Officer, Toast -->
-  <div id="cameraModal" class="camera-overlay" hidden>
+  <!-- Kamera -->
+  <div id="cameraModal" class="camera-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle">
     <div class="camera-box">
-      <div class="camera-head"><div><strong id="cameraTitle">Ambil Foto</strong></div><button type="button" class="icon-btn" id="closeCameraButton"><svg class="icon"><use href="#i-x"/></svg></button></div>
+      <div class="camera-head">
+        <div><strong id="cameraTitle">Ambil Foto</strong><span>Pastikan objek terlihat jelas sebelum mengambil foto.</span></div>
+        <button type="button" class="icon-btn" id="closeCameraButton" aria-label="Tutup kamera"><svg class="icon"><use href="#i-x"/></svg></button>
+      </div>
       <div class="camera-video-wrap"><video id="cameraVideo" autoplay playsinline muted></video></div>
       <div id="cameraStatus" class="camera-status">Menyiapkan kamera…</div>
       <div class="camera-actions">
-        <button type="button" id="switchCameraButton" class="btn btn-ghost"><svg class="icon"><use href="#i-refresh"/></svg>Ganti</button>
-        <div class="right"><button type="button" id="cameraGalleryButton" class="btn btn-ghost">Galeri</button><button type="button" id="takePhotoButton" class="btn btn-primary">Ambil</button></div>
+        <button type="button" id="switchCameraButton" class="btn btn-ghost"><svg class="icon"><use href="#i-refresh"/></svg>Ganti Kamera</button>
+        <div class="right">
+          <button type="button" id="cameraGalleryButton" class="btn btn-ghost">Pilih Galeri</button>
+          <button type="button" id="takePhotoButton" class="btn btn-primary"><svg class="icon"><use href="#i-camera"/></svg>Ambil Foto</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="officerModal" class="modal" hidden>
-    <div class="modal-card sm">
-      <div class="modal-head"><div><h2>Data Petugas Pemeriksa</h2></div><button type="button" class="icon-btn" id="closeOfficerBtn"><svg class="icon"><use href="#i-x"/></svg></button></div>
-      <div class="modal-body">
-        <div class="field"><label>Nama</label><input id="inputOfficerName" class="control" type="text" value="RISKY DIAH OKTAVIANTI"></div>
-        <div class="field"><label>NIP</label><input id="inputOfficerNIP" class="control" type="text" value="198710012012122001"></div>
-      </div>
-      <div class="modal-foot"><div class="actions"><button type="button" class="btn btn-primary" id="saveOfficerBtn">Terapkan</button></div></div>
-    </div>
-  </div>
-
-  <div id="photoPreviewModal" class="photo-preview-overlay" hidden><button type="button" class="close-preview-btn" id="closePhotoPreview"><svg class="icon" style="width:24px;height:24px;"><use href="#i-x"/></svg></button><img id="photoPreviewImg" src=""></div>
   <input id="galleryInput" type="file" accept="image/*" hidden>
   <input id="captureInput" type="file" accept="image/*" capture="environment" hidden>
-  <div id="toast" class="toast" hidden></div>
+  <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
 
   <script>
     'use strict';
 
     /* ============================================================
-     * KONFIGURASI API (GOOGLE APPS SCRIPT)
+     * KONFIGURASI
      * ============================================================ */
     const API_URL = 'https://script.google.com/macros/s/AKfycbwuDWJLTtORP7_WVyF2QdSxTP0e-oW8M2dFr-OCEqOxm68n_r4Yq7i-b0gzX6M9FDTE/exec';
 
     const REFRESH_INTERVAL_MS = 30000;
+    const MAX_CLIENT_PHOTO_BYTES = 950 * 1024; // di bawah batas 1 MB sisi server
+    const MAX_POSITION_LENGTH = 500;
     const DEFAULT_CONDITIONS = ['Baik Masih Digunakan', 'Baik Tidak Digunakan', 'Rusak Tidak Digunakan'];
+    const PHOTO_LABELS = { barang: 'Foto Barang', kode: 'Foto Kode Barang' };
+    const DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
     const $ = function (id) { return document.getElementById(id); };
 
-    /* --- CACHE LOKAL (INDEXED DB) --- */
+    /* ============================================================
+     * LOCAL CACHE (INDEXED DB) UNTUK PENYIMPANAN FOTO SEMENTARA
+     * ============================================================ */
     const localDB = {
       db: null,
       init: function() {
         return new Promise(function(resolve) {
           if (localDB.db) return resolve(localDB.db);
-          if (!window.indexedDB) return resolve(null);
+          if (!window.indexedDB) return resolve(null); // Fallback browser lama
           try {
             const req = indexedDB.open('OpnameCacheDB', 1);
-            req.onupgradeneeded = function(e) { e.target.result.createObjectStore('cache', { keyPath: 'serial' }); };
-            req.onsuccess = function(e) { localDB.db = e.target.result; resolve(localDB.db); };
+            req.onupgradeneeded = function(e) {
+              e.target.result.createObjectStore('cache', { keyPath: 'serial' });
+            };
+            req.onsuccess = function(e) {
+              localDB.db = e.target.result;
+              resolve(localDB.db);
+            };
             req.onerror = function() { resolve(null); };
           } catch(e) { resolve(null); }
         });
@@ -451,8 +680,9 @@
       save: async function(serial, payload) {
         try {
           const db = await localDB.init();
-          if (db) db.transaction('cache', 'readwrite').objectStore('cache').put({ serial: serial, payload: payload, time: Date.now() });
-        } catch (e) { }
+          if (!db) return;
+          db.transaction('cache', 'readwrite').objectStore('cache').put({ serial: serial, payload: payload, time: Date.now() });
+        } catch (e) { console.warn('Gagal menyimpan cache', e); }
       },
       get: async function(serial) {
         try {
@@ -467,303 +697,875 @@
       }
     };
 
-    const state = { groups: [], items: [], today: '', conditions: DEFAULT_CONDITIONS, filter: 'all', loaded: false };
-    const drafts = Object.create(null);
-    let activeSerial = null, moveSourceSerial = null;
-    let saving = false, dashboardLoading = false, reportActive = false;
-    let pendingKind = null, cameraKind = null, facingMode = 'environment', cameraStream = null, toastTimer = null;
+    const state = {
+      groups: [],
+      items: [],
+      today: '', // Hanya menyimpan tanggal cetak hari ini
+      conditions: DEFAULT_CONDITIONS,
+      filter: 'all',
+      loaded: false
+    };
+    const drafts = Object.create(null); // draf formulir per nomor seri
+    let activeSerial = null;
+    let saving = false;
+    let dashboardLoading = false;
+    let reportActive = false;
+    let pendingKind = null;
+    let cameraKind = null;
+    let facingMode = 'environment';
+    let cameraStream = null;
+    let toastTimer = null;
 
-    /* ======================= API REQUEST ======================= */
+    /* ======================= API ======================= */
+    function isConfigured() {
+      return /^https:\/\/script\.google\.com\/.+\/exec$/.test(API_URL);
+    }
+
     async function apiRequest(options) {
+      if (!isConfigured()) throw new Error('URL Web App belum diatur pada konstanta API_URL di index.html.');
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), options.timeout || 45000);
+      const timer = setTimeout(function () { controller.abort(); }, options.timeout || 45000);
       try {
         let response;
         if (options.body) {
-          response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(options.body), signal: controller.signal });
+          response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(options.body),
+            signal: controller.signal
+          });
         } else {
           const url = API_URL + (API_URL.indexOf('?') === -1 ? '?' : '&') + new URLSearchParams(options.params || {}).toString();
           response = await fetch(url, { signal: controller.signal });
         }
-        if (!response.ok) throw new Error('Status ' + response.status);
+        if (!response.ok) throw new Error('Server merespons dengan status ' + response.status + '.');
         const text = await response.text();
-        const json = JSON.parse(text);
-        if (!json || !json.ok) throw new Error(json.error || 'Server error');
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch (parseError) {
+          throw new Error('Respons server tidak valid. Pastikan Web App sudah di-deploy ulang dengan akses "Siapa saja" dan URL berakhiran /exec.');
+        }
+        if (!json || !json.ok) throw new Error((json && json.error) || 'Terjadi kesalahan pada server.');
         return json.data;
-      } finally { clearTimeout(timer); }
+      } catch (error) {
+        if (error && error.name === 'AbortError') throw new Error('Waktu tunggu habis. Periksa koneksi internet lalu coba lagi.');
+        if (error instanceof TypeError) throw new Error('Tidak dapat terhubung ke Google Apps Script. Periksa koneksi internet, URL Web App, dan pengaturan akses "Siapa saja".');
+        throw error;
+      } finally {
+        clearTimeout(timer);
+      }
     }
 
-    /* ======================= INISIALISASI ======================= */
+    /* ======================= Inisialisasi ======================= */
     document.addEventListener('DOMContentLoaded', function () {
       bindEvents();
+      populateConditions(DEFAULT_CONDITIONS);
+      if (!isConfigured()) {
+        $('configNotice').hidden = false;
+        return;
+      }
       loadDashboard({ first: true });
-      window.setInterval(() => { if (!document.hidden && !reportActive && !activeSerial && !moveSourceSerial) loadDashboard({}); }, REFRESH_INTERVAL_MS);
+      window.setInterval(function () {
+        if (!document.hidden && !reportActive && !activeSerial) loadDashboard({});
+      }, REFRESH_INTERVAL_MS);
     });
 
     function bindEvents() {
-      $('refreshButton').addEventListener('click', () => loadDashboard({ manual: true }));
+      $('refreshButton').addEventListener('click', function () { loadDashboard({ manual: true }); });
+      $('retryButton').addEventListener('click', function () { loadDashboard({ manual: true }); });
       $('searchInput').addEventListener('input', renderGroups);
-      $('filterGroup').addEventListener('click', e => {
-        const btn = e.target.closest('[data-filter]');
-        if (!btn) return;
-        state.filter = btn.dataset.filter;
-        document.querySelectorAll('#filterGroup button').forEach(b => b.classList.toggle('active', b === btn));
+      $('filterGroup').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-filter]');
+        if (!button) return;
+        state.filter = button.dataset.filter;
+        document.querySelectorAll('#filterGroup button').forEach(function (b) { b.classList.toggle('active', b === button); });
         renderGroups();
       });
-
-      // Pendelegasian Event untuk tombol-tombol di dalam tabel (Isi Opname & Pindah Data)
-      $('groupsContainer').addEventListener('click', e => {
-        const btnOpen = e.target.closest('[data-open]');
-        if (btnOpen) openForm(btnOpen.dataset.open);
-        
-        const btnMove = e.target.closest('[data-move]');
-        if (btnMove) openMoveModal(btnMove.dataset.move);
+      $('groupsContainer').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-open]');
+        if (button) openForm(button.dataset.open);
       });
 
-      /* Event Pindah Data Modal */
-      $('closeMoveBtn').addEventListener('click', closeMoveModal);
-      $('cancelMoveBtn').addEventListener('click', closeMoveModal);
-      $('confirmMoveBtn').addEventListener('click', handleMoveData);
+      $('openReportButton').addEventListener('click', showReportView);
+      $('backButton').addEventListener('click', showInventoryView);
+      $('printButton').addEventListener('click', printReport);
       
-      /* Event Form & Laporan & Foto - Disingkat untuk efisiensi */
-      $('openReportButton').addEventListener('click', () => { reportActive = true; $('inventoryView').hidden = true; $('reportView').hidden = false; $('reportView').classList.add('active'); loadReport(); });
-      $('backButton').addEventListener('click', () => { reportActive = false; $('reportView').hidden = true; $('reportView').classList.remove('active'); $('inventoryView').hidden = false; loadDashboard({}); });
-      $('printButton').addEventListener('click', () => window.print());
-      $('reportTableBody').addEventListener('click', e => { if (e.target.classList.contains('clickable-photo')) { $('photoPreviewImg').src = e.target.dataset.full; $('photoPreviewModal').hidden = false; } });
-      $('closePhotoPreview').addEventListener('click', () => $('photoPreviewModal').hidden = true);
+      /* Event Preview Foto Modal Laporan */
+      $('reportTableBody').addEventListener('click', function (event) {
+        if (event.target.classList.contains('clickable-photo')) {
+          const fullSrc = event.target.getAttribute('data-full');
+          if (fullSrc) {
+            $('photoPreviewImg').src = fullSrc;
+            $('photoPreviewModal').hidden = false;
+          }
+        }
+      });
+      
+      $('closePhotoPreview').addEventListener('click', function() {
+        $('photoPreviewModal').hidden = true;
+        $('photoPreviewImg').src = '';
+      });
+      
+      $('photoPreviewModal').addEventListener('mousedown', function(event) {
+        if (event.target === this) {
+          $('photoPreviewModal').hidden = true;
+          $('photoPreviewImg').src = '';
+        }
+      });
+
+      /* Event Modal Petugas Pemeriksa */
+      $('openOfficerBtn').addEventListener('click', function() {
+        $('inputOfficerName').value = $('printPetugasName').textContent;
+        $('inputOfficerNIP').value = $('printPetugasNIP').textContent;
+        $('officerModal').hidden = false;
+      });
+      
+      function closeOfficerModal() {
+        $('officerModal').hidden = true;
+      }
+      
+      $('closeOfficerBtn').addEventListener('click', closeOfficerModal);
+      $('cancelOfficerBtn').addEventListener('click', closeOfficerModal);
+      $('officerModal').addEventListener('mousedown', function (event) { if (event.target === this) closeOfficerModal(); });
+      
+      $('saveOfficerBtn').addEventListener('click', function() {
+        $('printPetugasName').textContent = $('inputOfficerName').value.trim() || '........................................';
+        $('printPetugasNIP').textContent = $('inputOfficerNIP').value.trim() || '....................................';
+        closeOfficerModal();
+        showToast('Data petugas berhasil diperbarui untuk cetak laporan.', 'success');
+      });
+
+      /* Event Form Opname */
       $('closeFormButton').addEventListener('click', closeForm);
       $('cancelFormButton').addEventListener('click', closeForm);
+      $('formModal').addEventListener('mousedown', function (event) { if (event.target === this) closeForm(); });
       $('saveButton').addEventListener('click', saveRecord);
-      $('fCondition').addEventListener('change', function() { if (activeSerial) getDraft(activeSerial).condition = this.value; });
-      $('fPosition').addEventListener('input', function() { $('posCount').textContent = this.value.length; if (activeSerial) getDraft(activeSerial).position = this.value; });
-      $('formModal').addEventListener('click', e => { const c = e.target.closest('[data-camera]'), g = e.target.closest('[data-gallery]'); if(c) startCamera(c.dataset.camera); if(g) openFilePicker(g.dataset.gallery, 'gallery'); });
+      $('fCondition').addEventListener('change', function () { if (activeSerial) getDraft(activeSerial).condition = this.value; });
+      $('fPosition').addEventListener('input', function () {
+        $('posCount').textContent = this.value.length;
+        if (activeSerial) getDraft(activeSerial).position = this.value;
+      });
+      $('formModal').addEventListener('click', function (event) {
+        const cam = event.target.closest('[data-camera]');
+        const gal = event.target.closest('[data-gallery]');
+        if (cam) startCamera(cam.dataset.camera);
+        if (gal) openFilePicker(gal.dataset.gallery, 'gallery');
+      });
+
+      /* Event Pindah Data Barang */
+      $('moveSerialSelect').addEventListener('change', function () {
+        const newSerial = this.value;
+        if (newSerial === activeSerial || !activeSerial) return;
+        
+        const newItem = state.items.find(function (i) { return i.serial === newSerial; });
+        if (!newItem) return;
+        
+        // Ambil data dari draft item lama
+        if (!drafts[newSerial]) drafts[newSerial] = { condition: '', position: '', photos: {} };
+        const newDraft = drafts[newSerial];
+        const oldDraft = drafts[activeSerial] || { photos: {} };
+        
+        // Pindahkan data ke draft item baru
+        newDraft.condition = $('fCondition').value;
+        newDraft.position = $('fPosition').value;
+        newDraft.photos = oldDraft.photos; // foto ikut dipindah!
+        
+        // Bersihkan draft item lama
+        delete drafts[activeSerial];
+        
+        // Terapkan serial baru menjadi target aktif
+        activeSerial = newSerial;
+        
+        // Perbarui UI form
+        $('formType').textContent = newItem.type;
+        $('formTitle').textContent = newItem.serial;
+        
+        const note = $('formNote');
+        if (newItem.completed) {
+          $('formNoteText').textContent = 'Peringatan: Target baru ini juga sudah pernah dicatat sebelumnya. Menyimpan akan menimpa log.';
+          note.hidden = false;
+        } else {
+          $('formNoteText').textContent = 'Data (termasuk foto) berhasil dipindahkan ke form target baru. Silakan klik Simpan.';
+          note.hidden = false;
+        }
+        
+        showToast('Isian dipindahkan ke target: ' + newSerial, 'success');
+      });
+
+      $('galleryInput').addEventListener('change', handleFileChosen);
+      $('captureInput').addEventListener('change', handleFileChosen);
+
       $('closeCameraButton').addEventListener('click', closeCamera);
       $('switchCameraButton').addEventListener('click', switchCamera);
       $('takePhotoButton').addEventListener('click', takePhoto);
-      $('cameraGalleryButton').addEventListener('click', () => { const k = cameraKind; closeCamera(); openFilePicker(k, 'gallery'); });
-      $('galleryInput').addEventListener('change', handleFileChosen);
-      $('captureInput').addEventListener('change', handleFileChosen);
-      $('openOfficerBtn').addEventListener('click', () => $('officerModal').hidden = false);
-      $('closeOfficerBtn').addEventListener('click', () => $('officerModal').hidden = true);
-      $('saveOfficerBtn').addEventListener('click', () => { $('printPetugasName').textContent = $('inputOfficerName').value || '...'; $('printPetugasNIP').textContent = $('inputOfficerNIP').value || '...'; $('officerModal').hidden = true; });
-    }
+      $('cameraGalleryButton').addEventListener('click', function () {
+        const kind = cameraKind;
+        closeCamera();
+        if (kind) openFilePicker(kind, 'gallery');
+      });
+      $('cameraModal').addEventListener('mousedown', function (event) { if (event.target === this) closeCamera(); });
 
-    /* ======================= FITUR PINDAH DATA ======================= */
-    function openMoveModal(serial) {
-      moveSourceSerial = serial;
-      const sourceItem = state.items.find(i => i.serial === serial);
-      
-      $('moveSourceLabel').innerHTML = `<strong>${escapeHtml(serial)}</strong><span style="font-size: .8rem; color: var(--muted); margin-top:2px;">${escapeHtml(sourceItem.type)}</span>`;
-      
-      const select = $('moveTargetSelect');
-      let options = '<option value="">-- Silakan pilih nomor seri tujuan --</option>';
-      
-      // Loop untuk mengumpulkan HANYA barang berstatus "BELUM OPNAME" (completed === false)
-      state.groups.forEach(g => {
-        const pendingItems = g.items.filter(i => !i.completed && i.serial !== serial);
-        if (pendingItems.length > 0) {
-          options += `<optgroup label="${escapeHtml(g.type)}">`;
-          pendingItems.forEach(i => { options += `<option value="${escapeHtml(i.serial)}">${escapeHtml(i.serial)}</option>`; });
-          options += `</optgroup>`;
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        if (!$('cameraModal').hidden) closeCamera();
+        else if (!$('formModal').hidden) closeForm();
+        else if (!$('officerModal').hidden) closeOfficerModal();
+        else if (!$('photoPreviewModal').hidden) {
+          $('photoPreviewModal').hidden = true;
+          $('photoPreviewImg').src = '';
         }
       });
-      select.innerHTML = options;
-      
-      $('moveModal').hidden = false;
-      document.body.classList.add('modal-open');
     }
 
-    function closeMoveModal() {
-      if (saving) return;
-      $('moveModal').hidden = true;
-      if ($('formModal').hidden) document.body.classList.remove('modal-open');
-      moveSourceSerial = null;
-    }
-
-    async function handleMoveData() {
-      const targetSerial = $('moveTargetSelect').value;
-      if (!targetSerial) {
-        showToast('Anda harus memilih barang tujuan terlebih dahulu.', 'warning');
-        $('moveTargetSelect').focus();
-        return;
-      }
-      
-      const btn = $('confirmMoveBtn');
-      btn.disabled = true;
-      btn.textContent = 'Memproses...';
-      saving = true;
-      
-      try {
-        await apiRequest({
-          timeout: 120000,
-          body: {
-            action: 'move', // Mengandalkan endpoint 'move' di Google Apps Script
-            payload: { sourceSerial: moveSourceSerial, targetSerial: targetSerial }
-          }
-        });
-        
-        showToast(`Data berhasil dipindahkan dari ${moveSourceSerial} ke ${targetSerial}`, 'success');
-        closeMoveModal();
-        loadDashboard({});
-      } catch (error) {
-        showToast('Gagal memindahkan data: ' + errorMessage(error) + '. (Pastikan backend script sudah diperbarui!)', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<svg class="icon"><use href="#i-move-arrow"/></svg> Konfirmasi Pindah';
-        saving = false;
-      }
-    }
-
-    /* ======================= DASHBOARD & FORM ======================= */
+    /* ======================= Dashboard ======================= */
     async function loadDashboard(opts) {
-      if (dashboardLoading) return;
+      if (!isConfigured() || dashboardLoading) return;
       dashboardLoading = true;
       if (opts.first) $('loadingState').hidden = false;
+      $('refreshButton').disabled = true;
       try {
         const data = await apiRequest({ params: { action: 'dashboard' } });
         $('pageError').hidden = true;
-        
-        state.groups = (data.groups || []).map(g => ({
-          type: g.type,
-          items: (g.items || []).map(i => ({ type: i.type || g.type, serial: i.serial, completed: Boolean(i.completed), todayCount: Number(i.todayCount || 0), lastInput: i.lastInput || '' }))
-        }));
-        state.items = [].concat.apply([], state.groups.map(g => g.items));
-        state.today = data.today || state.today;
-        state.loaded = true;
-        
-        if (data.conditions && data.conditions.length) {
-          state.conditions = data.conditions;
-          $('fCondition').innerHTML = '<option value="">Pilih kondisi…</option>' + data.conditions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+        applyDashboard(data);
+        if (opts.manual) showToast('Status berhasil diperbarui dari Google Sheets.', 'success');
+      } catch (error) {
+        if (opts.first || opts.manual || !state.loaded) {
+          $('pageErrorText').textContent = errorMessage(error);
+          $('pageError').hidden = false;
         }
+      } finally {
+        dashboardLoading = false;
+        $('loadingState').hidden = true;
+        $('refreshButton').disabled = false;
+      }
+    }
 
-        const total = state.items.length;
-        const done = Number(data.completed || 0);
-        const pending = total - done;
-        const pct = total ? Math.round(done / total * 100) : 0;
-        
-        $('statTotal').textContent = total; $('statDone').textContent = done; $('statPending').textContent = pending;
-        $('cntAll').textContent = total; $('cntDone').textContent = done; $('cntPending').textContent = pending;
-        $('pctValue').textContent = pct; $('progressFill').style.width = pct + '%';
-        $('headerDate').textContent = formatDateIndonesian(state.today, true);
-        
-        renderGroups();
-      } catch (e) {
-        if (!state.loaded) { $('pageErrorText').textContent = errorMessage(e); $('pageError').hidden = false; }
-      } finally { dashboardLoading = false; $('loadingState').hidden = true; }
+    function applyDashboard(data) {
+      state.groups = (data.groups || []).map(function (group) {
+        return {
+          type: group.type,
+          items: (group.items || []).map(function (item) {
+            return {
+              type: item.type || group.type,
+              serial: item.serial,
+              completed: Boolean(item.completed),
+              todayCount: Number(item.todayCount || 0),
+              lastInput: item.lastInput || ''
+            };
+          })
+        };
+      });
+      state.items = [].concat.apply([], state.groups.map(function (g) { return g.items; }));
+      state.today = data.today || state.today; // Mengambil tanggal server (tanggal cetak)
+      state.loaded = true;
+      if (data.conditions && data.conditions.length) {
+        state.conditions = data.conditions;
+        populateConditions(data.conditions);
+      }
+
+      // Populate opsi pindah data barang
+      populateMoveSelect();
+
+      const total = Number(data.total || state.items.length);
+      const done = Number(data.completed || 0);
+      const pending = Number(data.pending != null ? data.pending : total - done);
+      const pct = total ? Math.round(done / total * 100) : 0;
+      $('statTotal').textContent = total;
+      $('statDone').textContent = done;
+      $('statPending').textContent = pending;
+      $('cntAll').textContent = total;
+      $('cntDone').textContent = done;
+      $('cntPending').textContent = pending;
+      $('pctValue').textContent = pct;
+      $('progressFill').style.width = pct + '%';
+      $('progressBar').setAttribute('aria-valuenow', pct);
+      $('headerDate').textContent = formatDateIndonesian(state.today, true);
+      renderGroups();
+    }
+
+    function populateMoveSelect() {
+      const select = $('moveSerialSelect');
+      select.innerHTML = state.groups.map(function(g) {
+        return '<optgroup label="' + escapeHtml(g.type) + '">' +
+          g.items.map(function(i) {
+            return '<option value="' + escapeHtml(i.serial) + '">' + escapeHtml(i.serial) + '</option>';
+          }).join('') +
+        '</optgroup>';
+      }).join('');
+    }
+
+    function populateConditions(list) {
+      const select = $('fCondition');
+      const current = select.value;
+      select.innerHTML = '<option value="">Pilih kondisi…</option>' + list.map(function (c) {
+        return '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
+      }).join('');
+      select.value = current;
+    }
+
+    function matchesFilter(item, query) {
+      if (state.filter === 'done' && !item.completed) return false;
+      if (state.filter === 'pending' && item.completed) return false;
+      if (!query) return true;
+      return item.serial.toLowerCase().indexOf(query) !== -1 || item.type.toLowerCase().indexOf(query) !== -1;
     }
 
     function renderGroups() {
       const query = String($('searchInput').value || '').trim().toLowerCase();
-      let html = '', visible = 0;
-      state.groups.forEach((group, groupIndex) => {
+      let html = '';
+      let visible = 0;
+      state.groups.forEach(function (group, groupIndex) {
+        const doneCount = group.items.filter(function (i) { return i.completed; }).length;
+        const pct = group.items.length ? Math.round(doneCount / group.items.length * 100) : 0;
         let rows = '';
-        group.items.forEach((item, idx) => {
-          if ((state.filter === 'done' && !item.completed) || (state.filter === 'pending' && item.completed) || (query && !item.serial.toLowerCase().includes(query) && !item.type.toLowerCase().includes(query))) return;
-          visible++;
-          
-          let actionButtons = '';
-          if (item.completed) {
-            actionButtons = `<div class="action-group">
-                <button type="button" class="btn btn-ghost btn-sm" data-move="${escapeHtml(item.serial)}"><svg class="icon"><use href="#i-refresh"/></svg> Pindah Data</button>
-                <button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}">Input Ulang</button>
-              </div>`;
-          } else {
-            actionButtons = `<div class="action-group"><button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}" style="width:100%;">Isi Opname</button></div>`;
-          }
-          
-          rows += `<tr class="${item.completed ? 'is-done' : 'is-pending'}">
-            <td class="col-no">${idx + 1}</td>
-            <td class="col-serial"><span class="serial">${escapeHtml(item.serial)}</span></td>
-            <td class="col-status"><span class="badge ${item.completed ? 'badge-done' : 'badge-pending'}"><i></i>${item.completed ? 'SUDAH OPNAME' : 'BELUM OPNAME'}</span></td>
-            <td class="col-note note">${escapeHtml(item.completed ? `Tercatat ${item.todayCount}×` : 'Belum ada input')}</td>
-            <td class="col-action" style="white-space:nowrap;">${actionButtons}</td>
-          </tr>`;
+        group.items.forEach(function (item, index) {
+          if (!matchesFilter(item, query)) return;
+          visible += 1;
+          rows += renderRow(item, index + 1);
         });
-        if (rows) html += `<section class="card group"><div class="group-head"><span class="group-letter">${String.fromCharCode(65 + groupIndex)}</span><div><h3>${escapeHtml(group.type)}</h3></div></div><table class="dev-table"><tbody>${rows}</tbody></table></section>`;
+        if (!rows) return;
+        html += '<section class="card group">' +
+          '<div class="group-head">' +
+            '<span class="group-letter">' + String.fromCharCode(65 + groupIndex) + '</span>' +
+            '<div><h3>' + escapeHtml(group.type) + '</h3><p>' + doneCount + ' dari ' + group.items.length + ' unit sudah opname</p></div>' +
+            '<div class="group-meter"><div class="progress"><i style="width:' + pct + '%"></i></div></div>' +
+          '</div>' +
+          '<table class="dev-table"><thead><tr>' +
+            '<th class="col-no">No.</th><th>Nomor Seri</th><th class="col-status">Status</th><th>Catatan Terbaru</th><th class="col-action"></th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</section>';
       });
       $('groupsContainer').innerHTML = html;
       $('searchEmpty').hidden = visible !== 0 || !state.loaded;
     }
 
+    function renderRow(item, number) {
+      const done = item.completed;
+      let note = 'Belum ada input';
+      if (done) {
+        const time = item.lastInput ? (item.lastInput.split(' ')[1] || item.lastInput) : '';
+        note = 'Tercatat ' + item.todayCount + '×' + (time ? ' · terakhir pukul ' + time : '');
+      }
+      return '<tr class="' + (done ? 'is-done' : 'is-pending') + '">' +
+        '<td class="col-no">' + number + '</td>' +
+        '<td class="col-serial"><span class="serial">' + escapeHtml(item.serial) + '</span></td>' +
+        '<td class="col-status"><span class="badge ' + (done ? 'badge-done' : 'badge-pending') + '"><i></i>' + (done ? 'SUDAH OPNAME' : 'BELUM OPNAME') + '</span></td>' +
+        '<td class="col-note note">' + escapeHtml(note) + '</td>' +
+        '<td class="col-action"><button type="button" class="btn btn-primary btn-sm" data-open="' + escapeHtml(item.serial) + '">' + (done ? 'Input Ulang' : 'Isi Opname') + '</button></td>' +
+      '</tr>';
+    }
+
+    /* ======================= Formulir ======================= */
     function getDraft(serial) {
       if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} };
       return drafts[serial];
     }
 
     async function openForm(serial) {
-      const item = state.items.find(i => i.serial === serial);
+      const item = state.items.find(function (i) { return i.serial === serial; });
       if (!item) return;
       activeSerial = serial;
-      const draft = getDraft(serial);
       
-      $('fCondition').value = ''; $('fPosition').value = ''; $('img-barang').hidden = true; $('ph-barang').hidden = false; $('img-kode').hidden = true; $('ph-kode').hidden = false;
-      $('formType').textContent = item.type; $('formTitle').textContent = item.serial;
-      $('formNote').hidden = true;
-      $('formModal').hidden = false; document.body.classList.add('modal-open');
+      if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} };
+      const draft = drafts[serial];
+      
+      // Kosongkan form UI sementara
+      $('fCondition').value = '';
+      $('fPosition').value = '';
+      $('posCount').textContent = '0';
+      $('img-barang').hidden = true; $('ph-barang').hidden = false;
+      $('img-kode').hidden = true; $('ph-kode').hidden = false;
 
-      // Auto-load dari IndexedDB jika status sudah selesai (fitur yang diminta sebelumnya)
+      // Update Judul & Dropdown Target
+      $('formType').textContent = item.type;
+      $('formTitle').textContent = item.serial;
+      $('moveSerialSelect').value = serial;
+      
+      const note = $('formNote');
+      note.hidden = true;
+
+      // Buka modal secara visual ke user
+      $('formModal').hidden = false;
+      document.body.classList.add('modal-open');
+      $('formModal').querySelector('.modal-body').scrollTop = 0;
+
+      // 💥 SISTEM AUTO-LOAD DARI CACHE LOKAL:
+      // Jika barang sudah 'Input Ulang' dan draft masih kosong, kita cari data dari pengisian sebelumnya!
       if (item.completed && !draft.condition && !draft.photos.barang) {
-        $('formType').textContent = item.type + ' (Memuat histori...)';
-        const cached = await localDB.get(serial);
-        if (cached && activeSerial === serial) {
-          draft.condition = cached.condition; draft.position = cached.position;
-          if (cached.photoBarang) draft.photos.barang = { dataUrl: cached.photoBarang };
-          if (cached.photoKode) draft.photos.kode = { dataUrl: cached.photoKode };
+        $('formType').textContent = item.type + ' (Memuat foto sebelumnya...)';
+        
+        const cachedPayload = await localDB.get(serial);
+        
+        // Pastikan user belum menutup modal saat sistem loading
+        if (cachedPayload && activeSerial === serial) {
+          draft.condition = cachedPayload.condition;
+          draft.position = cachedPayload.position;
+          if (cachedPayload.photoBarang) draft.photos.barang = { dataUrl: cachedPayload.photoBarang, bytes: dataUrlByteLength(cachedPayload.photoBarang) };
+          if (cachedPayload.photoKode) draft.photos.kode = { dataUrl: cachedPayload.photoKode, bytes: dataUrlByteLength(cachedPayload.photoKode) };
         }
-        if (activeSerial === serial) $('formType').textContent = item.type;
+        
+        if (activeSerial === serial) {
+          $('formType').textContent = item.type; // Kembalikan teks asli
+        }
       }
+
+      // Jika user keburu menutup form
       if (activeSerial !== serial) return;
 
+      // Render data draft/cache ke UI
       $('fCondition').value = draft.condition || '';
       $('fPosition').value = draft.position || '';
       $('posCount').textContent = ($('fPosition').value || '').length;
-      if (draft.photos.barang) { $('img-barang').src = draft.photos.barang.dataUrl; $('img-barang').hidden = false; $('ph-barang').hidden = true; }
-      if (draft.photos.kode) { $('img-kode').src = draft.photos.kode.dataUrl; $('img-kode').hidden = false; $('ph-kode').hidden = true; }
-      
+      renderPhoto('barang');
+      renderPhoto('kode');
+
       if (item.completed) {
-        $('formNoteText').textContent = 'Perangkat ini sudah dicatat sebelumnya. Data histori dimuat otomatis. Menyimpan akan menimpa log ini.';
-        $('formNote').hidden = false;
+        $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Data keterangan & foto sebelumnya telah dimuat ulang. Jika salah klik, silakan gunakan menu "Pindah Target" di atas.';
+        note.hidden = false;
+      }
+      
+      $('fCondition').focus();
+    }
+
+    function closeForm() {
+      if (saving) return;
+      $('formModal').hidden = true;
+      document.body.classList.remove('modal-open');
+      activeSerial = null;
+    }
+
+    function renderPhoto(kind) {
+      const draft = activeSerial ? getDraft(activeSerial) : { photos: {} };
+      const photo = draft.photos[kind];
+      const img = $('img-' + kind);
+      const placeholder = $('ph-' + kind);
+      $('slot-' + kind).classList.toggle('has-photo', Boolean(photo));
+      if (photo) {
+        img.src = photo.dataUrl;
+        img.hidden = false;
+        placeholder.hidden = true;
+      } else {
+        img.removeAttribute('src');
+        img.hidden = true;
+        placeholder.hidden = false;
       }
     }
 
-    function closeForm() { if (!saving) { $('formModal').hidden = true; document.body.classList.remove('modal-open'); activeSerial = null; } }
+    function setPhoto(kind, dataUrl) {
+      if (!activeSerial) return;
+      getDraft(activeSerial).photos[kind] = { dataUrl: dataUrl, bytes: dataUrlByteLength(dataUrl) };
+      renderPhoto(kind);
+    }
 
     async function saveRecord() {
       if (saving || !activeSerial) return;
-      const item = state.items.find(i => i.serial === activeSerial);
+      const item = state.items.find(function (i) { return i.serial === activeSerial; });
+      if (!item) { showToast('Data barang tidak ditemukan. Perbarui halaman.', 'error'); return; }
       const draft = getDraft(activeSerial);
-      if (!draft.condition || !draft.position || !draft.photos.barang || !draft.photos.kode) { showToast('Lengkapi semua isian dan foto.', 'warning'); return; }
+      const condition = $('fCondition').value;
+      const position = $('fPosition').value.trim();
+      const photoBarang = draft.photos.barang;
+      const photoKode = draft.photos.kode;
 
-      saving = true; $('saveButton').disabled = true; $('saveButton').textContent = 'Menyimpan...';
-      const payload = { type: item.type, serial: item.serial, condition: draft.condition, position: draft.position, photoBarang: draft.photos.barang.dataUrl, photoKode: draft.photos.kode.dataUrl };
+      if (!condition) { showToast('Pilih kondisi barang terlebih dahulu.', 'warning'); $('fCondition').focus(); return; }
+      if (!position) { showToast('Isi detail posisi barang terlebih dahulu.', 'warning'); $('fPosition').focus(); return; }
+      if (position.length > MAX_POSITION_LENGTH) { showToast('Detail posisi maksimal ' + MAX_POSITION_LENGTH + ' karakter.', 'warning'); return; }
+      if (!photoBarang) { showToast('Ambil atau pilih Foto Barang terlebih dahulu.', 'warning'); return; }
+      if (!photoKode) { showToast('Ambil atau pilih Foto Kode Barang terlebih dahulu.', 'warning'); return; }
+
+      saving = true;
+      const button = $('saveButton');
+      button.disabled = true;
+      button.textContent = 'Menyimpan…';
+      
+      const payload = {
+        type: item.type,
+        serial: item.serial,
+        condition: condition,
+        position: position,
+        photoBarang: photoBarang.dataUrl,
+        photoKode: photoKode.dataUrl
+      };
+
+      // 1. Simpan ke Cache Lokal browser sebelum dikirim agar bisa di-load jika Input Ulang
       localDB.save(item.serial, payload);
 
+      // 2. Kirim ke Server
       try {
-        await apiRequest({ body: { action: 'save', payload: payload } });
+        const result = await apiRequest({
+          timeout: 120000,
+          body: { action: 'save', payload: payload }
+        });
+        
+        // Hapus dari RAM (draft) setelah sukses supaya fresh
         delete drafts[item.serial];
+        saving = false;
         closeForm();
-        showToast('Berhasil disimpan.', 'success');
+        
+        if (result && result.sharingWarning) {
+          showToast('Data tersimpan, tetapi kebijakan Google Drive mungkin membatasi akses publik ke foto. Periksa izin folder/file.', 'warning');
+        } else {
+          showToast('Berhasil! ' + item.serial + ' berhasil disimpan.', 'success');
+        }
+        
         loadDashboard({});
-      } catch (e) { showToast(errorMessage(e), 'error'); } 
-      finally { saving = false; $('saveButton').disabled = false; $('saveButton').textContent = 'Simpan Opname'; }
+        if (reportActive) loadReport();
+      } catch (error) {
+        showToast(errorMessage(error), 'error');
+      } finally {
+        saving = false;
+        button.disabled = false;
+        button.textContent = 'Simpan Opname';
+      }
     }
 
-    /* ======================= CAMERA & UTILS ======================= */
-    function openFilePicker(kind, mode) { pendingKind = kind; $(mode === 'capture' ? 'captureInput' : 'galleryInput').click(); }
-    async function handleFileChosen(e) { const f = e.target.files[0], k = pendingKind; e.target.value = ''; if (f && k) { showToast('Memproses foto...', 'success'); try { const d = await compressImageFile(f); if (activeSerial) { getDraft(activeSerial).photos[k] = { dataUrl: d }; if(k==='barang'){$('img-barang').src=d;$('img-barang').hidden=false;$('ph-barang').hidden=true;}else{$('img-kode').src=d;$('img-kode').hidden=false;$('ph-kode').hidden=true;} } showToast('Foto siap diunggah.', 'success'); } catch(err) { showToast('Gagal memproses foto', 'error'); } } }
-    async function compressImageFile(f) { const bm = await createImageBitmap(f); const c = document.createElement('canvas'); const s = Math.min(1, 1600/Math.max(bm.width, bm.height)); c.width = bm.width*s; c.height = bm.height*s; const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height); ctx.drawImage(bm,0,0,c.width,c.height); bm.close(); return new Promise(r => c.toBlob(b => { const rd = new FileReader(); rd.onload = () => r(rd.result); rd.readAsDataURL(b); }, 'image/jpeg', 0.82)); }
-    
-    async function startCamera(kind) { cameraKind = kind; $('cameraModal').hidden = false; try { cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}); $('cameraVideo').srcObject = cameraStream; $('cameraStatus').textContent = 'Kamera aktif.'; } catch(e) { closeCamera(); openFilePicker(kind, 'capture'); } }
-    function closeCamera() { if(cameraStream) cameraStream.getTracks().forEach(t=>t.stop()); $('cameraModal').hidden = true; }
-    async function switchCamera() { facingMode = facingMode === 'environment' ? 'user' : 'environment'; closeCamera(); setTimeout(() => startCamera(cameraKind), 300); }
-    async function takePhoto() { const v = $('cameraVideo'); if(!v.videoWidth) return; const c = document.createElement('canvas'); const s = Math.min(1, 1600/Math.max(v.videoWidth, v.videoHeight)); c.width = v.videoWidth*s; c.height = v.videoHeight*s; c.getContext('2d').drawImage(v,0,0,c.width,c.height); const d = c.toDataURL('image/jpeg', 0.82); const k = cameraKind; closeCamera(); if (activeSerial) { getDraft(activeSerial).photos[k] = { dataUrl: d }; if(k==='barang'){$('img-barang').src=d;$('img-barang').hidden=false;$('ph-barang').hidden=true;}else{$('img-kode').src=d;$('img-kode').hidden=false;$('ph-kode').hidden=true;} } showToast('Foto diambil.', 'success'); }
+    /* ======================= Foto ======================= */
+    function openFilePicker(kind, mode) {
+      pendingKind = kind;
+      const input = $(mode === 'capture' ? 'captureInput' : 'galleryInput');
+      input.value = '';
+      input.click();
+    }
 
-    async function loadReport() { $('reportTableBody').innerHTML = '<tr><td colspan="8" style="text-align:center;">Memuat data...</td></tr>'; try { const data = await apiRequest({ params: { action: 'report' } }); const rm = {}; if (data.records) data.records.forEach(r => rm[r.serial] = r); $('reportDateLabel').textContent = formatDateIndonesian(state.today); $('reportTableBody').innerHTML = state.items.map((item, i) => { const r = rm[item.serial]; return `<tr><td style="text-align:center">${i+1}</td><td>${escapeHtml(item.type)}</td><td><strong>${escapeHtml(item.serial)}</strong></td><td><span class="badge ${r?'badge-done':'badge-pending'}"><i></i>${r?'Sudah':'Belum'}</span></td><td>${r?escapeHtml(r.condition):'-'}</td><td>${r?escapeHtml(r.position):'-'}</td><td style="text-align:center">${r&&r.photoBarangImageUrl?`<img src="${r.photoBarangImageUrl}" class="report-photo clickable-photo" data-full="${r.photoBarangImageUrl}">`:'-'}</td><td style="text-align:center">${r&&r.photoKodeImageUrl?`<img src="${r.photoKodeImageUrl}" class="report-photo clickable-photo" data-full="${r.photoKodeImageUrl}">`:'-'}</td></tr>`; }).join(''); } catch(e) { $('reportTableBody').innerHTML = `<tr><td colspan="8" style="text-align:center; color:red">${errorMessage(e)}</td></tr>`; } }
-    
-    function showToast(msg, type) { const t = $('toast'); t.textContent = msg; t.className = 'toast ' + (type||'success'); t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 4500); }
-    function errorMessage(e) { return String(e.message||e).replace(/^Exception:\s*/i, ''); }
-    function escapeHtml(v) { return String(v||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    function formatDateIndonesian(iso) { if (!iso) return '—'; const p = String(iso).split('-'); return p.length === 3 ? `${p[2]} ${MONTH_NAMES[p[1]-1]} ${p[0]}` : iso; }
+    function handleFileChosen(event) {
+      const input = event.target;
+      const file = input.files && input.files[0];
+      const kind = pendingKind;
+      input.value = '';
+      if (file && kind) processSelectedFile(file, kind);
+    }
+
+    async function processSelectedFile(file, kind) {
+      if (!String(file.type || '').startsWith('image/')) {
+        showToast('File yang dipilih bukan gambar. Pilih foto JPG, PNG, atau format gambar yang didukung browser.', 'error');
+        return;
+      }
+      showToast('Mengompres foto di perangkat…', 'success');
+      let image = null;
+      try {
+        image = await loadImageFromFile(file);
+        const dataUrl = await compressImageSource(image, image.naturalWidth || image.width, image.naturalHeight || image.height);
+        setPhoto(kind, dataUrl);
+        showToast(PHOTO_LABELS[kind] + ' siap diunggah (' + formatBytes(dataUrlByteLength(dataUrl)) + ').', 'success');
+      } catch (error) {
+        showToast('Foto tidak dapat diproses. Coba gunakan JPG/PNG atau ambil foto melalui kamera. ' + errorMessage(error), 'error');
+      } finally {
+        if (image && typeof image.close === 'function') image.close();
+      }
+    }
+
+    function loadImageFromFile(file) {
+      if ('createImageBitmap' in window) {
+        return createImageBitmap(file).catch(function () { return loadImageFallback(file); });
+      }
+      return loadImageFallback(file);
+    }
+
+    function loadImageFallback(file) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.onerror = function () { reject(new Error('File gagal dibaca.')); };
+        reader.onload = function () {
+          const image = new Image();
+          image.onload = function () { resolve(image); };
+          image.onerror = function () { reject(new Error('Browser tidak dapat membaca format foto ini.')); };
+          image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function compressImageSource(source, originalWidth, originalHeight) {
+      if (!originalWidth || !originalHeight) throw new Error('Dimensi foto tidak valid.');
+      const scale = Math.min(1, 1600 / Math.max(originalWidth, originalHeight));
+      let width = Math.max(1, Math.round(originalWidth * scale));
+      let height = Math.max(1, Math.round(originalHeight * scale));
+      let quality = 0.88;
+      const canvas = document.createElement('canvas');
+      for (let attempt = 0; attempt < 14; attempt += 1) {
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext('2d', { alpha: false });
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, width, height);
+        context.drawImage(source, 0, 0, width, height);
+        const blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+        if (blob.size <= MAX_CLIENT_PHOTO_BYTES) return await blobToDataUrl(blob);
+        if (quality > 0.5) {
+          quality = Math.max(0.48, quality - 0.1);
+        } else {
+          width = Math.max(320, Math.round(width * 0.82));
+          height = Math.max(240, Math.round(height * 0.82));
+          quality = 0.82;
+        }
+      }
+      throw new Error('Ukuran foto masih melebihi 1 MB setelah kompresi.');
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (blob) {
+          if (blob) resolve(blob);
+          else reject(new Error('Kompresi gambar gagal pada browser ini.'));
+        }, type, quality);
+      });
+    }
+
+    function blobToDataUrl(blob) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.onload = function () { resolve(String(reader.result)); };
+        reader.onerror = function () { reject(new Error('Hasil foto gagal dibaca.')); };
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    /* ======================= Kamera ======================= */
+    async function startCamera(kind) {
+      cameraKind = kind;
+      facingMode = 'environment';
+      $('cameraTitle').textContent = 'Ambil ' + PHOTO_LABELS[kind];
+      $('cameraStatus').textContent = 'Meminta izin kamera…';
+      $('cameraModal').hidden = false;
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        closeCamera();
+        showToast('Akses kamera langsung tidak didukung. Membuka kamera/galeri perangkat.', 'warning');
+        openFilePicker(kind, 'capture');
+        return;
+      }
+      try {
+        await startCameraStream();
+        $('cameraStatus').textContent = 'Kamera aktif. Tekan Ambil Foto untuk melanjutkan.';
+      } catch (error) {
+        closeCamera();
+        showToast('Kamera tidak dapat dibuka. Membuka kamera/galeri perangkat sebagai alternatif.', 'warning');
+        openFilePicker(kind, 'capture');
+      }
+    }
+
+    async function startCameraStream() {
+      stopCameraStream();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: facingMode }, width: { ideal: 1600 }, height: { ideal: 1200 } }
+      });
+      cameraStream = stream;
+      const video = $('cameraVideo');
+      video.srcObject = stream;
+      await video.play();
+    }
+
+    async function switchCamera() {
+      const previous = facingMode;
+      facingMode = facingMode === 'environment' ? 'user' : 'environment';
+      $('cameraStatus').textContent = 'Mengganti kamera…';
+      try {
+        await startCameraStream();
+        $('cameraStatus').textContent = facingMode === 'environment' ? 'Kamera belakang aktif.' : 'Kamera depan aktif.';
+      } catch (error) {
+        facingMode = previous;
+        try { await startCameraStream(); } catch (ignore) { /* abaikan */ }
+        $('cameraStatus').textContent = 'Kamera alternatif tidak tersedia pada perangkat ini.';
+        showToast('Arah kamera tidak dapat diganti pada perangkat/browser ini.', 'warning');
+      }
+    }
+
+    async function takePhoto() {
+      const video = $('cameraVideo');
+      if (!video.videoWidth || !video.videoHeight) {
+        showToast('Kamera belum siap. Tunggu beberapa saat lalu coba lagi.', 'warning');
+        return;
+      }
+      const button = $('takePhotoButton');
+      button.disabled = true;
+      $('cameraStatus').textContent = 'Mengambil dan mengompres foto…';
+      try {
+        const dataUrl = await compressImageSource(video, video.videoWidth, video.videoHeight);
+        const kind = cameraKind;
+        closeCamera();
+        setPhoto(kind, dataUrl);
+        showToast(PHOTO_LABELS[kind] + ' berhasil diambil (' + formatBytes(dataUrlByteLength(dataUrl)) + ').', 'success');
+      } catch (error) {
+        showToast('Gagal mengambil foto: ' + errorMessage(error), 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function closeCamera() {
+      stopCameraStream();
+      $('cameraModal').hidden = true;
+      cameraKind = null;
+    }
+
+    function stopCameraStream() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(function (track) { track.stop(); });
+        cameraStream = null;
+      }
+      const video = $('cameraVideo');
+      if (video) video.srcObject = null;
+    }
+
+    /* ======================= Laporan ======================= */
+    function showReportView() {
+      reportActive = true;
+      $('inventoryView').style.display = 'none';
+      const view = $('reportView');
+      view.hidden = false;
+      view.classList.add('active');
+      loadReport();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showInventoryView() {
+      reportActive = false;
+      const view = $('reportView');
+      view.classList.remove('active');
+      view.hidden = true;
+      $('inventoryView').style.display = '';
+      loadDashboard({});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function loadReport() {
+      $('reportLoading').hidden = false;
+      $('reportError').hidden = true;
+      try {
+        // Melakukan request untuk mengambil laporan master (semua data tanpa filter tanggal)
+        const data = await apiRequest({ params: { action: 'report' } });
+        renderReport(data);
+      } catch (error) {
+        $('reportErrorText').textContent = errorMessage(error);
+        $('reportError').hidden = false;
+      } finally {
+        $('reportLoading').hidden = true;
+      }
+    }
+
+    function renderReport(data) {
+      // Menggunakan waktu hari ini untuk kebutuhan cetak karena laporan tidak lagi berbatas waktu
+      const printDate = state.today || new Date().toISOString().split('T')[0];
+      const dateLabel = formatDateIndonesian(printDate);
+      
+      $('reportDateLabel').textContent = dateLabel;
+      $('reportGeneratedPrint').textContent = 'Dicetak pada: ' + (data.generatedAt || dateLabel);
+      $('signatureDate').textContent = dateLabel;
+      $('reportSummary').textContent = 'Total perangkat terdaftar: ' + state.items.length + ' · Menampilkan seluruh data opname perangkat.';
+      
+      const tbody = $('reportTableBody');
+      if (!state.items || !state.items.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:26px;color:var(--muted)">Data master barang belum dimuat dari server. Coba muat ulang halaman.</td></tr>';
+        return;
+      }
+
+      // Buat pemetaan data opname berdasar nomor seri
+      const recordMap = {};
+      if (data.records) {
+        data.records.forEach(function(r) { recordMap[r.serial] = r; });
+      }
+
+      // Menampilkan SELURUH BARANG yang disandingkan dengan laporan opname
+      tbody.innerHTML = state.items.map(function (item, index) {
+        const record = recordMap[item.serial];
+        const isDone = Boolean(record);
+        
+        const status = isDone ? 'Sudah opname' : 'Belum opname';
+        const badgeCls = isDone ? 'badge-done' : 'badge-pending';
+        const condition = isDone ? record.condition : '-';
+        const position = isDone ? record.position : '-';
+        const photoBarang = isDone ? reportPhoto(record.photoBarangImageUrl, record.photoBarangUrl, 'Foto barang') : '<span class="photo-fallback">Tidak ada foto</span>';
+        const photoKode = isDone ? reportPhoto(record.photoKodeImageUrl, record.photoKodeUrl, 'Foto kode') : '<span class="photo-fallback">Tidak ada foto</span>';
+
+        return '<tr>' +
+          cell('No.', String(index + 1), 'text-align:center') +
+          cell('Jenis Barang', escapeHtml(item.type)) +
+          cell('Nomor Seri', '<strong>' + escapeHtml(item.serial) + '</strong>') +
+          cell('Status', '<span class="badge ' + badgeCls + '"><i></i>' + status + '</span>') +
+          cell('Kondisi', escapeHtml(condition)) +
+          cell('Detail Posisi', escapeHtml(position)) +
+          cell('Foto Barang', photoBarang, '', 'photo-cell') +
+          cell('Foto Kode', photoKode, '', 'photo-cell') +
+        '</tr>';
+      }).join('');
+    }
+
+    function cell(label, content, style, cls) {
+      return '<td data-label="' + label + '"' + (style ? ' style="' + style + '"' : '') + '><div class="cell-val' + (cls ? ' ' + cls : '') + '">' + content + '</div></td>';
+    }
+
+    function reportPhoto(imageUrl, fileUrl, alt) {
+      if (!imageUrl && !fileUrl) return '<span class="photo-fallback">Tidak ada foto</span>';
+      return imageUrl
+        ? '<img class="report-photo clickable-photo" src="' + escapeHtml(imageUrl) + '" data-full="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(alt) + '" referrerpolicy="no-referrer" title="Klik untuk memperbesar"><span class="photo-fallback" hidden>Pratinjau tidak tersedia</span>'
+        : '<span class="photo-fallback">Pratinjau tidak tersedia</span>';
+    }
+
+    function waitForReportImages(timeoutMs) {
+      const pending = Array.from(document.querySelectorAll('#reportTableBody img')).filter(function (img) { return !img.complete; });
+      if (!pending.length) return Promise.resolve();
+      const loaded = Promise.all(pending.map(function (img) {
+        return new Promise(function (resolve) {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      }));
+      return Promise.race([loaded, new Promise(function (resolve) { setTimeout(resolve, timeoutMs); })]);
+    }
+
+    async function printReport() {
+      if (!reportActive) showReportView();
+      const button = $('printButton');
+      button.disabled = true;
+      try {
+        await waitForReportImages(8000);
+        window.print();
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    /* ======================= Utilitas ======================= */
+    function showToast(message, type) {
+      const toast = $('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + (type || 'success');
+      toast.hidden = false;
+      if (toastTimer) window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(function () { toast.hidden = true; }, 4500);
+    }
+
+    function errorMessage(error) {
+      if (!error) return 'Terjadi kesalahan yang tidak diketahui.';
+      return String(error.message || error).replace(/^Exception:\s*/i, '');
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+      });
+    }
+
+    function dataUrlByteLength(dataUrl) {
+      const base64 = String(dataUrl || '').split(',')[1] || '';
+      const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
+      return Math.max(0, Math.floor(base64.length * 3 / 4) - padding);
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return '0 B';
+      return bytes < 1024 * 1024 ? Math.round(bytes / 1024) + ' KB' : (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function formatDateIndonesian(isoDate, withDay) {
+      if (!isoDate) return '—';
+      const parts = String(isoDate).split('-').map(Number);
+      if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return isoDate;
+      let text = parts[2] + ' ' + MONTH_NAMES[parts[1] - 1] + ' ' + parts[0];
+      if (withDay) text = DAY_NAMES[new Date(parts[0], parts[1] - 1, parts[2]).getDay()] + ', ' + text;
+      return text;
+    }
   </script>
 </body>
 </html>
