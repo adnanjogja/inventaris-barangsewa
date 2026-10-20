@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b2142">
+  <title>Opname Perangkat Sewa · Kantor Imigrasi Kediri</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #0b2142;
+      --navy-800: #0f2d57;
+      --navy-700: #16396b;
+      --navy-600: #1f4d8c;
+      --gold: #c29b45;
+      --ink: #162033;
+      --ink-2: #34445c;
+      --muted: #66758b;
+      --line: #e3e9f1;
+      --line-2: #edf1f6;
+      --canvas: #f3f6fa;
+      --surface: #ffffff;
+      --pending-bg: #fff7de;
+      --pending-bd: #f1d37a;
+      --pending-fg: #8a5a00;
+      --pending-dot: #e0a526;
+      --done-bg: #e3f6ea;
+      --done-bd: #8fd3a8;
+      --done-fg: #13693a;
+      --done-dot: #22a15b;
+      --danger: #b42335;
+      --danger-bg: #fdecee;
+      --radius: 14px;
+      --shadow: 0 1px 2px rgba(15, 35, 65, .05), 0 8px 24px rgba(15, 35, 65, .06);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.modal-open { overflow: hidden; }
+    h1, h2, h3, p { margin: 0; }
+    button, input, select { font: inherit; color: inherit; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .icon { width: 1.1em; height: 1.1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; vertical-align: -.18em; }
+
+    /* ---------- Header ---------- */
+    .app-header { position: relative; color: #fff; background: linear-gradient(120deg, var(--navy-900), var(--navy-700)); }
+    .app-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--gold), #e6c777 40%, transparent 85%); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0 30px; }
+    .brand { display: flex; align-items: center; gap: 18px; min-width: 0; }
+    .emblem { width: 54px; height: 54px; border-radius: 15px; display: grid; place-items: center; flex: 0 0 auto; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); }
+    .emblem .icon { width: 26px; height: 26px; }
+    .kicker { font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #cfdcf0; }
+    .app-title { margin-top: 4px; font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 800; line-height: 1.2; letter-spacing: -.015em; }
+    .app-subtitle { margin-top: 3px; font-size: .92rem; color: #cfdcf0; }
+    .date-chip { flex: 0 0 auto; text-align: right; padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
+    .date-chip small { display: block; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: #b9c9e2; font-weight: 600; }
+    .date-chip strong { display: block; font-size: .95rem; font-weight: 700; white-space: nowrap; }
+
+    /* ---------- Layout ---------- */
+    .main { padding: 28px 0 48px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .stack > * + * { margin-top: 20px; }
+    .section-title { font-size: 1.02rem; font-weight: 700; letter-spacing: -.01em; color: var(--navy-800); }
+    .section-caption { margin-top: 2px; font-size: .84rem; color: var(--muted); }
+
+    /* ---------- Summary ---------- */
+    .summary { padding: 22px 24px; }
+    .summary-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .summary-pct { font-size: 2rem; font-weight: 800; line-height: 1; color: var(--navy-800); letter-spacing: -.03em; }
+    .summary-pct small { font-size: 1rem; font-weight: 700; color: var(--muted); }
+    .progress { height: 10px; margin-top: 14px; border-radius: 99px; background: var(--line-2); overflow: hidden; }
+    .progress > i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--navy-600), #3d7bc4); transition: width .5s ease; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+    .stat { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 12px; background: #f8fafd; border: 1px solid var(--line-2); min-width: 0; }
+    .stat-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: 0 0 auto; background: #e9f0fa; color: var(--navy-600); }
+    .stat.done .stat-icon { background: var(--done-bg); color: var(--done-fg); }
+    .stat.pending .stat-icon { background: var(--pending-bg); color: var(--pending-fg); }
+    .stat-label { font-size: .75rem; color: var(--muted); font-weight: 600; line-height: 1.2; }
+    .stat-value { font-size: 1.5rem; font-weight: 800; line-height: 1.15; color: var(--ink); letter-spacing: -.02em; }
+
+    /* ---------- Toolbar ---------- */
+    .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; }
+    .search { position: relative; flex: 1 1 260px; min-width: 0; }
+    .search .icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .search input { width: 100%; height: 42px; padding: 0 14px 0 38px; border: 1px solid #d5deea; border-radius: 10px; background: #fff; }
+    .segmented { display: inline-flex; padding: 3px; background: var(--line-2); border-radius: 10px; gap: 2px; }
+    .segmented button { border: 0; background: transparent; padding: 7px 13px; border-radius: 8px; font-size: .83rem; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+    .segmented button b { font-weight: 700; margin-left: 4px; color: var(--muted); }
+    .segmented button.active { background: #fff; color: var(--navy-800); box-shadow: 0 1px 3px rgba(15,35,65,.12); }
+    .toolbar-actions { display: flex; gap: 8px; margin-left: auto; }
+
+    /* ---------- Buttons ---------- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 42px; padding: 0 16px; border-radius: 10px; border: 1px solid transparent; font-weight: 600; font-size: .88rem; cursor: pointer; transition: background .15s, border-color .15s, box-shadow .15s; white-space: nowrap; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    .btn-primary { background: var(--navy-700); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--navy-800); }
+    .btn-ghost { background: #fff; color: var(--ink-2); border-color: #d2dbe8; }
+    .btn-ghost:hover:not(:disabled) { background: #f4f7fb; border-color: #bccadd; }
+    .btn-sm { height: 36px; padding: 0 13px; font-size: .82rem; }
+    .btn:focus-visible, .segmented button:focus-visible { outline: 2px solid var(--navy-600); outline-offset: 2px; }
+
+    /* ---------- Notices ---------- */
+    .notice { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 18px; border-radius: 12px; border: 1px solid; }
+    .notice strong { display: block; margin-bottom: 2px; }
+    .notice p { font-size: .88rem; }
+    .notice code { font-family: var(--mono); font-size: .82rem; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 5px; }
+    .notice-error { background: var(--danger-bg); border-color: #f1b7be; color: #7d1824; }
+    .notice-info { background: #eef4fd; border-color: #c4d7f2; color: #1b3d6e; }
+    .loading-card { padding: 22px 24px; }
+    .loading-line { height: 3px; margin-top: 14px; overflow: hidden; background: var(--line-2); border-radius: 99px; }
+    .loading-line::after { content: ''; display: block; height: 100%; width: 35%; background: var(--navy-600); border-radius: 99px; animation: slide 1.2s ease-in-out infinite; }
+    @keyframes slide { from { transform: translateX(-110%); } to { transform: translateX(310%); } }
+
+    /* ---------- Group & table ---------- */
+    .group { overflow: hidden; }
+    .group-head { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f6f9fd); }
+    .group-letter { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--navy-700); color: #fff; font-weight: 800; font-size: .9rem; flex: 0 0 auto; }
+    .group-head h3 { font-size: 1rem; font-weight: 700; color: var(--navy-800); }
+    .group-head p { font-size: .8rem; color: var(--muted); }
+    .group-meter { margin-left: auto; width: 110px; flex: 0 0 auto; }
+    .group-meter .progress { margin-top: 0; height: 7px; }
+    .dev-table, .report-table { width: 100%; border-collapse: collapse; }
+    .dev-table th { padding: 10px 16px; text-align: left; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: #fbfcfe; border-bottom: 1px solid var(--line); }
+    .dev-table td { padding: 13px 16px; border-bottom: 1px solid var(--line-2); vertical-align: middle; }
+    .dev-table tbody tr:last-child td { border-bottom: 0; }
+    .dev-table tbody tr.is-pending { background: rgba(255, 247, 222, .5); }
+    .dev-table tbody tr.is-done { background: rgba(227, 246, 234, .55); }
+    .dev-table tbody tr td:first-child { box-shadow: inset 3px 0 0 var(--pending-dot); }
+    .dev-table tbody tr.is-done td:first-child { box-shadow: inset 3px 0 0 var(--done-dot); }
+    .col-no { width: 56px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .col-status { width: 170px; }
+    .col-action { width: 150px; text-align: right; }
+    .serial { font-family: var(--mono); font-size: .86rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+    .note { font-size: .84rem; color: var(--ink-2); }
+    .badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 99px; font-size: .72rem; font-weight: 700; letter-spacing: .02em; border: 1px solid; white-space: nowrap; }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; }
+    .badge-pending { background: var(--pending-bg); border-color: var(--pending-bd); color: var(--pending-fg); }
+    .badge-pending i { background: var(--pending-dot); }
+    .badge-done { background: var(--done-bg); border-color: var(--done-bd); color: var(--done-fg); }
+    .badge-done i { background: var(--done-dot); }
+    .empty-state { padding: 38px 20px; text-align: center; color: var(--muted); border: 1px dashed #c9d5e4; border-radius: var(--radius); background: #fff; }
+
+    /* ---------- Modal ---------- */
+    .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(11, 33, 66, .55); backdrop-filter: blur(2px); }
+    .modal-card { width: min(660px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(5, 18, 38, .35); overflow: hidden; }
+    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f4f8fd); }
+    .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+    .modal-head h2 { margin-top: 2px; font-family: var(--mono); font-size: 1.02rem; font-weight: 700; color: var(--navy-800); overflow-wrap: anywhere; }
+    .icon-btn { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid transparent; background: transparent; border-radius: 9px; color: var(--ink-2); cursor: pointer; }
+    .icon-btn:hover { background: var(--line-2); }
+    .modal-body { padding: 20px 22px; overflow-y: auto; }
+    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 22px; border-top: 1px solid var(--line); background: #fbfcfe; }
+    .modal-foot .actions { display: flex; gap: 8px; }
+    .form-note { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 18px; padding: 11px 13px; border-radius: 10px; background: var(--done-bg); border: 1px solid var(--done-bd); color: var(--done-fg); font-size: .82rem; }
+    .field + .field { margin-top: 18px; }
+    .field label, .field .label { display: block; margin-bottom: 6px; font-size: .8rem; font-weight: 700; color: var(--ink-2); }
+    .req { color: var(--danger); }
+    .control { width: 100%; height: 44px; padding: 0 13px; border: 1px solid #d2dbe8; border-radius: 10px; background: #fff; }
+    select.control { appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2366758b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    .control:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 77, 140, .14); }
+    .hint { margin-top: 5px; font-size: .75rem; color: var(--muted); }
+    .hint.right { text-align: right; }
+    .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .photo-slot { padding: 11px; border: 1.5px dashed #b9c7d8; border-radius: 12px; background: #fafcfe; min-width: 0; }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--done-bd); background: #f6fcf8; }
+    .photo-title { margin-bottom: 8px; font-size: .78rem; font-weight: 700; color: var(--ink-2); }
+    .photo-preview { height: 130px; display: grid; place-items: center; overflow: hidden; border-radius: 9px; background: #eef2f7; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .photo-empty { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .74rem; color: #7b8899; text-align: center; padding: 6px; }
+    .photo-empty .icon { width: 22px; height: 22px; }
+    .photo-actions { display: flex; gap: 6px; margin-top: 9px; }
+    .photo-actions .btn { flex: 1 1 0; padding: 0 8px; }
+
+    /* ---------- Camera ---------- */
+    .camera-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(5, 14, 28, .88); }
+    .camera-box { width: min(720px, 100%); padding: 16px; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(0,0,0,.4); }
+    .camera-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .camera-head strong { display: block; }
+    .camera-head span { font-size: .82rem; color: var(--muted); }
+    .camera-video-wrap { display: grid; place-items: center; min-height: 220px; overflow: hidden; border-radius: 12px; background: #0d151f; }
+    .camera-video-wrap video { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
+    .camera-status { margin: 10px 0; font-size: .82rem; color: var(--muted); }
+    .camera-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+    .camera-actions .right { display: flex; gap: 8px; margin-left: auto; }
+
+    /* ---------- Toast ---------- */
+    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 3000; transform: translateX(-50%); width: min(460px, calc(100vw - 28px)); padding: 13px 16px; border-radius: 12px; background: var(--navy-800); color: #fff; font-size: .88rem; box-shadow: 0 14px 40px rgba(8, 24, 48, .3); border-left: 4px solid #5aa0e6; }
+    .toast.success { border-left-color: #35b873; }
+    .toast.error { background: #8e1f2c; border-left-color: #ff8d98; }
+    .toast.warning { background: #6f4e05; border-left-color: #f0c34e; }
+
+    /* ---------- Report ---------- */
+    #reportView { display: none; }
+    #reportView.active { display: block; }
+    .report-sheet { overflow: hidden; }
+    .report-head { padding: 26px 28px 18px; border-bottom: 2px solid var(--navy-800); text-align: center; }
+    .report-org { font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); font-weight: 700; }
+    .report-title { margin: 10px 0 6px; font-size: 1.3rem; font-weight: 800; line-height: 1.25; color: var(--navy-800); }
+    .report-meta { font-size: .84rem; color: var(--ink-2); }
+    .report-body { padding: 20px 24px 28px; }
+    .report-controls { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .report-controls .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .report-controls .control { width: 200px; }
+    .report-summary { margin-bottom: 12px; font-size: .84rem; color: var(--ink-2); }
+    .table-wrap { overflow-x: auto; }
+    .report-table th { padding: 9px 8px; border: 1px solid #d3dce9; background: #eaf0f8; color: var(--navy-800); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; text-align: left; }
+    .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; overflow-wrap: anywhere; }
+    .report-table tbody tr:nth-child(even) { background: #fafbfd; }
+    .report-photo { display: block; width: 84px; height: 62px; margin: 0 auto 4px; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; }
+    .photo-cell { text-align: center; }
+    .photo-fallback { display: block; font-size: .72rem; color: var(--muted); }
+    .report-link { display: block; font-size: .7rem; color: var(--navy-600); }
+    .signature { display: none; }
+
+    /* ---------- Footer ---------- */
+    .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
+    .app-footer strong { display: block; color: #fff; font-size: .9rem; margin-bottom: 2px; }
+    .app-footer .small { margin-top: 8px; font-size: .74rem; color: #8ea3c4; }
+
+    /* ---------- Responsif ---------- */
+    @media (max-width: 720px) {
+      .wrap { padding: 0 16px; }
+      .header-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 0 24px; }
+      .emblem { width: 44px; height: 44px; border-radius: 12px; }
+      .brand { gap: 14px; }
+      .date-chip { text-align: left; width: 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+      .main { padding-top: 18px; }
+      .summary { padding: 18px 16px; }
+      .stats { gap: 8px; }
+      .stat { flex-direction: column; align-items: flex-start; gap: 8px; padding: 11px; }
+      .stat-icon { width: 32px; height: 32px; }
+      .stat-value { font-size: 1.3rem; }
+      .toolbar { padding: 12px; }
+      .toolbar-actions { width: 100%; margin-left: 0; }
+      .toolbar-actions .btn { flex: 1 1 0; }
+      .segmented { width: 100%; }
+      .segmented button { flex: 1 1 0; padding: 8px 6px; }
+      .group-head { padding: 14px 16px; }
+      .group-meter { display: none; }
+
+      .dev-table thead { display: none; }
+      .dev-table, .dev-table tbody { display: block; }
+      .dev-table tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line-2); box-shadow: inset 3px 0 0 var(--pending-dot); }
+      .dev-table tbody tr.is-done { box-shadow: inset 3px 0 0 var(--done-dot); }
+      .dev-table tbody tr:last-child { border-bottom: 0; }
+      .dev-table td, .dev-table tbody tr td:first-child, .dev-table tbody tr.is-done td:first-child { display: block; padding: 0; border: 0; box-shadow: none; width: auto; }
+      .col-no { display: none !important; }
+      .col-serial { grid-column: 1; grid-row: 1; align-self: center; }
+      .col-status { grid-column: 2; grid-row: 1; }
+      .col-note { grid-column: 1 / -1; }
+      .col-action { grid-column: 1 / -1; text-align: left; }
+      .col-action .btn { width: 100%; }
+
+      .modal { padding: 0; align-items: flex-end; }
+      .modal-card { width: 100%; max-height: 94vh; border-radius: 18px 18px 0 0; }
+      .modal-head, .modal-body, .modal-foot { padding-left: 16px; padding-right: 16px; }
+      .modal-foot { flex-direction: column-reverse; align-items: stretch; }
+      .modal-foot .actions { width: 100%; }
+      .modal-foot .actions .btn { flex: 1 1 0; }
+      .photo-grid { gap: 10px; }
+      .photo-preview { height: 108px; }
+      .photo-actions { flex-direction: column; }
+      .report-head { padding: 20px 14px 14px; }
+      .report-body { padding: 14px 12px 20px; }
+      .report-controls .control { width: 100%; }
+    }
+    @media screen and (max-width: 720px) {
+      .table-wrap { overflow: visible; }
+      .report-table thead { display: none; }
+      .report-table, .report-table tbody, .report-table tr, .report-table td { display: block; width: 100%; }
+      .report-table tbody tr, .report-table tbody tr:nth-child(even) { margin-bottom: 12px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+      .report-table td { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; border: 0; }
+      .report-table td[data-label]::before { content: attr(data-label); flex: 0 0 92px; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+      .report-table .cell-val { flex: 1 1 auto; min-width: 0; }
+      .report-table .photo-cell { text-align: left; }
+      .report-photo { margin: 0 0 4px; }
+    }
+
+    /* ---------- Cetak / PDF ---------- */
+    @page { size: A4 landscape; margin: 10mm; }
+    @media print {
+      html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; min-width: 0 !important; font-size: 9pt !important; }
+      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #cameraModal, #toast { display: none !important; }
+      .wrap { max-width: none !important; padding: 0 !important; }
+      .main { padding: 0 !important; }
+      #reportView, #reportView[hidden] { display: block !important; }
+      .card.report-sheet { border: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+      .report-head { padding: 0 0 8px !important; border-bottom: 2px solid #222 !important; }
+      .report-org { font-size: 8pt !important; color: #222 !important; }
+      .report-title { font-size: 15pt !important; color: #111 !important; margin: 4px 0 !important; }
+      .report-meta, .report-summary { font-size: 8pt !important; color: #222 !important; }
+      .report-body { padding: 8px 0 0 !important; }
+      .table-wrap { overflow: visible !important; }
+      .report-table { table-layout: fixed !important; }
+      .report-table thead { display: table-header-group; }
+      .report-table tr { break-inside: avoid; page-break-inside: avoid; }
+      .report-table th, .report-table td { border: 1px solid #555 !important; padding: 4px !important; font-size: 7.2pt !important; color: #111 !important; }
+      .report-table th { background: #e9e9e9 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .report-table tbody tr:nth-child(even) { background: #fff !important; }
+      .report-photo { width: 58px !important; height: 42px !important; border: 0 !important; background: #fff !important; border-radius: 0 !important; }
+      .report-link { display: none !important; }
+      .print-only { display: block !important; }
+      .signature { display: block !important; width: 245px; margin: 18px 0 0 auto; text-align: center; font-size: 8pt; break-inside: avoid; }
+      a { color: #111 !important; text-decoration: none !important; }
+    }
+    .print-only { display: none; }
+  </style>
+</head>
+<body>
+  <!-- Ikon SVG -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  </svg>
+
+  <header class="app-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="emblem" aria-hidden="true"><svg class="icon"><use href="#i-clipboard"/></svg></div>
+        <div>
+          <div class="kicker">Kantor Imigrasi Kelas II Non TPI Kediri</div>
+          <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023<br>DI KANTOR IMIGRASI KEDIRI</h1>
+          <p class="app-subtitle">Pencatatan kondisi, posisi, dan dokumentasi foto perangkat sewa harian</p>
+        </div>
+      </div>
+      <div class="date-chip">
+        <small>Tanggal Opname</small>
+        <strong id="headerDate">—</strong>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <noscript><div class="notice notice-error"><div><strong>JavaScript dinonaktifkan</strong><p>Aplikasi ini membutuhkan JavaScript. Aktifkan JavaScript pada browser Anda.</p></div></div></noscript>
+
+    <section id="inventoryView" class="stack">
+      <div id="configNotice" class="notice notice-info" hidden>
+        <div>
+          <strong>Aplikasi belum terhubung ke Google Apps Script</strong>
+          <p>Buka berkas <code>index.html</code>, cari konstanta <code>API_URL</code> di bagian awal skrip, lalu isi dengan URL Web App yang berakhiran <code>/exec</code>.</p>
+        </div>
+      </div>
+
+      <div id="loadingState" class="card loading-card" hidden>
+        <div class="section-title">Memuat daftar perangkat</div>
+        <div class="section-caption">Mengambil status terbaru dari Google Sheets…</div>
+        <div class="loading-line"></div>
+      </div>
+
+      <div id="pageError" class="notice notice-error" hidden role="alert">
+        <div><strong>Data tidak dapat dimuat</strong><p id="pageErrorText"></p></div>
+        <button type="button" id="retryButton" class="btn btn-ghost btn-sm">Coba Lagi</button>
+      </div>
+
+      <section class="card summary" aria-label="Ringkasan opname">
+        <div class="summary-top">
+          <div>
+            <h2 class="section-title">Ringkasan Opname Hari Ini</h2>
+            <p class="section-caption" id="todayCaption">Status diperiksa berdasarkan tanggal hari ini.</p>
+          </div>
+          <div class="summary-pct"><span id="pctValue">0</span><small>%</small></div>
+        </div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><i id="progressFill"></i></div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-icon"><svg class="icon"><use href="#i-box"/></svg></div>
+            <div><div class="stat-label">Total Barang</div><div class="stat-value" id="statTotal">—</div></div>
+          </div>
+          <div class="stat done">
+            <div class="stat-icon"><svg class="icon"><use href="#i-check"/></svg></div>
+            <div><div class="stat-label">Sudah Opname</div><div class="stat-value" id="statDone">—</div></div>
+          </div>
+          <div class="stat pending">
+            <div class="stat-icon"><svg class="icon"><use href="#i-clock"/></svg></div>
+            <div><div class="stat-label">Belum Opname</div><div class="stat-value" id="statPending">—</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card toolbar" aria-label="Pencarian dan filter">
+        <label class="search">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input id="searchInput" type="search" placeholder="Cari jenis atau nomor seri…" aria-label="Cari barang" autocomplete="off">
+        </label>
+        <div class="segmented" id="filterGroup" role="group" aria-label="Filter status">
+          <button type="button" class="active" data-filter="all">Semua<b id="cntAll">0</b></button>
+          <button type="button" data-filter="pending">Belum<b id="cntPending">0</b></button>
+          <button type="button" data-filter="done">Sudah<b id="cntDone">0</b></button>
+        </div>
+        <div class="toolbar-actions">
+          <button id="refreshButton" class="btn btn-ghost" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Perbarui</button>
+          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan / PDF</button>
+        </div>
+      </section>
+
+      <div id="groupsContainer" class="stack"></div>
+      <div id="searchEmpty" class="empty-state" hidden>Tidak ada barang yang sesuai dengan pencarian atau filter.</div>
+    </section>
+
+    <section id="reportView" aria-label="Laporan opname" hidden>
+      <div class="card report-sheet">
+        <div class="report-head">
+          <div class="report-org">Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia</div>
+          <div class="report-org">Kantor Imigrasi Kelas II Non TPI Kediri</div>
+          <h2 class="report-title">LAPORAN OPNAME PERANGKAT SEWA DITJEN IMIGRASI 2023</h2>
+          <div class="report-meta">Lokasi: Kantor Imigrasi Kediri · Tanggal laporan: <strong id="reportDateLabel">—</strong></div>
+          <div class="report-meta print-only" id="reportGeneratedPrint">Dicetak pada: —</div>
+        </div>
+        <div class="report-body">
+          <div class="report-controls no-print">
+            <div>
+              <label for="reportDateInput" class="label" style="display:block;margin-bottom:6px;font-size:.8rem;font-weight:700;color:var(--ink-2)">Pilih tanggal laporan</label>
+              <div class="row">
+                <input type="date" id="reportDateInput" class="control">
+                <button type="button" id="loadReportButton" class="btn btn-ghost">Tampilkan</button>
+              </div>
+            </div>
+            <div class="row">
+              <button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button>
+              <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak / Unduh PDF</button>
+            </div>
+          </div>
+          <div id="reportLoading" class="loading-line no-print" hidden style="margin:0 0 14px"></div>
+          <div id="reportError" class="notice notice-error no-print" hidden role="alert" style="margin-bottom:14px"><div><strong>Laporan tidak dapat dimuat</strong><p id="reportErrorText"></p></div></div>
+          <div class="report-summary" id="reportSummary">Memuat data laporan…</div>
+          <div class="table-wrap">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th style="width:4%">No.</th>
+                  <th style="width:11%">Waktu Input</th>
+                  <th style="width:11%">Jenis Barang</th>
+                  <th style="width:14%">Nomor Seri</th>
+                  <th style="width:13%">Kondisi</th>
+                  <th style="width:20%">Detail Posisi</th>
+                  <th style="width:13.5%">Foto Barang</th>
+                  <th style="width:13.5%">Foto Kode</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody">
+                <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">Memuat…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="signature">
+            Kediri, <span id="signatureDate">—</span><br>
+            Petugas Pemeriksa,<br><br><br><br>
+            (........................................)<br>
+            NIP. ....................................
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <strong>Kantor Imigrasi Kelas II Non TPI Kediri</strong>
+    <div>Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
+    <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa · Data tersimpan pada Google Sheets dan Google Drive</div>
+  </footer>
+
+  <!-- Formulir opname -->
+  <div id="formModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" id="formType">Jenis Barang</div>
+          <h2 id="formTitle">—</h2>
+        </div>
+        <button type="button" class="icon-btn" id="closeFormButton" aria-label="Tutup formulir"><svg class="icon"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-note" id="formNote" hidden>
+          <svg class="icon"><use href="#i-info"/></svg>
+          <span id="formNoteText"></span>
+        </div>
+        <div class="field">
+          <label for="fCondition">Kondisi Barang <span class="req">*</span></label>
+          <select id="fCondition" class="control"><option value="">Pilih kondisi…</option></select>
+        </div>
+        <div class="field">
+          <label for="fPosition">Detail Posisi Barang <span class="req">*</span></label>
+          <input id="fPosition" class="control" type="text" maxlength="500" placeholder="Contoh: Ruang pelayanan paspor, meja operator 2" autocomplete="off">
+          <div class="hint right"><span id="posCount">0</span>/500</div>
+        </div>
+        <div class="field">
+          <div class="label">Dokumentasi Foto <span class="req">*</span></div>
+          <div class="photo-grid">
+            <div class="photo-slot" id="slot-barang">
+              <div class="photo-title">Foto Barang</div>
+              <div class="photo-preview">
+                <img id="img-barang" alt="Pratinjau Foto Barang" hidden>
+                <span class="photo-empty" id="ph-barang"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span>
+              </div>
+              <div class="photo-actions">
+                <button type="button" class="btn btn-primary btn-sm" data-camera="barang"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-gallery="barang"><svg class="icon"><use href="#i-image"/></svg>Galeri</button>
+              </div>
+            </div>
+            <div class="photo-slot" id="slot-kode">
+              <div class="photo-title">Foto Kode Barang</div>
+              <div class="photo-preview">
+                <img id="img-kode" alt="Pratinjau Foto Kode Barang" hidden>
+                <span class="photo-empty" id="ph-kode"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span>
+              </div>
+              <div class="photo-actions">
+                <button type="button" class="btn btn-primary btn-sm" data-camera="kode"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-gallery="kode"><svg class="icon"><use href="#i-image"/></svg>Galeri</button>
+              </div>
+            </div>
+          </div>
+          <div class="hint">Wajib melampirkan kedua foto. Setiap foto otomatis dikompres hingga maksimal 1 MB.</div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div class="hint" style="margin:0">Data disimpan sebagai log baru.</div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="cancelFormButton">Batal</button>
+          <button type="button" class="btn btn-primary" id="saveButton">Simpan Opname</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kamera -->
+  <div id="cameraModal" class="camera-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle">
+    <div class="camera-box">
+      <div class="camera-head">
+        <div><strong id="cameraTitle">Ambil Foto</strong><span>Pastikan objek terlihat jelas sebelum mengambil foto.</span></div>
+        <button type="button" class="icon-btn" id="closeCameraButton" aria-label="Tutup kamera"><svg class="icon"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="camera-video-wrap"><video id="cameraVideo" autoplay playsinline muted></video></div>
+      <div id="cameraStatus" class="camera-status">Menyiapkan kamera…</div>
+      <div class="camera-actions">
+        <button type="button" id="switchCameraButton" class="btn btn-ghost"><svg class="icon"><use href="#i-refresh"/></svg>Ganti Kamera</button>
+        <div class="right">
+          <button type="button" id="cameraGalleryButton" class="btn btn-ghost">Pilih Galeri</button>
+          <button type="button" id="takePhotoButton" class="btn btn-primary"><svg class="icon"><use href="#i-camera"/></svg>Ambil Foto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input id="galleryInput" type="file" accept="image/*" hidden>
+  <input id="captureInput" type="file" accept="image/*" capture="environment" hidden>
+  <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+
+  <script>
+    'use strict';
+
+    /* ============================================================
+     * KONFIGURASI
+     * Isi dengan URL Web App Google Apps Script (berakhiran /exec).
+     * Contoh: https://script.google.com/macros/s/AKfycb.../exec
+     * ============================================================ */
+    const API_URL = 'GANTI_DENGAN_URL_WEB_APP_ANDA';
+
+    const REFRESH_INTERVAL_MS = 30000;
+    const MAX_CLIENT_PHOTO_BYTES = 950 * 1024; // di bawah batas 1 MB sisi server
+    const MAX_POSITION_LENGTH = 500;
+    const DEFAULT_CONDITIONS = ['Baik Masih Digunakan', 'Baik Tidak Digunakan', 'Rusak Tidak Digunakan'];
+    const PHOTO_LABELS = { barang: 'Foto Barang', kode: 'Foto Kode Barang' };
+    const DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    const $ = function (id) { return document.getElementById(id); };
+
+    const state = {
+      groups: [],
+      items: [],
+      today: '',
+      conditions: DEFAULT_CONDITIONS,
+      filter: 'all',
+      loaded: false
+    };
+    const drafts = Object.create(null); // draf formulir per nomor seri
+    let activeSerial = null;
+    let saving = false;
+    let dashboardLoading = false;
+    let reportActive = false;
+    let pendingKind = null;
+    let cameraKind = null;
+    let facingMode = 'environment';
+    let cameraStream = null;
+    let toastTimer = null;
+
+    /* ======================= API ======================= */
+    function isConfigured() {
+      return /^https:\/\/script\.google\.com\/.+\/exec$/.test(API_URL);
+    }
+
+    async function apiRequest(options) {
+      if (!isConfigured()) throw new Error('URL Web App belum diatur pada konstanta API_URL di index.html.');
+      const controller = new AbortController();
+      const timer = setTimeout(function () { controller.abort(); }, options.timeout || 45000);
+      try {
+        let response;
+        if (options.body) {
+          // text/plain menghindari preflight CORS yang tidak didukung Apps Script.
+          response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(options.body),
+            signal: controller.signal
+          });
+        } else {
+          const url = API_URL + (API_URL.indexOf('?') === -1 ? '?' : '&') + new URLSearchParams(options.params || {}).toString();
+          response = await fetch(url, { signal: controller.signal });
+        }
+        if (!response.ok) throw new Error('Server merespons dengan status ' + response.status + '.');
+        const text = await response.text();
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch (parseError) {
+          throw new Error('Respons server tidak valid. Pastikan Web App sudah di-deploy ulang dengan akses "Siapa saja" dan URL berakhiran /exec.');
+        }
+        if (!json || !json.ok) throw new Error((json && json.error) || 'Terjadi kesalahan pada server.');
+        return json.data;
+      } catch (error) {
+        if (error && error.name === 'AbortError') throw new Error('Waktu tunggu habis. Periksa koneksi internet lalu coba lagi.');
+        if (error instanceof TypeError) throw new Error('Tidak dapat terhubung ke Google Apps Script. Periksa koneksi internet, URL Web App, dan pengaturan akses "Siapa saja".');
+        throw error;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    /* ======================= Inisialisasi ======================= */
+    document.addEventListener('DOMContentLoaded', function () {
+      bindEvents();
+      populateConditions(DEFAULT_CONDITIONS);
+      if (!isConfigured()) {
+        $('configNotice').hidden = false;
+        return;
+      }
+      loadDashboard({ first: true });
+      window.setInterval(function () {
+        if (!document.hidden && !reportActive && !activeSerial) loadDashboard({});
+      }, REFRESH_INTERVAL_MS);
+    });
+
+    function bindEvents() {
+      $('refreshButton').addEventListener('click', function () { loadDashboard({ manual: true }); });
+      $('retryButton').addEventListener('click', function () { loadDashboard({ manual: true }); });
+      $('searchInput').addEventListener('input', renderGroups);
+      $('filterGroup').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-filter]');
+        if (!button) return;
+        state.filter = button.dataset.filter;
+        document.querySelectorAll('#filterGroup button').forEach(function (b) { b.classList.toggle('active', b === button); });
+        renderGroups();
+      });
+      $('groupsContainer').addEventListener('click', function (event) {
+        const button = event.target.closest('[data-open]');
+        if (button) openForm(button.dataset.open);
+      });
+
+      $('openReportButton').addEventListener('click', showReportView);
+      $('backButton').addEventListener('click', showInventoryView);
+      $('loadReportButton').addEventListener('click', loadReport);
+      $('printButton').addEventListener('click', printReport);
+      $('reportTableBody').addEventListener('error', function (event) {
+        const img = event.target;
+        if (img && img.classList && img.classList.contains('report-photo')) {
+          img.hidden = true;
+          const fallback = img.parentNode.querySelector('.photo-fallback');
+          if (fallback) fallback.hidden = false;
+        }
+      }, true);
+
+      $('closeFormButton').addEventListener('click', closeForm);
+      $('cancelFormButton').addEventListener('click', closeForm);
+      $('formModal').addEventListener('mousedown', function (event) { if (event.target === this) closeForm(); });
+      $('saveButton').addEventListener('click', saveRecord);
+      $('fCondition').addEventListener('change', function () { if (activeSerial) getDraft(activeSerial).condition = this.value; });
+      $('fPosition').addEventListener('input', function () {
+        $('posCount').textContent = this.value.length;
+        if (activeSerial) getDraft(activeSerial).position = this.value;
+      });
+      $('formModal').addEventListener('click', function (event) {
+        const cam = event.target.closest('[data-camera]');
+        const gal = event.target.closest('[data-gallery]');
+        if (cam) startCamera(cam.dataset.camera);
+        if (gal) openFilePicker(gal.dataset.gallery, 'gallery');
+      });
+
+      $('galleryInput').addEventListener('change', handleFileChosen);
+      $('captureInput').addEventListener('change', handleFileChosen);
+
+      $('closeCameraButton').addEventListener('click', closeCamera);
+      $('switchCameraButton').addEventListener('click', switchCamera);
+      $('takePhotoButton').addEventListener('click', takePhoto);
+      $('cameraGalleryButton').addEventListener('click', function () {
+        const kind = cameraKind;
+        closeCamera();
+        if (kind) openFilePicker(kind, 'gallery');
+      });
+      $('cameraModal').addEventListener('mousedown', function (event) { if (event.target === this) closeCamera(); });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        if (!$('cameraModal').hidden) closeCamera();
+        else if (!$('formModal').hidden) closeForm();
+      });
+    }
+
+    /* ======================= Dashboard ======================= */
+    async function loadDashboard(opts) {
+      if (!isConfigured() || dashboardLoading) return;
+      dashboardLoading = true;
+      if (opts.first) $('loadingState').hidden = false;
+      $('refreshButton').disabled = true;
+      try {
+        const data = await apiRequest({ params: { action: 'dashboard' } });
+        $('pageError').hidden = true;
+        applyDashboard(data);
+        if (opts.manual) showToast('Status berhasil diperbarui dari Google Sheets.', 'success');
+      } catch (error) {
+        if (opts.first || opts.manual || !state.loaded) {
+          $('pageErrorText').textContent = errorMessage(error);
+          $('pageError').hidden = false;
+        }
+      } finally {
+        dashboardLoading = false;
+        $('loadingState').hidden = true;
+        $('refreshButton').disabled = false;
+      }
+    }
+
+    function applyDashboard(data) {
+      state.groups = (data.groups || []).map(function (group) {
+        return {
+          type: group.type,
+          items: (group.items || []).map(function (item) {
+            return {
+              type: item.type || group.type,
+              serial: item.serial,
+              completed: Boolean(item.completed),
+              todayCount: Number(item.todayCount || 0),
+              lastInput: item.lastInput || ''
+            };
+          })
+        };
+      });
+      state.items = [].concat.apply([], state.groups.map(function (g) { return g.items; }));
+      state.today = data.today || state.today;
+      state.loaded = true;
+      if (data.conditions && data.conditions.length) {
+        state.conditions = data.conditions;
+        populateConditions(data.conditions);
+      }
+
+      const total = Number(data.total || state.items.length);
+      const done = Number(data.completed || 0);
+      const pending = Number(data.pending != null ? data.pending : total - done);
+      const pct = total ? Math.round(done / total * 100) : 0;
+      $('statTotal').textContent = total;
+      $('statDone').textContent = done;
+      $('statPending').textContent = pending;
+      $('cntAll').textContent = total;
+      $('cntDone').textContent = done;
+      $('cntPending').textContent = pending;
+      $('pctValue').textContent = pct;
+      $('progressFill').style.width = pct + '%';
+      $('progressBar').setAttribute('aria-valuenow', pct);
+      $('headerDate').textContent = formatDateIndonesian(state.today, true);
+      $('todayCaption').textContent = done + ' dari ' + total + ' perangkat sudah dicatat pada ' + formatDateIndonesian(state.today) + ' (waktu Asia/Jakarta).';
+      if (!$('reportDateInput').value && state.today) $('reportDateInput').value = state.today;
+      renderGroups();
+    }
+
+    function populateConditions(list) {
+      const select = $('fCondition');
+      const current = select.value;
+      select.innerHTML = '<option value="">Pilih kondisi…</option>' + list.map(function (c) {
+        return '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>';
+      }).join('');
+      select.value = current;
+    }
+
+    function matchesFilter(item, query) {
+      if (state.filter === 'done' && !item.completed) return false;
+      if (state.filter === 'pending' && item.completed) return false;
+      if (!query) return true;
+      return item.serial.toLowerCase().indexOf(query) !== -1 || item.type.toLowerCase().indexOf(query) !== -1;
+    }
+
+    function renderGroups() {
+      const query = String($('searchInput').value || '').trim().toLowerCase();
+      let html = '';
+      let visible = 0;
+      state.groups.forEach(function (group, groupIndex) {
+        const doneCount = group.items.filter(function (i) { return i.completed; }).length;
+        const pct = group.items.length ? Math.round(doneCount / group.items.length * 100) : 0;
+        let rows = '';
+        group.items.forEach(function (item, index) {
+          if (!matchesFilter(item, query)) return;
+          visible += 1;
+          rows += renderRow(item, index + 1);
+        });
+        if (!rows) return;
+        html += '<section class="card group">' +
+          '<div class="group-head">' +
+            '<span class="group-letter">' + String.fromCharCode(65 + groupIndex) + '</span>' +
+            '<div><h3>' + escapeHtml(group.type) + '</h3><p>' + doneCount + ' dari ' + group.items.length + ' unit sudah opname hari ini</p></div>' +
+            '<div class="group-meter"><div class="progress"><i style="width:' + pct + '%"></i></div></div>' +
+          '</div>' +
+          '<table class="dev-table"><thead><tr>' +
+            '<th class="col-no">No.</th><th>Nomor Seri</th><th class="col-status">Status</th><th>Catatan Hari Ini</th><th class="col-action"></th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</section>';
+      });
+      $('groupsContainer').innerHTML = html;
+      $('searchEmpty').hidden = visible !== 0 || !state.loaded;
+    }
+
+    function renderRow(item, number) {
+      const done = item.completed;
+      let note = 'Belum ada input untuk hari ini';
+      if (done) {
+        const time = item.lastInput ? (item.lastInput.split(' ')[1] || item.lastInput) : '';
+        note = 'Tercatat ' + item.todayCount + '× hari ini' + (time ? ' · terakhir pukul ' + time : '');
+      }
+      return '<tr class="' + (done ? 'is-done' : 'is-pending') + '">' +
+        '<td class="col-no">' + number + '</td>' +
+        '<td class="col-serial"><span class="serial">' + escapeHtml(item.serial) + '</span></td>' +
+        '<td class="col-status"><span class="badge ' + (done ? 'badge-done' : 'badge-pending') + '"><i></i>' + (done ? 'SUDAH OPNAME' : 'BELUM OPNAME') + '</span></td>' +
+        '<td class="col-note note">' + escapeHtml(note) + '</td>' +
+        '<td class="col-action"><button type="button" class="btn btn-primary btn-sm" data-open="' + escapeHtml(item.serial) + '">' + (done ? 'Input Ulang' : 'Isi Opname') + '</button></td>' +
+      '</tr>';
+    }
+
+    /* ======================= Formulir ======================= */
+    function getDraft(serial) {
+      if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} };
+      return drafts[serial];
+    }
+
+    function openForm(serial) {
+      const item = state.items.find(function (i) { return i.serial === serial; });
+      if (!item) return;
+      activeSerial = serial;
+      const draft = getDraft(serial);
+      $('formType').textContent = item.type;
+      $('formTitle').textContent = item.serial;
+      $('fCondition').value = draft.condition || '';
+      $('fPosition').value = draft.position || '';
+      $('posCount').textContent = ($('fPosition').value || '').length;
+      const note = $('formNote');
+      if (item.completed) {
+        $('formNoteText').textContent = 'Perangkat ini sudah dicatat ' + item.todayCount + '× hari ini. Penyimpanan baru akan ditambahkan sebagai log tambahan.';
+        note.hidden = false;
+      } else {
+        note.hidden = true;
+      }
+      renderPhoto('barang');
+      renderPhoto('kode');
+      $('formModal').hidden = false;
+      document.body.classList.add('modal-open');
+      $('formModal').querySelector('.modal-body').scrollTop = 0;
+      $('fCondition').focus();
+    }
+
+    function closeForm() {
+      if (saving) return;
+      $('formModal').hidden = true;
+      document.body.classList.remove('modal-open');
+      activeSerial = null;
+    }
+
+    function renderPhoto(kind) {
+      const draft = activeSerial ? getDraft(activeSerial) : { photos: {} };
+      const photo = draft.photos[kind];
+      const img = $('img-' + kind);
+      const placeholder = $('ph-' + kind);
+      $('slot-' + kind).classList.toggle('has-photo', Boolean(photo));
+      if (photo) {
+        img.src = photo.dataUrl;
+        img.hidden = false;
+        placeholder.hidden = true;
+      } else {
+        img.removeAttribute('src');
+        img.hidden = true;
+        placeholder.hidden = false;
+      }
+    }
+
+    function setPhoto(kind, dataUrl) {
+      if (!activeSerial) return;
+      getDraft(activeSerial).photos[kind] = { dataUrl: dataUrl, bytes: dataUrlByteLength(dataUrl) };
+      renderPhoto(kind);
+    }
+
+    async function saveRecord() {
+      if (saving || !activeSerial) return;
+      const item = state.items.find(function (i) { return i.serial === activeSerial; });
+      if (!item) { showToast('Data barang tidak ditemukan. Perbarui halaman.', 'error'); return; }
+      const draft = getDraft(activeSerial);
+      const condition = $('fCondition').value;
+      const position = $('fPosition').value.trim();
+      const photoBarang = draft.photos.barang;
+      const photoKode = draft.photos.kode;
+
+      if (!condition) { showToast('Pilih kondisi barang terlebih dahulu.', 'warning'); $('fCondition').focus(); return; }
+      if (!position) { showToast('Isi detail posisi barang terlebih dahulu.', 'warning'); $('fPosition').focus(); return; }
+      if (position.length > MAX_POSITION_LENGTH) { showToast('Detail posisi maksimal ' + MAX_POSITION_LENGTH + ' karakter.', 'warning'); return; }
+      if (!photoBarang) { showToast('Ambil atau pilih Foto Barang terlebih dahulu.', 'warning'); return; }
+      if (!photoKode) { showToast('Ambil atau pilih Foto Kode Barang terlebih dahulu.', 'warning'); return; }
+
+      saving = true;
+      const button = $('saveButton');
+      button.disabled = true;
+      button.textContent = 'Menyimpan…';
+      try {
+        const result = await apiRequest({
+          timeout: 120000,
+          body: {
+            action: 'save',
+            payload: {
+              type: item.type,
+              serial: item.serial,
+              condition: condition,
+              position: position,
+              photoBarang: photoBarang.dataUrl,
+              photoKode: photoKode.dataUrl
+            }
+          }
+        });
+        delete drafts[item.serial];
+        saving = false;
+        closeForm();
+        if (result && result.sharingWarning) {
+          showToast('Data tersimpan, tetapi kebijakan Google Drive mungkin membatasi akses publik ke foto. Periksa izin folder/file.', 'warning');
+        } else {
+          showToast('Berhasil! ' + item.serial + ' tercatat pada ' + (result && result.timestamp ? result.timestamp : 'hari ini') + '.', 'success');
+        }
+        loadDashboard({});
+        if (reportActive) loadReport();
+      } catch (error) {
+        showToast(errorMessage(error), 'error');
+      } finally {
+        saving = false;
+        button.disabled = false;
+        button.textContent = 'Simpan Opname';
+      }
+    }
+
+    /* ======================= Foto ======================= */
+    function openFilePicker(kind, mode) {
+      pendingKind = kind;
+      const input = $(mode === 'capture' ? 'captureInput' : 'galleryInput');
+      input.value = '';
+      input.click();
+    }
+
+    function handleFileChosen(event) {
+      const input = event.target;
+      const file = input.files && input.files[0];
+      const kind = pendingKind;
+      input.value = '';
+      if (file && kind) processSelectedFile(file, kind);
+    }
+
+    async function processSelectedFile(file, kind) {
+      if (!String(file.type || '').startsWith('image/')) {
+        showToast('File yang dipilih bukan gambar. Pilih foto JPG, PNG, atau format gambar yang didukung browser.', 'error');
+        return;
+      }
+      showToast('Mengompres foto di perangkat…', 'success');
+      let image = null;
+      try {
+        image = await loadImageFromFile(file);
+        const dataUrl = await compressImageSource(image, image.naturalWidth || image.width, image.naturalHeight || image.height);
+        setPhoto(kind, dataUrl);
+        showToast(PHOTO_LABELS[kind] + ' siap diunggah (' + formatBytes(dataUrlByteLength(dataUrl)) + ').', 'success');
+      } catch (error) {
+        showToast('Foto tidak dapat diproses. Coba gunakan JPG/PNG atau ambil foto melalui kamera. ' + errorMessage(error), 'error');
+      } finally {
+        if (image && typeof image.close === 'function') image.close();
+      }
+    }
+
+    function loadImageFromFile(file) {
+      if ('createImageBitmap' in window) {
+        return createImageBitmap(file).catch(function () { return loadImageFallback(file); });
+      }
+      return loadImageFallback(file);
+    }
+
+    function loadImageFallback(file) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.onerror = function () { reject(new Error('File gagal dibaca.')); };
+        reader.onload = function () {
+          const image = new Image();
+          image.onload = function () { resolve(image); };
+          image.onerror = function () { reject(new Error('Browser tidak dapat membaca format foto ini.')); };
+          image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function compressImageSource(source, originalWidth, originalHeight) {
+      if (!originalWidth || !originalHeight) throw new Error('Dimensi foto tidak valid.');
+      const scale = Math.min(1, 1600 / Math.max(originalWidth, originalHeight));
+      let width = Math.max(1, Math.round(originalWidth * scale));
+      let height = Math.max(1, Math.round(originalHeight * scale));
+      let quality = 0.88;
+      const canvas = document.createElement('canvas');
+      for (let attempt = 0; attempt < 14; attempt += 1) {
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext('2d', { alpha: false });
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, width, height);
+        context.drawImage(source, 0, 0, width, height);
+        const blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+        if (blob.size <= MAX_CLIENT_PHOTO_BYTES) return await blobToDataUrl(blob);
+        if (quality > 0.5) {
+          quality = Math.max(0.48, quality - 0.1);
+        } else {
+          width = Math.max(320, Math.round(width * 0.82));
+          height = Math.max(240, Math.round(height * 0.82));
+          quality = 0.82;
+        }
+      }
+      throw new Error('Ukuran foto masih melebihi 1 MB setelah kompresi.');
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (blob) {
+          if (blob) resolve(blob);
+          else reject(new Error('Kompresi gambar gagal pada browser ini.'));
+        }, type, quality);
+      });
+    }
+
+    function blobToDataUrl(blob) {
+      return new Promise(function (resolve, reject) {
+        const reader = new FileReader();
+        reader.onload = function () { resolve(String(reader.result)); };
+        reader.onerror = function () { reject(new Error('Hasil foto gagal dibaca.')); };
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    /* ======================= Kamera ======================= */
+    async function startCamera(kind) {
+      cameraKind = kind;
+      facingMode = 'environment';
+      $('cameraTitle').textContent = 'Ambil ' + PHOTO_LABELS[kind];
+      $('cameraStatus').textContent = 'Meminta izin kamera…';
+      $('cameraModal').hidden = false;
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        closeCamera();
+        showToast('Akses kamera langsung tidak didukung. Membuka kamera/galeri perangkat.', 'warning');
+        openFilePicker(kind, 'capture');
+        return;
+      }
+      try {
+        await startCameraStream();
+        $('cameraStatus').textContent = 'Kamera aktif. Tekan Ambil Foto untuk melanjutkan.';
+      } catch (error) {
+        closeCamera();
+        showToast('Kamera tidak dapat dibuka. Membuka kamera/galeri perangkat sebagai alternatif.', 'warning');
+        openFilePicker(kind, 'capture');
+      }
+    }
+
+    async function startCameraStream() {
+      stopCameraStream();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: facingMode }, width: { ideal: 1600 }, height: { ideal: 1200 } }
+      });
+      cameraStream = stream;
+      const video = $('cameraVideo');
+      video.srcObject = stream;
+      await video.play();
+    }
+
+    async function switchCamera() {
+      const previous = facingMode;
+      facingMode = facingMode === 'environment' ? 'user' : 'environment';
+      $('cameraStatus').textContent = 'Mengganti kamera…';
+      try {
+        await startCameraStream();
+        $('cameraStatus').textContent = facingMode === 'environment' ? 'Kamera belakang aktif.' : 'Kamera depan aktif.';
+      } catch (error) {
+        facingMode = previous;
+        try { await startCameraStream(); } catch (ignore) { /* abaikan */ }
+        $('cameraStatus').textContent = 'Kamera alternatif tidak tersedia pada perangkat ini.';
+        showToast('Arah kamera tidak dapat diganti pada perangkat/browser ini.', 'warning');
+      }
+    }
+
+    async function takePhoto() {
+      const video = $('cameraVideo');
+      if (!video.videoWidth || !video.videoHeight) {
+        showToast('Kamera belum siap. Tunggu beberapa saat lalu coba lagi.', 'warning');
+        return;
+      }
+      const button = $('takePhotoButton');
+      button.disabled = true;
+      $('cameraStatus').textContent = 'Mengambil dan mengompres foto…';
+      try {
+        const dataUrl = await compressImageSource(video, video.videoWidth, video.videoHeight);
+        const kind = cameraKind;
+        closeCamera();
+        setPhoto(kind, dataUrl);
+        showToast(PHOTO_LABELS[kind] + ' berhasil diambil (' + formatBytes(dataUrlByteLength(dataUrl)) + ').', 'success');
+      } catch (error) {
+        showToast('Gagal mengambil foto: ' + errorMessage(error), 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function closeCamera() {
+      stopCameraStream();
+      $('cameraModal').hidden = true;
+      cameraKind = null;
+    }
+
+    function stopCameraStream() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(function (track) { track.stop(); });
+        cameraStream = null;
+      }
+      const video = $('cameraVideo');
+      if (video) video.srcObject = null;
+    }
+
+    /* ======================= Laporan ======================= */
+    function showReportView() {
+      reportActive = true;
+      $('inventoryView').style.display = 'none';
+      const view = $('reportView');
+      view.hidden = false;
+      view.classList.add('active');
+      if (!$('reportDateInput').value) $('reportDateInput').value = state.today;
+      loadReport();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showInventoryView() {
+      reportActive = false;
+      const view = $('reportView');
+      view.classList.remove('active');
+      view.hidden = true;
+      $('inventoryView').style.display = '';
+      loadDashboard({});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function loadReport() {
+      const date = $('reportDateInput').value || state.today;
+      if (!date) { showToast('Tanggal laporan belum tersedia.', 'warning'); return; }
+      $('reportLoading').hidden = false;
+      $('reportError').hidden = true;
+      $('loadReportButton').disabled = true;
+      try {
+        const data = await apiRequest({ params: { action: 'report', date: date } });
+        renderReport(data);
+      } catch (error) {
+        $('reportErrorText').textContent = errorMessage(error);
+        $('reportError').hidden = false;
+      } finally {
+        $('reportLoading').hidden = true;
+        $('loadReportButton').disabled = false;
+      }
+    }
+
+    function renderReport(data) {
+      const dateLabel = formatDateIndonesian(data.date);
+      $('reportDateLabel').textContent = dateLabel;
+      $('reportGeneratedPrint').textContent = 'Dicetak pada: ' + (data.generatedAt || '—');
+      $('signatureDate').textContent = dateLabel;
+      $('reportSummary').textContent = 'Jumlah catatan: ' + data.count + ' · Tanggal: ' + dateLabel + '. Foto ditampilkan sebagai thumbnail jika izin Google Drive memungkinkan akses.';
+      const tbody = $('reportTableBody');
+      if (!data.records || !data.records.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:26px;color:var(--muted)">Belum ada data opname pada tanggal ini.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = data.records.map(function (record, index) {
+        return '<tr>' +
+          cell('No.', String(index + 1), 'text-align:center') +
+          cell('Waktu Input', escapeHtml(record.timestamp)) +
+          cell('Jenis Barang', escapeHtml(record.type)) +
+          cell('Nomor Seri', '<strong>' + escapeHtml(record.serial) + '</strong>') +
+          cell('Kondisi', escapeHtml(record.condition)) +
+          cell('Detail Posisi', escapeHtml(record.position)) +
+          cell('Foto Barang', reportPhoto(record.photoBarangImageUrl, record.photoBarangUrl, 'Foto barang'), '', 'photo-cell') +
+          cell('Foto Kode', reportPhoto(record.photoKodeImageUrl, record.photoKodeUrl, 'Foto kode'), '', 'photo-cell') +
+        '</tr>';
+      }).join('');
+    }
+
+    function cell(label, content, style, cls) {
+      return '<td data-label="' + label + '"' + (style ? ' style="' + style + '"' : '') + '><div class="cell-val' + (cls ? ' ' + cls : '') + '">' + content + '</div></td>';
+    }
+
+    function reportPhoto(imageUrl, fileUrl, alt) {
+      if (!imageUrl && !fileUrl) return '<span class="photo-fallback">Tidak ada foto</span>';
+      const img = imageUrl
+        ? '<img class="report-photo" src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(alt) + '" referrerpolicy="no-referrer"><span class="photo-fallback" hidden>Pratinjau tidak tersedia</span>'
+        : '<span class="photo-fallback">Pratinjau tidak tersedia</span>';
+      const link = fileUrl ? '<a class="report-link" href="' + escapeHtml(fileUrl) + '" target="_blank" rel="noopener">Buka foto</a>' : '';
+      return img + link;
+    }
+
+    function waitForReportImages(timeoutMs) {
+      const pending = Array.from(document.querySelectorAll('#reportTableBody img')).filter(function (img) { return !img.complete; });
+      if (!pending.length) return Promise.resolve();
+      const loaded = Promise.all(pending.map(function (img) {
+        return new Promise(function (resolve) {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      }));
+      return Promise.race([loaded, new Promise(function (resolve) { setTimeout(resolve, timeoutMs); })]);
+    }
+
+    async function printReport() {
+      if (!reportActive) showReportView();
+      const button = $('printButton');
+      button.disabled = true;
+      try {
+        await waitForReportImages(8000);
+        window.print();
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    /* ======================= Utilitas ======================= */
+    function showToast(message, type) {
+      const toast = $('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + (type || 'success');
+      toast.hidden = false;
+      if (toastTimer) window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(function () { toast.hidden = true; }, 4500);
+    }
+
+    function errorMessage(error) {
+      if (!error) return 'Terjadi kesalahan yang tidak diketahui.';
+      return String(error.message || error).replace(/^Exception:\s*/i, '');
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char];
+      });
+    }
+
+    function dataUrlByteLength(dataUrl) {
+      const base64 = String(dataUrl || '').split(',')[1] || '';
+      const padding = base64.endsWith('==') ? 2 : base64.endsWith('=') ? 1 : 0;
+      return Math.max(0, Math.floor(base64.length * 3 / 4) - padding);
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return '0 B';
+      return bytes < 1024 * 1024 ? Math.round(bytes / 1024) + ' KB' : (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function formatDateIndonesian(isoDate, withDay) {
+      if (!isoDate) return '—';
+      const parts = String(isoDate).split('-').map(Number);
+      if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return isoDate;
+      let text = parts[2] + ' ' + MONTH_NAMES[parts[1] - 1] + ' ' + parts[0];
+      if (withDay) text = DAY_NAMES[new Date(parts[0], parts[1] - 1, parts[2]).getDay()] + ', ' + text;
+      return text;
+    }
+  </script>
+</body>
+</html>
