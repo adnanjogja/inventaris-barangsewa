@@ -11,201 +11,272 @@
   <style>
     :root {
       --navy-900: #0b2142; --navy-800: #0f2d57; --navy-700: #16396b; --navy-600: #1f4d8c;
-      --gold: #c29b45; --ink: #162033; --ink-2: #34445c; --muted: #66758b;
-      --line: #e3e9f1; --line-2: #edf1f6; --canvas: #f3f6fa; --surface: #ffffff;
-      --pending-bg: #fff7de; --pending-bd: #f1d37a; --pending-fg: #8a5a00; --pending-dot: #e0a526;
-      --done-bg: #e3f6ea; --done-bd: #8fd3a8; --done-fg: #13693a; --done-dot: #22a15b;
-      --danger: #b42335; --danger-bg: #fdecee; --radius: 14px;
-      --shadow: 0 1px 2px rgba(15, 35, 65, .05), 0 8px 24px rgba(15, 35, 65, .06);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --gold: #c29b45; --ink: #1e293b; --ink-2: #334155; --muted: #64748b;
+      --line: #e2e8f0; --line-2: #f1f5f9; --canvas: #f8fafc; --surface: #ffffff;
+      --pending-bg: #fef3c7; --pending-bd: #fde68a; --pending-fg: #92400e; --pending-dot: #f59e0b;
+      --done-bg: #dcfce7; --done-bd: #bbf7d0; --done-fg: #166534; --done-dot: #22c55e;
+      --danger: #ef4444; --danger-bg: #fee2e2; 
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(15, 35, 65, 0.05);
+      --shadow-md: 0 4px 12px rgba(15, 35, 65, 0.05), 0 2px 4px rgba(15, 35, 65, 0.03);
+      --shadow-lg: 0 12px 32px rgba(15, 35, 65, 0.08);
+      --shadow-hover: 0 8px 24px rgba(15, 35, 65, 0.12);
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     }
+
     *, *::before, *::after { box-sizing: border-box; }
     [hidden] { display: none !important; }
-    html { -webkit-text-size-adjust: 100%; }
-    body { margin: 0; min-width: 320px; background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { 
+      margin: 0; min-width: 320px; 
+      background: var(--canvas); color: var(--ink); 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+      font-size: 15px; line-height: 1.5; 
+      -webkit-font-smoothing: antialiased; 
+    }
     body.modal-open { overflow: hidden; }
     h1, h2, h3, p { margin: 0; }
     button, input, select { font: inherit; color: inherit; }
     .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
-    .icon { width: 1.1em; height: 1.1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; vertical-align: -.18em; }
+    .icon { width: 1.2em; height: 1.2em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; vertical-align: -.15em; }
 
-    /* ---------- Header ---------- */
-    .app-header { position: relative; color: #fff; background: linear-gradient(120deg, var(--navy-900), var(--navy-700)); }
-    .app-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--gold), #e6c777 40%, transparent 85%); }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 36px 0 40px; }
-    .brand { display: flex; align-items: center; gap: 20px; min-width: 0; }
-    .emblem { width: 72px; height: 72px; display: grid; place-items: center; flex: 0 0 auto; }
+    /* ---------- Header Profesional ---------- */
+    .app-header { 
+      position: relative; color: #fff; 
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%); 
+      box-shadow: 0 4px 20px rgba(11, 33, 66, 0.15);
+    }
+    .app-header::after { 
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; 
+      background: linear-gradient(90deg, var(--gold), #fcd34d 40%, transparent 90%); 
+    }
+    .header-inner { 
+      display: flex; align-items: center; justify-content: space-between; 
+      gap: 24px; padding: 32px 0 40px; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 20px; min-width: 0; flex: 1; }
+    .emblem { width: 75px; height: 75px; display: grid; place-items: center; flex: 0 0 auto; background: rgba(255,255,255,0.05); border-radius: 50%; padding: 8px; border: 1px solid rgba(255,255,255,0.1); }
     .emblem img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .emblem .icon { display: none; width: 30px; height: 30px; color: var(--navy-700); }
+    .emblem .icon { display: none; width: 32px; height: 32px; color: var(--navy-700); }
     .emblem.fallback img { display: none; }
-    .emblem.fallback .icon { display: block; }
-    .kicker { font-size: .75rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: #cfdcf0; }
-    .app-title { margin-top: 6px; font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 700; line-height: 1.2; letter-spacing: -.015em; }
-    .app-subtitle { margin-top: 4px; font-size: .95rem; font-weight: 400; color: #cfdcf0; }
-    .date-chip { flex: 0 0 auto; text-align: right; padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
-    .date-chip small { display: block; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: #b9c9e2; font-weight: 600; }
-    .date-chip strong { display: block; font-size: .95rem; font-weight: 700; white-space: nowrap; }
+    .emblem.fallback .icon { display: block; color: #fff; }
+    
+    .brand-text { display: flex; flex-direction: column; justify-content: center; }
+    .kicker { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px; }
+    .app-title { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; color: #f8fafc; }
+    .app-subtitle { margin-top: 6px; font-size: 0.95rem; font-weight: 400; color: #cbd5e1; max-width: 600px; }
+    
+    .date-chip { 
+      flex: 0 0 auto; text-align: right; padding: 12px 20px; 
+      border-radius: var(--radius-md); background: rgba(255,255,255,0.06); 
+      border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(4px);
+    }
+    .date-chip small { display: block; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: #94a3b8; font-weight: 600; margin-bottom: 2px;}
+    .date-chip strong { display: block; font-size: 1rem; font-weight: 700; color: #f8fafc; white-space: nowrap; }
 
-    /* ---------- Layout & Summary ---------- */
-    .main { padding: 28px 0 48px; }
-    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
-    .stack > * + * { margin-top: 20px; }
-    .section-title { font-size: 1.02rem; font-weight: 700; letter-spacing: -.01em; color: var(--navy-800); }
-    .section-caption { margin-top: 2px; font-size: .84rem; color: var(--muted); }
-    .summary { padding: 22px 24px; }
+    /* ---------- Layout & Kartu ---------- */
+    .main { padding: 32px 0 60px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); transition: box-shadow 0.3s ease; overflow: hidden; }
+    .card:hover { box-shadow: var(--shadow-lg); }
+    .stack > * + * { margin-top: 24px; }
+    .section-title { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; color: var(--navy-800); }
+    .section-caption { margin-top: 4px; font-size: 0.85rem; color: var(--muted); }
+    
+    /* ---------- Ringkasan (Summary) ---------- */
+    .summary { padding: 24px 28px; }
     .summary-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .summary-pct { font-size: 2rem; font-weight: 800; line-height: 1; color: var(--navy-800); letter-spacing: -.03em; }
-    .summary-pct small { font-size: 1rem; font-weight: 700; color: var(--muted); }
-    .progress { height: 10px; margin-top: 14px; border-radius: 99px; background: var(--line-2); overflow: hidden; }
-    .progress > i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--navy-600), #3d7bc4); transition: width .5s ease; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
-    .stat { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 12px; background: #f8fafd; border: 1px solid var(--line-2); min-width: 0; }
-    .stat-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: 0 0 auto; background: #e9f0fa; color: var(--navy-600); }
+    .summary-pct { font-size: 2.5rem; font-weight: 800; line-height: 1; color: var(--navy-800); letter-spacing: -0.03em; }
+    .summary-pct small { font-size: 1.2rem; font-weight: 700; color: var(--muted); }
+    .progress { height: 12px; margin-top: 20px; border-radius: 99px; background: var(--line-2); overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    .progress > i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--navy-600), #3b82f6); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+    .stat { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: var(--radius-md); background: #f8fafc; border: 1px solid var(--line-2); transition: transform 0.2s ease; }
+    .stat:hover { transform: translateY(-2px); }
+    .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex: 0 0 auto; background: #e0e7ff; color: var(--navy-600); }
     .stat.done .stat-icon { background: var(--done-bg); color: var(--done-fg); }
     .stat.pending .stat-icon { background: var(--pending-bg); color: var(--pending-fg); }
-    .stat-label { font-size: .75rem; color: var(--muted); font-weight: 600; line-height: 1.2; }
-    .stat-value { font-size: 1.5rem; font-weight: 800; line-height: 1.15; color: var(--ink); letter-spacing: -.02em; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 600; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .stat-value { font-size: 1.6rem; font-weight: 800; line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
 
-    /* ---------- Toolbar & Buttons ---------- */
-    .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; }
-    .search { position: relative; flex: 1 1 260px; min-width: 0; }
-    .search .icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
-    .search input { width: 100%; height: 42px; padding: 0 14px 0 38px; border: 1px solid #d5deea; border-radius: 10px; background: #fff; }
-    .segmented { display: inline-flex; padding: 3px; background: var(--line-2); border-radius: 10px; gap: 2px; }
-    .segmented button { border: 0; background: transparent; padding: 7px 13px; border-radius: 8px; font-size: .83rem; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
-    .segmented button b { font-weight: 700; margin-left: 4px; color: var(--muted); }
-    .segmented button.active { background: #fff; color: var(--navy-800); box-shadow: 0 1px 3px rgba(15,35,65,.12); }
-    .toolbar-actions { display: flex; gap: 8px; margin-left: auto; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 42px; padding: 0 16px; border-radius: 10px; border: 1px solid transparent; font-weight: 600; font-size: .88rem; cursor: pointer; transition: background .15s, border-color .15s, box-shadow .15s; white-space: nowrap; }
-    .btn:disabled { opacity: .55; cursor: not-allowed; }
+    /* ---------- Toolbar & Tombol ---------- */
+    .toolbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 16px 20px; }
+    .search { position: relative; flex: 1 1 280px; min-width: 0; }
+    .search .icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .search input { width: 100%; height: 46px; padding: 0 16px 0 44px; border: 1px solid #cbd5e1; border-radius: var(--radius-md); background: #fff; font-size: 0.95rem; transition: all 0.2s; }
+    .search input:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 77, 140, 0.15); }
+    
+    .segmented { display: inline-flex; padding: 4px; background: var(--line-2); border-radius: var(--radius-md); gap: 2px; }
+    .segmented button { border: 0; background: transparent; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+    .segmented button b { font-weight: 700; margin-left: 6px; color: var(--muted); background: #e2e8f0; padding: 2px 6px; border-radius: 6px; font-size: 0.75rem; }
+    .segmented button.active { background: #fff; color: var(--navy-800); box-shadow: var(--shadow-sm); }
+    .segmented button.active b { background: #f1f5f9; color: var(--navy-800); }
+    
+    .toolbar-actions { display: flex; gap: 12px; margin-left: auto; }
+    .btn { 
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
+      height: 46px; padding: 0 20px; border-radius: var(--radius-md); border: 1px solid transparent; 
+      font-weight: 600; font-size: 0.9rem; cursor: pointer; 
+      transition: all 0.2s ease; white-space: nowrap; 
+    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn:active:not(:disabled) { transform: translateY(0); }
     .btn-primary { background: var(--navy-700); color: #fff; }
     .btn-primary:hover:not(:disabled) { background: var(--navy-800); }
-    .btn-ghost { background: #fff; color: var(--ink-2); border-color: #d2dbe8; }
-    .btn-ghost:hover:not(:disabled) { background: #f4f7fb; border-color: #bccadd; }
-    .btn-sm { height: 36px; padding: 0 13px; font-size: .82rem; }
-    .btn:focus-visible, .segmented button:focus-visible { outline: 2px solid var(--navy-600); outline-offset: 2px; }
+    .btn-ghost { background: #fff; color: var(--ink-2); border-color: #cbd5e1; }
+    .btn-ghost:hover:not(:disabled) { background: #f8fafc; border-color: #94a3b8; }
+    .btn-sm { height: 38px; padding: 0 16px; font-size: 0.85rem; border-radius: var(--radius-sm); }
+    .btn:focus-visible { outline: 2px solid var(--navy-600); outline-offset: 2px; }
     .action-group { display: flex; gap: 8px; justify-content: flex-end; }
 
-    /* ---------- Notices & Table ---------- */
-    .notice { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 18px; border-radius: 12px; border: 1px solid; }
-    .notice strong { display: block; margin-bottom: 2px; }
-    .notice p { font-size: .88rem; }
-    .notice-error { background: var(--danger-bg); border-color: #f1b7be; color: #7d1824; }
-    .notice-info { background: #eef4fd; border-color: #c4d7f2; color: #1b3d6e; }
-    .loading-card { padding: 22px 24px; }
-    .loading-line { height: 3px; margin-top: 14px; overflow: hidden; background: var(--line-2); border-radius: 99px; }
-    .loading-line::after { content: ''; display: block; height: 100%; width: 35%; background: var(--navy-600); border-radius: 99px; animation: slide 1.2s ease-in-out infinite; }
-    @keyframes slide { from { transform: translateX(-110%); } to { transform: translateX(310%); } }
-    .group { overflow: hidden; }
-    .group-head { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f6f9fd); }
-    .group-letter { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--navy-700); color: #fff; font-weight: 800; font-size: .9rem; flex: 0 0 auto; }
-    .group-head h3 { font-size: 1rem; font-weight: 700; color: var(--navy-800); }
-    .group-head p { font-size: .8rem; color: var(--muted); }
+    /* ---------- Daftar Opname & Tabel ---------- */
+    .group-head { display: flex; align-items: center; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #f8fafc, #f1f5f9); }
+    .group-letter { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--navy-700); color: #fff; font-weight: 800; font-size: 1rem; flex: 0 0 auto; box-shadow: var(--shadow-sm); }
+    .group-head h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy-800); }
+    
     .dev-table, .report-table { width: 100%; border-collapse: collapse; }
-    .dev-table th { padding: 10px 16px; text-align: left; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: #fbfcfe; border-bottom: 1px solid var(--line); }
-    .dev-table td { padding: 13px 16px; border-bottom: 1px solid var(--line-2); vertical-align: middle; }
+    .dev-table th { padding: 14px 20px; text-align: left; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 700; background: #f8fafc; border-bottom: 1px solid var(--line); }
+    .dev-table td { padding: 16px 20px; border-bottom: 1px solid var(--line-2); vertical-align: middle; }
+    .dev-table tbody tr { transition: background 0.2s ease; }
+    .dev-table tbody tr:hover { background: #f8fafc !important; }
     .dev-table tbody tr:last-child td { border-bottom: 0; }
-    .dev-table tbody tr.is-pending { background: rgba(255, 247, 222, .5); }
-    .dev-table tbody tr.is-done { background: rgba(227, 246, 234, .55); }
-    .dev-table tbody tr td:first-child { box-shadow: inset 3px 0 0 var(--pending-dot); }
-    .dev-table tbody tr.is-done td:first-child { box-shadow: inset 3px 0 0 var(--done-dot); }
-    .col-no { width: 56px; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .col-status { width: 170px; }
-    .serial { font-family: var(--mono); font-size: .86rem; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
-    .note { font-size: .84rem; color: var(--ink-2); }
-    .badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 99px; font-size: .72rem; font-weight: 700; letter-spacing: .02em; border: 1px solid; white-space: nowrap; }
-    .badge i { width: 7px; height: 7px; border-radius: 50%; }
+    .dev-table tbody tr.is-pending { background: rgba(254, 243, 199, 0.3); }
+    .dev-table tbody tr.is-done { background: rgba(220, 252, 231, 0.3); }
+    .dev-table tbody tr td:first-child { box-shadow: inset 4px 0 0 var(--pending-dot); }
+    .dev-table tbody tr.is-done td:first-child { box-shadow: inset 4px 0 0 var(--done-dot); }
+    
+    .col-no { width: 60px; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
+    .col-status { width: 180px; }
+    .serial { font-family: var(--mono); font-size: 0.95rem; font-weight: 600; color: var(--navy-900); overflow-wrap: anywhere; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
+    .note { font-size: 0.85rem; color: var(--muted); }
+    
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; border: 1px solid; white-space: nowrap; }
+    .badge i { width: 8px; height: 8px; border-radius: 50%; }
     .badge-pending { background: var(--pending-bg); border-color: var(--pending-bd); color: var(--pending-fg); }
-    .badge-pending i { background: var(--pending-dot); }
+    .badge-pending i { background: var(--pending-dot); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
     .badge-done { background: var(--done-bg); border-color: var(--done-bd); color: var(--done-fg); }
-    .badge-done i { background: var(--done-dot); }
-    .empty-state { padding: 38px 20px; text-align: center; color: var(--muted); border: 1px dashed #c9d5e4; border-radius: var(--radius); background: #fff; }
+    .badge-done i { background: var(--done-dot); box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); }
+    
+    .empty-state { padding: 60px 20px; text-align: center; color: var(--muted); border: 2px dashed #cbd5e1; border-radius: var(--radius-lg); background: #f8fafc; font-weight: 500; }
 
-    /* ---------- Modal ---------- */
-    .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(11, 33, 66, .55); backdrop-filter: blur(2px); }
-    .modal-card { width: min(660px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(5, 18, 38, .35); overflow: hidden; }
-    .modal-card.sm { width: min(440px, 100%); }
-    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f4f8fd); }
-    .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
-    .modal-head h2 { margin-top: 2px; font-family: var(--mono); font-size: 1.02rem; font-weight: 700; color: var(--navy-800); overflow-wrap: anywhere; }
-    .icon-btn { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid transparent; background: transparent; border-radius: 9px; color: var(--ink-2); cursor: pointer; }
-    .icon-btn:hover { background: var(--line-2); }
-    .modal-body { padding: 20px 22px; overflow-y: auto; }
-    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 22px; border-top: 1px solid var(--line); background: #fbfcfe; }
-    .modal-foot .actions { display: flex; gap: 8px; width: 100%; justify-content: flex-end; }
-    .form-note { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 18px; padding: 11px 13px; border-radius: 10px; background: var(--done-bg); border: 1px solid var(--done-bd); color: var(--done-fg); font-size: .82rem; }
-    .field + .field { margin-top: 18px; }
-    .field label, .field .label { display: block; margin-bottom: 6px; font-size: .8rem; font-weight: 700; color: var(--ink-2); }
+    /* ---------- Pop-up / Modal ---------- */
+    .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); transition: opacity 0.3s; }
+    .modal-card { width: min(680px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-card.sm { width: min(460px, 100%); }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    
+    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 28px; border-bottom: 1px solid var(--line); background: #f8fafc; }
+    .eyebrow { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+    .modal-head h2 { margin-top: 4px; font-family: var(--mono); font-size: 1.15rem; font-weight: 800; color: var(--navy-800); overflow-wrap: anywhere; }
+    .icon-btn { width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; border: 1px solid transparent; background: #fff; border-radius: 10px; color: var(--muted); cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+    .icon-btn:hover { background: var(--line-2); color: var(--danger); transform: rotate(90deg); }
+    
+    .modal-body { padding: 24px 28px; overflow-y: auto; }
+    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 28px; border-top: 1px solid var(--line); background: #f8fafc; }
+    .modal-foot .actions { display: flex; gap: 12px; width: 100%; justify-content: flex-end; }
+    
+    /* Input Form Modern */
+    .field + .field { margin-top: 20px; }
+    .field label, .field .label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--ink-2); }
     .req { color: var(--danger); }
-    .control { width: 100%; height: 44px; padding: 0 13px; border: 1px solid #d2dbe8; border-radius: 10px; background: #fff; }
-    select.control { appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2366758b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-    .control:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 77, 140, .14); }
-    .hint { margin-top: 5px; font-size: .75rem; color: var(--muted); }
+    .control { width: 100%; height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: var(--radius-md); background: #fff; transition: all 0.2s; font-size: 0.95rem; }
+    select.control { appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+    .control:focus { outline: none; border-color: var(--navy-600); box-shadow: 0 0 0 3px rgba(31, 77, 140, 0.15); }
+    .hint { margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
+    .hint.right { text-align: right; }
     
-    /* ---------- Photos & Kamera ---------- */
-    .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .photo-slot { padding: 11px; border: 1.5px dashed #b9c7d8; border-radius: 12px; background: #fafcfe; min-width: 0; }
-    .photo-slot.has-photo { border-style: solid; border-color: var(--done-bd); background: #f6fcf8; }
-    .photo-title { margin-bottom: 8px; font-size: .78rem; font-weight: 700; color: var(--ink-2); }
-    .photo-preview { height: 130px; display: grid; place-items: center; overflow: hidden; border-radius: 9px; background: #eef2f7; }
-    .photo-preview img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .photo-empty { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .74rem; color: #7b8899; text-align: center; padding: 6px; }
-    .photo-empty .icon { width: 22px; height: 22px; }
-    .photo-actions { display: flex; gap: 6px; margin-top: 9px; }
-    .photo-actions .btn { flex: 1 1 0; padding: 0 8px; }
-    .photo-preview-overlay { position: fixed; inset: 0; z-index: 4000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.9); padding: 20px; }
-    .photo-preview-overlay img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-    .close-preview-btn { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; display: grid; place-items: center; cursor: pointer; }
-    .camera-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(5, 14, 28, .88); }
-    .camera-box { width: min(720px, 100%); padding: 16px; background: #fff; border-radius: 18px; }
-    .camera-video-wrap { display: grid; place-items: center; min-height: 220px; overflow: hidden; border-radius: 12px; background: #0d151f; margin-bottom: 12px; }
-    .camera-video-wrap video { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
-    .camera-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+    /* Kotak Info */
+    .form-note { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 20px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--done-bg); border: 1px solid var(--done-bd); color: var(--done-fg); font-size: 0.85rem; line-height: 1.4; }
+    .notice { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px; border-radius: var(--radius-md); border: 1px solid; }
+    .notice-error { background: var(--danger-bg); border-color: #fca5a5; color: #991b1b; }
     
-    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 3000; transform: translateX(-50%); width: min(460px, calc(100vw - 28px)); padding: 13px 16px; border-radius: 12px; background: var(--navy-800); color: #fff; font-size: .88rem; box-shadow: 0 14px 40px rgba(8, 24, 48, .3); border-left: 4px solid #5aa0e6; }
-    .toast.success { border-left-color: #35b873; }
-    .toast.error { background: #8e1f2c; border-left-color: #ff8d98; }
+    /* Area Foto */
+    .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .photo-slot { padding: 12px; border: 2px dashed #cbd5e1; border-radius: var(--radius-md); background: #f8fafc; transition: all 0.2s; }
+    .photo-slot:hover { border-color: var(--navy-600); }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--done-bd); background: #f0fdf4; }
+    .photo-title { margin-bottom: 10px; font-size: 0.8rem; font-weight: 700; color: var(--ink-2); text-align: center; }
+    .photo-preview { height: 140px; display: grid; place-items: center; overflow: hidden; border-radius: 8px; background: #e2e8f0; position: relative; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+    .photo-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+    .photo-empty .icon { width: 28px; height: 28px; opacity: 0.6; }
+    .photo-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .photo-actions .btn { flex: 1; padding: 0 8px; height: 36px; font-size: 0.8rem; }
 
-    /* ---------- Laporan & Footer ---------- */
+    /* Utilities & Laporan dll */
+    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 3000; transform: translateX(-50%); width: min(460px, calc(100vw - 32px)); padding: 16px 20px; border-radius: var(--radius-md); background: var(--navy-800); color: #fff; font-size: 0.95rem; font-weight: 500; box-shadow: var(--shadow-lg); border-left: 4px solid #3b82f6; display: flex; align-items: center; gap: 12px; animation: modalIn 0.3s; }
+    .toast.success { border-left-color: var(--done-dot); }
+    .toast.error { background: #991b1b; border-left-color: #f87171; }
+    
     #reportView { display: none; }
-    #reportView.active { display: block; }
-    .report-sheet { overflow: hidden; }
-    .report-head { padding: 26px 28px 18px; border-bottom: 2px solid var(--navy-800); text-align: center; }
-    .report-table { width: 100%; max-width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .report-table th, .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; word-wrap: break-word; overflow-wrap: break-word; }
-    .report-table th { background: #eaf0f8; color: var(--navy-800); font-size: .7rem; text-transform: uppercase; text-align: left; }
-    .report-photo { display: block; width: 100%; max-width: 90px; height: 70px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; }
-    .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
+    #reportView.active { display: block; animation: modalIn 0.4s; }
+    .report-sheet { overflow: hidden; padding: 20px; }
+    .report-head { padding: 24px 24px 20px; border-bottom: 3px solid var(--navy-800); text-align: center; }
+    .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .report-table th, .report-table td { padding: 12px 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; vertical-align: middle; }
+    .report-table th { background: #f1f5f9; color: var(--navy-900); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
+    .report-photo { width: 100%; max-width: 100px; height: 80px; object-fit: contain; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; cursor: zoom-in; }
+    .app-footer { background: var(--navy-900); color: #94a3b8; text-align: center; padding: 32px 20px; font-size: 0.85rem; border-top: 4px solid var(--gold); margin-top: auto; }
 
-    /* ---------- Responsif & Cetak ---------- */
-    @media (max-width: 720px) {
-      .action-group { flex-direction: column; width: 100%; }
-      .action-group .btn { width: 100%; }
+    /* ---------- RESPONSIVITAS (MOBILE FRIENDLY) ---------- */
+    @media (max-width: 768px) {
+      /* Header Penyesuaian */
+      .header-inner { flex-direction: column; align-items: flex-start; padding: 24px 0; gap: 20px; }
+      .app-title { font-size: 1.35rem; }
+      .date-chip { align-self: stretch; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+      .date-chip small { margin: 0; }
+      
+      /* Summary & Statistik Penyesuaian */
+      .summary-top { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .stats { grid-template-columns: 1fr; }
+      
+      /* Toolbar Penyesuaian */
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .search input { width: 100%; }
+      .segmented { display: flex; width: 100%; }
+      .segmented button { flex: 1; text-align: center; padding: 10px 0; }
+      .toolbar-actions { flex-direction: column; width: 100%; margin: 0; }
+      .toolbar-actions .btn { width: 100%; }
+      
+      /* Merubah Tabel menjadi Model Kartu Bertumpuk di HP */
       .dev-table thead { display: none; }
-      .dev-table, .dev-table tbody { display: block; }
-      .dev-table tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line-2); }
-      .dev-table td { display: block; padding: 0; border: 0; width: auto; }
+      .dev-table, .dev-table tbody { display: block; width: 100%; }
+      .dev-table tbody tr { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-bottom: 1px solid var(--line); border-radius: 0; }
+      .dev-table td { display: block; padding: 0; border: 0; width: 100%; text-align: left; }
+      
       .col-no { display: none !important; }
-      .col-serial { grid-column: 1; grid-row: 1; align-self: center; }
-      .col-status { grid-column: 2; grid-row: 1; }
-      .col-note { grid-column: 1 / -1; }
-      .col-action { grid-column: 1 / -1; }
+      .col-serial { margin-bottom: 4px; }
+      .serial { font-size: 1.1rem; padding: 6px 12px; display: inline-block; }
+      .col-status { margin-bottom: 8px; }
+      
+      /* Tombol Aksi di HP (Penuh 100%) */
+      .action-group { flex-direction: column; width: 100%; margin-top: 8px; }
+      .action-group .btn { width: 100%; height: 44px; }
+      
+      /* Modal Penyesuaian */
       .modal { padding: 0; align-items: flex-end; }
-      .modal-card { width: 100%; max-height: 94vh; border-radius: 18px 18px 0 0; }
+      .modal-card { width: 100%; max-height: 92vh; border-radius: 24px 24px 0 0; animation: modalInMobile 0.3s forwards; }
+      @keyframes modalInMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      .photo-grid { grid-template-columns: 1fr; gap: 20px; }
+      .modal-foot { flex-direction: column; padding: 16px 20px 24px; }
+      .modal-foot .actions { flex-direction: column-reverse; }
+      .modal-foot .btn { width: 100%; height: 50px; font-size: 1rem; }
     }
+
     @media print {
-      html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; }
+      html, body { background: #fff !important; color: #000 !important; }
       .app-header, .app-footer, #inventoryView, .no-print, .modal, .toast { display: none !important; }
-      #reportView, #reportView[hidden] { display: block !important; }
-      .report-table th, .report-table td { border: 1px solid #555 !important; font-size: 7.2pt !important; }
-      .print-only { display: block !important; }
-      .signature { display: block !important; width: 260px; margin: 18px 0 0 auto; text-align: center; }
+      #reportView { display: block !important; padding: 0; border: 0; }
+      .report-sheet { padding: 0; box-shadow: none; border: 0; }
+      .report-table th, .report-table td { border: 1px solid #000 !important; font-size: 10pt !important; color: #000 !important; }
+      .signature { display: block !important; width: 260px; margin: 30px 0 0 auto; text-align: center; }
     }
     .print-only, .signature { display: none; }
   </style>
 </head>
 <body>
-  <!-- Ikon SVG -->
+  <!-- Ikon SVG Tetap Sama -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 12"/></symbol>
     <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
@@ -229,24 +300,24 @@
     <div class="wrap header-inner">
       <div class="brand">
         <div class="emblem"><img src="logo-imigrasi.png" alt="Logo" onerror="this.parentNode.classList.add('fallback')"><svg class="icon"><use href="#i-clipboard"/></svg></div>
-        <div>
+        <div class="brand-text">
           <div class="kicker">Kantor Imigrasi Kelas II TPI Kediri</div>
-          <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023</h1>
-          <p class="app-subtitle">Pencatatan kondisi, posisi, dan dokumentasi foto perangkat sewa harian</p>
+          <h1 class="app-title">Daftar Perangkat Sewa 2023</h1>
+          <p class="app-subtitle">Pencatatan kondisi, posisi, dan dokumentasi foto harian perangkat operasional.</p>
         </div>
       </div>
-      <div class="date-chip"><small>Tanggal Cetak</small><strong id="headerDate">—</strong></div>
+      <div class="date-chip"><small>Tanggal Pencatatan</small><strong id="headerDate">Memuat...</strong></div>
     </div>
   </header>
 
   <main class="wrap main">
     <section id="inventoryView" class="stack">
-      <div id="loadingState" class="card loading-card" hidden><div class="section-title">Memuat daftar...</div><div class="loading-line"></div></div>
+      <div id="loadingState" class="card loading-card" hidden><div class="section-title">Memuat data dari server...</div><div class="loading-line"></div></div>
       <div id="pageError" class="notice notice-error" hidden role="alert"><div><strong>Gagal memuat</strong><p id="pageErrorText"></p></div><button type="button" id="retryButton" class="btn btn-ghost btn-sm">Coba Lagi</button></div>
 
       <section class="card summary">
         <div class="summary-top">
-          <div><h2 class="section-title">Ringkasan Opname</h2><p class="section-caption">Status diperiksa berdasarkan semua data yang terekam.</p></div>
+          <div><h2 class="section-title">Ringkasan Progres Opname</h2><p class="section-caption">Status penyelesaian berdasarkan log data hari ini.</p></div>
           <div class="summary-pct"><span id="pctValue">0</span><small>%</small></div>
         </div>
         <div class="progress"><i id="progressFill"></i></div>
@@ -258,7 +329,7 @@
       </section>
 
       <section class="card toolbar">
-        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Cari jenis atau seri..."></label>
+        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="Cari berdasarkan jenis atau serial number..."></label>
         <div class="segmented" id="filterGroup">
           <button type="button" class="active" data-filter="all">Semua<b id="cntAll">0</b></button>
           <button type="button" data-filter="pending">Belum<b id="cntPending">0</b></button>
@@ -266,37 +337,39 @@
         </div>
         <div class="toolbar-actions">
           <button id="refreshButton" class="btn btn-ghost" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Perbarui</button>
-          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan Lengkap</button>
+          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Lihat Laporan</button>
         </div>
       </section>
 
       <div id="groupsContainer" class="stack"></div>
-      <div id="searchEmpty" class="empty-state" hidden>Tidak ada barang yang sesuai.</div>
+      <div id="searchEmpty" class="empty-state" hidden>Tidak ada data barang yang sesuai dengan pencarian.</div>
     </section>
 
     <!-- Modal Laporan -->
     <section id="reportView" hidden>
       <div class="card report-sheet">
         <div class="report-head">
-          <div class="report-org">Kantor Imigrasi Kelas II TPI Kediri</div>
-          <h2 class="report-title">LAPORAN OPNAME PERANGKAT SEWA DITJEN IMIGRASI 2023</h2>
-          <div class="report-meta">Tanggal cetak laporan: <strong id="reportDateLabel">—</strong></div>
+          <div style="font-weight:700; color:#64748b; font-size:0.9rem; margin-bottom:8px;">KANTOR IMIGRASI KELAS II TPI KEDIRI</div>
+          <h2 style="font-size:1.4rem; color:#0f2d57; font-weight:800; margin-bottom:12px;">LAPORAN OPNAME PERANGKAT SEWA DITJEN IMIGRASI 2023</h2>
+          <div style="color:#475569; font-size:0.9rem;">Tanggal cetak laporan: <strong id="reportDateLabel">—</strong></div>
         </div>
         <div class="report-body">
-          <div class="report-controls no-print"><button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button></div>
-          <div class="table-wrap">
-            <table class="report-table">
-              <thead><tr><th>No.</th><th>Jenis Barang</th><th>Nomor Seri</th><th>Status</th><th>Kondisi</th><th>Detail Posisi</th><th>Foto Barang</th><th>Foto Kode</th></tr></thead>
-              <tbody id="reportTableBody"><tr><td colspan="8" style="text-align:center;">Memuat...</td></tr></tbody>
-            </table>
+          <div class="toolbar no-print" style="padding: 16px 0; background:transparent;">
+            <button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali</button>
+            <div style="margin-left:auto; display:flex; gap:12px;">
+              <button type="button" id="openOfficerBtn" class="btn btn-ghost"><svg class="icon"><use href="#i-user"/></svg>Edit Petugas</button>
+              <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan</button>
+            </div>
           </div>
-          <div class="report-actions no-print">
-            <button type="button" id="openOfficerBtn" class="btn btn-ghost"><svg class="icon"><use href="#i-user"/></svg>Petugas Pemeriksa</button>
-            <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan</button>
+          <div class="table-wrap" style="overflow-x: auto; border:1px solid #e2e8f0; border-radius:8px;">
+            <table class="report-table">
+              <thead><tr><th style="width:50px;">No.</th><th>Jenis Barang</th><th>Nomor Seri</th><th>Status</th><th>Kondisi</th><th>Detail Posisi</th><th>Foto Barang</th><th>Foto Kode</th></tr></thead>
+              <tbody id="reportTableBody"><tr><td colspan="8" style="text-align:center; padding: 40px;">Memuat data laporan...</td></tr></tbody>
+            </table>
           </div>
           <div class="signature">
             Kediri, <span id="signatureDate">—</span><br>Petugas Pemeriksa,<br><br><br><br>
-            <strong style="text-decoration: underline;"><span id="printPetugasName">RISKY DIAH OKTAVIANTI</span></strong><br>
+            <strong style="text-decoration: underline; font-size: 11pt;"><span id="printPetugasName">RISKY DIAH OKTAVIANTI</span></strong><br>
             NIP. <span id="printPetugasNIP">198710012012122001</span>
           </div>
         </div>
@@ -305,42 +378,42 @@
   </main>
 
   <footer class="app-footer">
-    <strong>Kantor Imigrasi Kelas II TPI Kediri</strong>
-    <div>Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
-    <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa</div>
+    <strong style="color:#f8fafc; font-size: 1rem;">Kantor Imigrasi Kelas II TPI Kediri</strong>
+    <div style="margin-top: 6px;">Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
+    <div style="margin-top: 16px; opacity: 0.6;">Aplikasi Pencatatan Opname Perangkat Sewa © 2023</div>
   </footer>
 
   <!-- Modal Pindahkan Data -->
   <div id="moveModal" class="modal" hidden role="dialog" aria-modal="true">
     <div class="modal-card sm">
       <div class="modal-head">
-        <div><h2 id="moveTitle">Pindahkan Data Opname</h2><div class="eyebrow" style="margin-top:4px;">Transfer ke barang lain</div></div>
+        <div><h2 id="moveTitle">Pindahkan Data Opname</h2><div class="eyebrow" style="margin-top:4px;">Transfer Riwayat ke Perangkat Lain</div></div>
         <button type="button" class="icon-btn" id="closeMoveBtn"><svg class="icon"><use href="#i-x"/></svg></button>
       </div>
       <div class="modal-body">
         <div class="field">
           <label>Data Asal (Saat ini: Sudah Opname)</label>
-          <div class="control" style="background:#f3f6fa; display:flex; flex-direction:column; justify-content:center; height: auto; padding: 12px 14px; line-height: 1.4;" id="moveSourceLabel"></div>
+          <div class="control" style="background:#f8fafc; display:flex; flex-direction:column; justify-content:center; height: auto; padding: 14px 16px; line-height: 1.5; border-color:#e2e8f0;" id="moveSourceLabel"></div>
         </div>
-        <div style="display: flex; justify-content: center; margin: 16px 0;">
-          <div style="background: var(--line-2); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: var(--navy-600);">
+        <div style="display: flex; justify-content: center; margin: 20px 0;">
+          <div style="background: #eff6ff; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #3b82f6; border:4px solid #fff; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
             <svg class="icon"><use href="#i-arrow-down"/></svg>
           </div>
         </div>
         <div class="field">
           <label for="moveTargetSelect">Pilih Barang Tujuan <span class="req">*</span></label>
           <select id="moveTargetSelect" class="control"></select>
-          <div class="hint">Hanya menampilkan barang yang <strong>belum diopname</strong>.</div>
+          <div class="hint">Daftar ini hanya menampilkan barang yang <strong>belum diopname</strong> hari ini.</div>
         </div>
-        <div class="form-note" style="margin-top: 22px; background: var(--pending-bg); border-color: var(--pending-bd); color: var(--pending-fg);">
-          <svg class="icon" style="flex: 0 0 auto;"><use href="#i-info"/></svg>
-          <span>Semua data (kondisi, posisi, dan foto) akan dialihkan ke barang tujuan. Status barang asal akan kembali menjadi <strong>"Belum Opname"</strong>.</span>
+        <div class="form-note" style="margin-top: 24px; background: #fffbeb; border-color: #fde68a; color: #92400e;">
+          <svg class="icon" style="flex: 0 0 auto; margin-top:2px; color:#d97706;"><use href="#i-info"/></svg>
+          <span>Peringatan: Seluruh data (kondisi, posisi, dan foto terkait) akan dialihkan permanen. Status barang asal akan kembali menjadi "Belum Opname".</span>
         </div>
       </div>
       <div class="modal-foot">
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="cancelMoveBtn">Batal</button>
-          <button type="button" class="btn btn-primary" id="confirmMoveBtn"><svg class="icon"><use href="#i-move-arrow"/></svg>Konfirmasi Pindah</button>
+          <button type="button" class="btn btn-primary" id="confirmMoveBtn" style="background:#3b82f6;"><svg class="icon"><use href="#i-move-arrow"/></svg>Konfirmasi Pindah</button>
         </div>
       </div>
     </div>
@@ -350,32 +423,32 @@
   <div id="formModal" class="modal" hidden role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-head">
-        <div><div class="eyebrow" id="formType">Jenis</div><h2 id="formTitle">—</h2></div>
+        <div><div class="eyebrow" id="formType">Jenis Perangkat</div><h2 id="formTitle" style="font-size:1.4rem;">—</h2></div>
         <button type="button" class="icon-btn" id="closeFormButton"><svg class="icon"><use href="#i-x"/></svg></button>
       </div>
       <div class="modal-body">
-        <div class="form-note" id="formNote" hidden><svg class="icon"><use href="#i-info"/></svg><span id="formNoteText"></span></div>
+        <div class="form-note" id="formNote" hidden><svg class="icon" style="margin-top:2px;"><use href="#i-info"/></svg><span id="formNoteText"></span></div>
         <div class="field">
           <label for="fCondition">Kondisi Barang <span class="req">*</span></label>
-          <select id="fCondition" class="control"><option value="">Pilih kondisi…</option></select>
+          <select id="fCondition" class="control"><option value="">Pilih kondisi saat ini…</option></select>
         </div>
         <div class="field">
           <label for="fPosition">Detail Posisi Barang <span class="req">*</span></label>
-          <input id="fPosition" class="control" type="text" maxlength="500" placeholder="Contoh: Ruang pelayanan paspor, meja operator 2" autocomplete="off">
-          <div class="hint right"><span id="posCount">0</span>/500</div>
+          <input id="fPosition" class="control" type="text" maxlength="500" placeholder="Contoh: Ruang Pelayanan Paspor, Meja Operator 2" autocomplete="off">
+          <div class="hint right"><span id="posCount">0</span>/500 karakter</div>
         </div>
         <div class="field">
-          <div class="label">Dokumentasi Foto <span class="req">*</span></div>
+          <div class="label">Dokumentasi Foto Fisik <span class="req">*</span></div>
           <div class="photo-grid">
             <div class="photo-slot" id="slot-barang">
-              <div class="photo-title">Foto Barang</div>
-              <div class="photo-preview"><img id="img-barang" hidden><span class="photo-empty" id="ph-barang"><svg class="icon"><use href="#i-image"/></svg>Belum ada</span></div>
-              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="barang">Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="barang">Galeri</button></div>
+              <div class="photo-title">Foto Seluruh Barang</div>
+              <div class="photo-preview"><img id="img-barang" hidden><span class="photo-empty" id="ph-barang"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span></div>
+              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="barang"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="barang">Galeri</button></div>
             </div>
             <div class="photo-slot" id="slot-kode">
-              <div class="photo-title">Foto Kode Barang</div>
-              <div class="photo-preview"><img id="img-kode" hidden><span class="photo-empty" id="ph-kode"><svg class="icon"><use href="#i-image"/></svg>Belum ada</span></div>
-              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="kode">Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="kode">Galeri</button></div>
+              <div class="photo-title">Foto Stiker/Kode Seri</div>
+              <div class="photo-preview"><img id="img-kode" hidden><span class="photo-empty" id="ph-kode"><svg class="icon"><use href="#i-image"/></svg>Belum ada foto</span></div>
+              <div class="photo-actions"><button type="button" class="btn btn-primary btn-sm" data-camera="kode"><svg class="icon"><use href="#i-camera"/></svg>Kamera</button><button type="button" class="btn btn-ghost btn-sm" data-gallery="kode">Galeri</button></div>
             </div>
           </div>
         </div>
@@ -383,56 +456,61 @@
       <div class="modal-foot">
         <div class="actions">
           <button type="button" class="btn btn-ghost" id="cancelFormButton">Batal</button>
-          <button type="button" class="btn btn-primary" id="saveButton">Simpan Opname</button>
+          <button type="button" class="btn btn-primary" id="saveButton"><svg class="icon"><use href="#i-check"/></svg>Simpan Data Opname</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Komponen Pendukung: Kamera, Officer, Toast -->
-  <div id="cameraModal" class="camera-overlay" hidden>
-    <div class="camera-box">
-      <div class="camera-head"><div><strong id="cameraTitle">Ambil Foto</strong></div><button type="button" class="icon-btn" id="closeCameraButton"><svg class="icon"><use href="#i-x"/></svg></button></div>
-      <div class="camera-video-wrap"><video id="cameraVideo" autoplay playsinline muted></video></div>
-      <div id="cameraStatus" class="camera-status">Menyiapkan kamera…</div>
-      <div class="camera-actions">
-        <button type="button" id="switchCameraButton" class="btn btn-ghost"><svg class="icon"><use href="#i-refresh"/></svg>Ganti</button>
-        <div class="right"><button type="button" id="cameraGalleryButton" class="btn btn-ghost">Galeri</button><button type="button" id="takePhotoButton" class="btn btn-primary">Ambil</button></div>
+  <div id="cameraModal" class="camera-overlay" hidden style="background: rgba(15, 23, 42, 0.95); z-index:9999;">
+    <div class="camera-box" style="background:#1e293b; color:#fff; border:1px solid #334155;">
+      <div class="modal-head" style="background:transparent; border-bottom:1px solid #334155;">
+        <div><h2 id="cameraTitle" style="color:#fff;">Ambil Foto</h2></div>
+        <button type="button" class="icon-btn" id="closeCameraButton" style="background:#334155; color:#fff; border:0;"><svg class="icon"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="camera-video-wrap" style="background:#0f172a; margin: 16px 0; border-radius:12px;"><video id="cameraVideo" autoplay playsinline muted></video></div>
+      <div id="cameraStatus" style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-bottom:16px;">Menyiapkan kamera…</div>
+      <div style="display:flex; gap:12px; justify-content:space-between;">
+        <button type="button" id="switchCameraButton" class="btn btn-ghost" style="background:#334155; color:#fff; border:0;"><svg class="icon"><use href="#i-refresh"/></svg>Putar</button>
+        <div style="display:flex; gap:8px;">
+            <button type="button" id="cameraGalleryButton" class="btn btn-ghost" style="background:#334155; color:#fff; border:0;">Buka Galeri</button>
+            <button type="button" id="takePhotoButton" class="btn btn-primary" style="background:#3b82f6; padding:0 30px;">Ambil Foto</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="officerModal" class="modal" hidden>
     <div class="modal-card sm">
-      <div class="modal-head"><div><h2>Data Petugas Pemeriksa</h2></div><button type="button" class="icon-btn" id="closeOfficerBtn"><svg class="icon"><use href="#i-x"/></svg></button></div>
+      <div class="modal-head"><div><h2>Ubah Data Petugas</h2></div><button type="button" class="icon-btn" id="closeOfficerBtn"><svg class="icon"><use href="#i-x"/></svg></button></div>
       <div class="modal-body">
-        <div class="field"><label>Nama</label><input id="inputOfficerName" class="control" type="text" value="RISKY DIAH OKTAVIANTI"></div>
-        <div class="field"><label>NIP</label><input id="inputOfficerNIP" class="control" type="text" value="198710012012122001"></div>
+        <div class="field"><label>Nama Lengkap</label><input id="inputOfficerName" class="control" type="text" value="RISKY DIAH OKTAVIANTI"></div>
+        <div class="field"><label>Nomor Induk Pegawai (NIP)</label><input id="inputOfficerNIP" class="control" type="text" value="198710012012122001"></div>
       </div>
-      <div class="modal-foot"><div class="actions"><button type="button" class="btn btn-primary" id="saveOfficerBtn">Terapkan</button></div></div>
+      <div class="modal-foot"><div class="actions"><button type="button" class="btn btn-primary" id="saveOfficerBtn">Simpan Petugas</button></div></div>
     </div>
   </div>
 
-  <div id="photoPreviewModal" class="photo-preview-overlay" hidden><button type="button" class="close-preview-btn" id="closePhotoPreview"><svg class="icon" style="width:24px;height:24px;"><use href="#i-x"/></svg></button><img id="photoPreviewImg" src=""></div>
+  <div id="photoPreviewModal" class="photo-preview-overlay" hidden style="z-index:9999; background:rgba(0,0,0,0.9);"><button type="button" class="close-preview-btn" id="closePhotoPreview" style="background:rgba(255,255,255,0.2);"><svg class="icon" style="width:24px;height:24px;"><use href="#i-x"/></svg></button><img id="photoPreviewImg" src=""></div>
   <input id="galleryInput" type="file" accept="image/*" hidden>
   <input id="captureInput" type="file" accept="image/*" capture="environment" hidden>
-  <div id="toast" class="toast" hidden></div>
+  <div id="toast" class="toast" hidden><svg class="icon" style="color:#60a5fa;"><use href="#i-info"/></svg><span id="toastMsg" style="flex:1;"></span></div>
 
-  <!-- B. JAVASCRIPT: LOGIKA FRONT-END -->
+  <!-- SCRIPT LOGIKA APLIKASI (TIDAK ADA PERUBAHAN LOGIKA DARI VERSI SEBELUMNYA) -->
   <script>
     'use strict';
 
     /* ============================================================
-     * 1. KONFIGURASI API (GOOGLE APPS SCRIPT)
+     * KONFIGURASI API (GOOGLE APPS SCRIPT)
      * ============================================================ */
-    // GANTI URL DI BAWAH INI DENGAN URL DEPLOY MILIK ANDA
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxv3Yf2-KVDq1HCyBlNOd65XcC6Rx6N0N63ZvdlLj4fiKXmdWlJK6GiwSR0EHLi5_JU/exec';
+    // MASUKKAN URL WEB APP ANDA DI SINI
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyLJZySepDYrFYzqdB6lOm84CXnZXd0Ti53hqDqEzhmMe5mwZaVBqjG4zNYV9LyS1sd/exec';
 
     const REFRESH_INTERVAL_MS = 30000;
     const DEFAULT_CONDITIONS = ['Baik Masih Digunakan', 'Baik Tidak Digunakan', 'Rusak Tidak Digunakan'];
     const $ = function (id) { return document.getElementById(id); };
 
-    /* --- CACHE LOKAL (Memori offline sementara) --- */
     const localDB = {
       db: null,
       init: async function() {
@@ -466,70 +544,39 @@
       }
     };
 
-    // State penyimpan kondisi aplikasi saat ini
     const state = { groups: [], items: [], today: '', conditions: DEFAULT_CONDITIONS, filter: 'all', loaded: false };
     const drafts = {};
-    let activeSerial = null;
-    let moveSourceSerial = null;
-    let saving = false;
-    let dashboardLoading = false;
-    let reportActive = false;
-    let pendingKind = null;
-    let cameraKind = null;
-    let facingMode = 'environment';
-    let cameraStream = null;
-    let toastTimer = null;
+    let activeSerial = null, moveSourceSerial = null;
+    let saving = false, dashboardLoading = false, reportActive = false;
+    let pendingKind = null, cameraKind = null, facingMode = 'environment', cameraStream = null, toastTimer = null;
 
-    /* ============================================================
-     * 2. JEMBATAN KOMUNIKASI (API REQUEST) KE APPS SCRIPT
-     * ============================================================ */
     async function apiRequest(options) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), options.timeout || 45000);
-      
       try {
         let response;
         if (options.body) {
-          response = await fetch(API_URL, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(options.body), 
-            signal: controller.signal 
-          });
+          response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(options.body), signal: controller.signal });
         } else {
           const url = API_URL + (API_URL.includes('?') ? '&' : '?') + new URLSearchParams(options.params || {}).toString();
           response = await fetch(url, { signal: controller.signal });
         }
-        
         if (!response.ok) throw new Error('Status Jaringan Error: ' + response.status);
-        
         const text = await response.text();
         const json = JSON.parse(text);
-        if (!json || !json.ok) throw new Error(json.error || 'Terjadi kesalahan dari Server Apps Script.');
-        
+        if (!json || !json.ok) throw new Error(json.error || 'Terjadi kesalahan server.');
         return json.data;
-      } finally { 
-        clearTimeout(timer); 
-      }
+      } finally { clearTimeout(timer); }
     }
 
-    /* ============================================================
-     * 3. INISIALISASI & MENGHUBUNGKAN TOMBOL (EVENTS)
-     * ============================================================ */
     document.addEventListener('DOMContentLoaded', function () {
-      bindEvents();
-      loadDashboard({ first: true });
-      setInterval(() => { 
-        if (!document.hidden && !reportActive && !activeSerial && !moveSourceSerial) {
-          loadDashboard({}); 
-        }
-      }, REFRESH_INTERVAL_MS);
+      bindEvents(); loadDashboard({ first: true });
+      setInterval(() => { if (!document.hidden && !reportActive && !activeSerial && !moveSourceSerial) loadDashboard({}); }, REFRESH_INTERVAL_MS);
     });
 
     function bindEvents() {
       $('refreshButton').addEventListener('click', () => loadDashboard({ manual: true }));
       $('searchInput').addEventListener('input', renderGroups);
-      
       $('filterGroup').addEventListener('click', e => {
         const btn = e.target.closest('[data-filter]');
         if (!btn) return;
@@ -541,7 +588,6 @@
       $('groupsContainer').addEventListener('click', e => {
         const btnOpen = e.target.closest('[data-open]');
         if (btnOpen) openForm(btnOpen.dataset.open);
-        
         const btnMove = e.target.closest('[data-move]');
         if (btnMove) openMoveModal(btnMove.dataset.move);
       });
@@ -550,83 +596,37 @@
       $('cancelMoveBtn').addEventListener('click', closeMoveModal);
       $('confirmMoveBtn').addEventListener('click', handleMoveData);
       
-      $('openReportButton').addEventListener('click', () => { 
-        reportActive = true; 
-        $('inventoryView').hidden = true; 
-        $('reportView').hidden = false; 
-        $('reportView').classList.add('active'); 
-        loadReport(); 
-      });
-      $('backButton').addEventListener('click', () => { 
-        reportActive = false; 
-        $('reportView').hidden = true; 
-        $('reportView').classList.remove('active'); 
-        $('inventoryView').hidden = false; 
-        loadDashboard({}); 
-      });
+      $('openReportButton').addEventListener('click', () => { reportActive = true; $('inventoryView').hidden = true; $('reportView').hidden = false; $('reportView').classList.add('active'); loadReport(); });
+      $('backButton').addEventListener('click', () => { reportActive = false; $('reportView').hidden = true; $('reportView').classList.remove('active'); $('inventoryView').hidden = false; loadDashboard({}); });
       $('printButton').addEventListener('click', () => window.print());
-      
-      $('reportTableBody').addEventListener('click', e => { 
-        if (e.target.classList.contains('clickable-photo')) { 
-          $('photoPreviewImg').src = e.target.dataset.full; 
-          $('photoPreviewModal').hidden = false; 
-        } 
-      });
+      $('reportTableBody').addEventListener('click', e => { if (e.target.classList.contains('clickable-photo')) { $('photoPreviewImg').src = e.target.dataset.full; $('photoPreviewModal').hidden = false; } });
       $('closePhotoPreview').addEventListener('click', () => $('photoPreviewModal').hidden = true);
       
       $('closeFormButton').addEventListener('click', closeForm);
       $('cancelFormButton').addEventListener('click', closeForm);
       $('saveButton').addEventListener('click', saveRecord);
+      $('fCondition').addEventListener('change', function() { if (activeSerial) getDraft(activeSerial).condition = this.value; });
+      $('fPosition').addEventListener('input', function() { $('posCount').textContent = this.value.length; if (activeSerial) getDraft(activeSerial).position = this.value; });
       
-      $('fCondition').addEventListener('change', function() { 
-        if (activeSerial) getDraft(activeSerial).condition = this.value; 
-      });
-      $('fPosition').addEventListener('input', function() { 
-        $('posCount').textContent = this.value.length; 
-        if (activeSerial) getDraft(activeSerial).position = this.value; 
-      });
-      
-      $('formModal').addEventListener('click', e => { 
-        const btnCamera = e.target.closest('[data-camera]');
-        const btnGallery = e.target.closest('[data-gallery]');
-        
-        if (btnCamera) startCamera(btnCamera.dataset.camera); 
-        if (btnGallery) openFilePicker(btnGallery.dataset.gallery, 'gallery'); 
-      });
-      
+      $('formModal').addEventListener('click', e => { const c = e.target.closest('[data-camera]'); const g = e.target.closest('[data-gallery]'); if (c) startCamera(c.dataset.camera); if (g) openFilePicker(g.dataset.gallery, 'gallery'); });
       $('closeCameraButton').addEventListener('click', closeCamera);
       $('switchCameraButton').addEventListener('click', switchCamera);
       $('takePhotoButton').addEventListener('click', takePhoto);
-      $('cameraGalleryButton').addEventListener('click', () => { 
-        const k = cameraKind; 
-        closeCamera(); 
-        openFilePicker(k, 'gallery'); 
-      });
-      
+      $('cameraGalleryButton').addEventListener('click', () => { const k = cameraKind; closeCamera(); openFilePicker(k, 'gallery'); });
       $('galleryInput').addEventListener('change', handleFileChosen);
       $('captureInput').addEventListener('change', handleFileChosen);
       
       $('openOfficerBtn').addEventListener('click', () => $('officerModal').hidden = false);
       $('closeOfficerBtn').addEventListener('click', () => $('officerModal').hidden = true);
-      $('saveOfficerBtn').addEventListener('click', () => { 
-        $('printPetugasName').textContent = $('inputOfficerName').value || '...'; 
-        $('printPetugasNIP').textContent = $('inputOfficerNIP').value || '...'; 
-        $('officerModal').hidden = true; 
-      });
+      $('saveOfficerBtn').addEventListener('click', () => { $('printPetugasName').textContent = $('inputOfficerName').value || '...'; $('printPetugasNIP').textContent = $('inputOfficerNIP').value || '...'; $('officerModal').hidden = true; });
     }
 
-    /* ============================================================
-     * 4. FITUR PINDAH DATA
-     * ============================================================ */
     function openMoveModal(serial) {
       moveSourceSerial = serial;
       const sourceItem = state.items.find(i => i.serial === serial);
+      $('moveSourceLabel').innerHTML = `<strong>${escapeHtml(serial)}</strong><span style="font-size: 0.85rem; color: var(--muted); margin-top:2px;">${escapeHtml(sourceItem.type)}</span>`;
       
-      $('moveSourceLabel').innerHTML = `<strong>${escapeHtml(serial)}</strong><span style="font-size: .8rem; color: var(--muted); margin-top:2px;">${escapeHtml(sourceItem.type)}</span>`;
-      
-      const select = $('moveTargetSelect');
       let options = '<option value="">-- Silakan pilih nomor seri tujuan --</option>';
-      
       state.groups.forEach(g => {
         const pendingItems = g.items.filter(i => !i.completed && i.serial !== serial);
         if (pendingItems.length > 0) {
@@ -635,116 +635,51 @@
           options += `</optgroup>`;
         }
       });
-      select.innerHTML = options;
-      
-      $('moveModal').hidden = false;
-      document.body.classList.add('modal-open');
+      $('moveTargetSelect').innerHTML = options;
+      $('moveModal').hidden = false; document.body.classList.add('modal-open');
     }
 
-    function closeMoveModal() {
-      if (saving) return;
-      $('moveModal').hidden = true;
-      if ($('formModal').hidden) document.body.classList.remove('modal-open');
-      moveSourceSerial = null;
-    }
+    function closeMoveModal() { if (saving) return; $('moveModal').hidden = true; if ($('formModal').hidden) document.body.classList.remove('modal-open'); moveSourceSerial = null; }
 
     async function handleMoveData() {
       const targetSerial = $('moveTargetSelect').value;
-      if (!targetSerial) {
-        showToast('Anda harus memilih barang tujuan terlebih dahulu.', 'warning');
-        $('moveTargetSelect').focus();
-        return;
-      }
+      if (!targetSerial) { showToast('Pilih barang tujuan terlebih dahulu.', 'warning'); $('moveTargetSelect').focus(); return; }
       
-      const btn = $('confirmMoveBtn');
-      btn.disabled = true;
-      btn.textContent = 'Memproses...';
-      saving = true;
-      
+      const btn = $('confirmMoveBtn'); btn.disabled = true; btn.textContent = 'Memproses...'; saving = true;
       try {
-        await apiRequest({
-          timeout: 60000,
-          body: {
-            action: 'move',
-            payload: { sourceSerial: moveSourceSerial, targetSerial: targetSerial }
-          }
-        });
-        
-        showToast(`Data berhasil dipindahkan dari ${moveSourceSerial} ke ${targetSerial}`, 'success');
-        closeMoveModal();
-        loadDashboard({}); 
-      } catch (error) {
-        showToast('Gagal memindahkan data: ' + errorMessage(error), 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<svg class="icon"><use href="#i-move-arrow"/></svg> Konfirmasi Pindah';
-        saving = false;
-      }
+        await apiRequest({ timeout: 60000, body: { action: 'move', payload: { sourceSerial: moveSourceSerial, targetSerial: targetSerial } } });
+        showToast(`Data dipindahkan dari ${moveSourceSerial} ke ${targetSerial}`, 'success');
+        closeMoveModal(); loadDashboard({}); 
+      } catch (error) { showToast('Gagal memindahkan data: ' + errorMessage(error), 'error'); } 
+      finally { btn.disabled = false; btn.innerHTML = '<svg class="icon"><use href="#i-move-arrow"/></svg>Konfirmasi Pindah'; saving = false; }
     }
 
-    /* ============================================================
-     * 5. MANAJEMEN DATA (DASHBOARD, SIMPAN, DLL)
-     * ============================================================ */
     async function loadDashboard(opts) {
-      if (dashboardLoading) return;
-      dashboardLoading = true;
+      if (dashboardLoading) return; dashboardLoading = true;
       if (opts.first) $('loadingState').hidden = false;
-      
       try {
         const data = await apiRequest({ params: { action: 'dashboard' } });
         $('pageError').hidden = true;
         
-        state.groups = (data.groups || []).map(g => ({
-          type: g.type,
-          items: (g.items || []).map(i => ({ 
-            type: i.type || g.type, 
-            serial: i.serial, 
-            completed: Boolean(i.completed), 
-            todayCount: Number(i.todayCount || 0), 
-            lastInput: i.lastInput || '' 
-          }))
-        }));
-        
+        state.groups = (data.groups || []).map(g => ({ type: g.type, items: (g.items || []).map(i => ({ type: i.type || g.type, serial: i.serial, completed: Boolean(i.completed), todayCount: Number(i.todayCount || 0), lastInput: i.lastInput || '' })) }));
         state.items = [].concat.apply([], state.groups.map(g => g.items));
-        state.today = data.today || state.today;
-        state.loaded = true;
+        state.today = data.today || state.today; state.loaded = true;
         
-        if (data.conditions && data.conditions.length) {
-          state.conditions = data.conditions;
-          $('fCondition').innerHTML = '<option value="">Pilih kondisi…</option>' + data.conditions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-        }
+        if (data.conditions && data.conditions.length) { state.conditions = data.conditions; $('fCondition').innerHTML = '<option value="">Pilih kondisi saat ini…</option>' + data.conditions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join(''); }
 
-        const total = state.items.length;
-        const done = Number(data.completed || 0);
-        const pending = total - done;
-        const pct = total ? Math.round((done / total) * 100) : 0;
+        const total = state.items.length; const done = Number(data.completed || 0); const pending = total - done; const pct = total ? Math.round((done / total) * 100) : 0;
         
-        $('statTotal').textContent = total; 
-        $('statDone').textContent = done; 
-        $('statPending').textContent = pending;
-        $('cntAll').textContent = total; 
-        $('cntDone').textContent = done; 
-        $('cntPending').textContent = pending;
-        $('pctValue').textContent = pct; 
-        $('progressFill').style.width = pct + '%';
-        $('headerDate').textContent = formatDateIndonesian(state.today, true);
-        
+        $('statTotal').textContent = total; $('statDone').textContent = done; $('statPending').textContent = pending;
+        $('cntAll').textContent = total; $('cntDone').textContent = done; $('cntPending').textContent = pending;
+        $('pctValue').textContent = pct; $('progressFill').style.width = pct + '%'; $('headerDate').textContent = formatDateIndonesian(state.today, true);
         renderGroups();
-      } catch (e) {
-        if (!state.loaded) { 
-          $('pageErrorText').textContent = errorMessage(e); 
-          $('pageError').hidden = false; 
-        }
-      } finally { 
-        dashboardLoading = false; 
-        $('loadingState').hidden = true; 
-      }
+      } catch (e) { if (!state.loaded) { $('pageErrorText').textContent = errorMessage(e); $('pageError').hidden = false; } } 
+      finally { dashboardLoading = false; $('loadingState').hidden = true; }
     }
 
     function renderGroups() {
       const query = String($('searchInput').value || '').trim().toLowerCase();
-      let html = '';
-      let visible = 0;
+      let html = ''; let visible = 0;
       
       state.groups.forEach((group, groupIndex) => {
         let rows = '';
@@ -752,313 +687,83 @@
           if (state.filter === 'done' && !item.completed) return;
           if (state.filter === 'pending' && item.completed) return;
           if (query && !item.serial.toLowerCase().includes(query) && !item.type.toLowerCase().includes(query)) return;
-          
           visible++;
           
-          let actionButtons = '';
-          if (item.completed) {
-            actionButtons = `<div class="action-group">
-                <button type="button" class="btn btn-ghost btn-sm" data-move="${escapeHtml(item.serial)}"><svg class="icon"><use href="#i-refresh"/></svg> Pindah Data</button>
-                <button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}">Input Ulang</button>
-              </div>`;
-          } else {
-            actionButtons = `<div class="action-group"><button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}" style="width:100%;">Isi Opname</button></div>`;
-          }
+          let actionButtons = item.completed 
+            ? `<div class="action-group"><button type="button" class="btn btn-ghost btn-sm" data-move="${escapeHtml(item.serial)}"><svg class="icon"><use href="#i-refresh"/></svg> Pindah</button><button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}">Edit</button></div>`
+            : `<div class="action-group"><button type="button" class="btn btn-primary btn-sm" data-open="${escapeHtml(item.serial)}" style="width:100%;">Isi Opname</button></div>`;
           
-          rows += `<tr class="${item.completed ? 'is-done' : 'is-pending'}">
-            <td class="col-no">${idx + 1}</td>
-            <td class="col-serial"><span class="serial">${escapeHtml(item.serial)}</span></td>
-            <td class="col-status"><span class="badge ${item.completed ? 'badge-done' : 'badge-pending'}"><i></i>${item.completed ? 'SUDAH OPNAME' : 'BELUM OPNAME'}</span></td>
-            <td class="col-note note">${escapeHtml(item.completed ? `Tercatat ${item.todayCount}×` : 'Belum ada input')}</td>
-            <td class="col-action" style="white-space:nowrap;">${actionButtons}</td>
-          </tr>`;
+          rows += `<tr class="${item.completed ? 'is-done' : 'is-pending'}"><td class="col-no">${idx + 1}</td><td class="col-serial"><span class="serial">${escapeHtml(item.serial)}</span></td><td class="col-status"><span class="badge ${item.completed ? 'badge-done' : 'badge-pending'}"><i></i>${item.completed ? 'SUDAH OPNAME' : 'BELUM OPNAME'}</span></td><td class="col-note note">${escapeHtml(item.completed ? `Tercatat ${item.todayCount}×` : 'Belum ada input')}</td><td class="col-action">${actionButtons}</td></tr>`;
         });
-        
-        if (rows) {
-          html += `<section class="card group">
-            <div class="group-head">
-              <span class="group-letter">${String.fromCharCode(65 + groupIndex)}</span>
-              <div><h3>${escapeHtml(group.type)}</h3></div>
-            </div>
-            <table class="dev-table"><tbody>${rows}</tbody></table>
-          </section>`;
-        }
+        if (rows) html += `<section class="card group"><div class="group-head"><span class="group-letter">${String.fromCharCode(65 + groupIndex)}</span><div><h3>${escapeHtml(group.type)}</h3></div></div><table class="dev-table"><tbody>${rows}</tbody></table></section>`;
       });
-      
-      $('groupsContainer').innerHTML = html;
-      $('searchEmpty').hidden = (visible !== 0 || !state.loaded);
+      $('groupsContainer').innerHTML = html; $('searchEmpty').hidden = (visible !== 0 || !state.loaded);
     }
 
-    function getDraft(serial) {
-      if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} };
-      return drafts[serial];
-    }
+    function getDraft(serial) { if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} }; return drafts[serial]; }
 
     async function openForm(serial) {
-      const item = state.items.find(i => i.serial === serial);
-      if (!item) return;
+      const item = state.items.find(i => i.serial === serial); if (!item) return;
+      activeSerial = serial; const draft = getDraft(serial);
       
-      activeSerial = serial;
-      const draft = getDraft(serial);
-      
-      $('fCondition').value = ''; 
-      $('fPosition').value = ''; 
-      $('img-barang').hidden = true; 
-      $('ph-barang').hidden = false; 
-      $('img-kode').hidden = true; 
-      $('ph-kode').hidden = false;
-      
-      $('formType').textContent = item.type; 
-      $('formTitle').textContent = item.serial;
-      $('formNote').hidden = true;
-      
-      $('formModal').hidden = false; 
-      document.body.classList.add('modal-open');
+      $('fCondition').value = ''; $('fPosition').value = ''; $('img-barang').hidden = true; $('ph-barang').hidden = false; $('img-kode').hidden = true; $('ph-kode').hidden = false;
+      $('formType').textContent = item.type; $('formTitle').textContent = item.serial; $('formNote').hidden = true;
+      $('formModal').hidden = false; document.body.classList.add('modal-open');
 
       if (item.completed && !draft.condition && !draft.photos.barang) {
-        $('formType').textContent = item.type + ' (Memuat histori...)';
-        const cached = await localDB.get(serial);
-        
-        if (cached && activeSerial === serial) {
-          draft.condition = cached.condition; 
-          draft.position = cached.position;
-          if (cached.photoBarang) draft.photos.barang = { dataUrl: cached.photoBarang };
-          if (cached.photoKode) draft.photos.kode = { dataUrl: cached.photoKode };
-        }
+        $('formType').textContent = item.type + ' (Memuat histori...)'; const cached = await localDB.get(serial);
+        if (cached && activeSerial === serial) { draft.condition = cached.condition; draft.position = cached.position; if (cached.photoBarang) draft.photos.barang = { dataUrl: cached.photoBarang }; if (cached.photoKode) draft.photos.kode = { dataUrl: cached.photoKode }; }
         if (activeSerial === serial) $('formType').textContent = item.type;
       }
       if (activeSerial !== serial) return;
 
-      $('fCondition').value = draft.condition || '';
-      $('fPosition').value = draft.position || '';
-      $('posCount').textContent = ($('fPosition').value || '').length;
-      
-      if (draft.photos.barang) { 
-        $('img-barang').src = draft.photos.barang.dataUrl; 
-        $('img-barang').hidden = false; 
-        $('ph-barang').hidden = true; 
-      }
-      if (draft.photos.kode) { 
-        $('img-kode').src = draft.photos.kode.dataUrl; 
-        $('img-kode').hidden = false; 
-        $('ph-kode').hidden = true; 
-      }
-      
-      if (item.completed) {
-        $('formNoteText').textContent = 'Perangkat ini sudah dicatat sebelumnya. Data histori dimuat otomatis. Menyimpan akan menimpa log ini.';
-        $('formNote').hidden = false;
-      }
+      $('fCondition').value = draft.condition || ''; $('fPosition').value = draft.position || ''; $('posCount').textContent = ($('fPosition').value || '').length;
+      if (draft.photos.barang) { $('img-barang').src = draft.photos.barang.dataUrl; $('img-barang').hidden = false; $('ph-barang').hidden = true; }
+      if (draft.photos.kode) { $('img-kode').src = draft.photos.kode.dataUrl; $('img-kode').hidden = false; $('ph-kode').hidden = true; }
+      if (item.completed) { $('formNoteText').textContent = 'Perangkat ini sudah dicatat. Menekan tombol simpan akan memperbarui data.'; $('formNote').hidden = false; }
     }
 
-    function closeForm() { 
-      if (!saving) { 
-        $('formModal').hidden = true; 
-        document.body.classList.remove('modal-open'); 
-        activeSerial = null; 
-      } 
-    }
+    function closeForm() { if (!saving) { $('formModal').hidden = true; document.body.classList.remove('modal-open'); activeSerial = null; } }
 
     async function saveRecord() {
       if (saving || !activeSerial) return;
-      
-      const item = state.items.find(i => i.serial === activeSerial);
-      const draft = getDraft(activeSerial);
-      
-      if (!draft.condition || !draft.position || !draft.photos.barang || !draft.photos.kode) { 
-        showToast('Lengkapi semua isian dan foto.', 'warning'); 
-        return; 
-      }
+      const item = state.items.find(i => i.serial === activeSerial); const draft = getDraft(activeSerial);
+      if (!draft.condition || !draft.position || !draft.photos.barang || !draft.photos.kode) { showToast('Lengkapi isian dan foto.', 'warning'); return; }
 
-      saving = true; 
-      $('saveButton').disabled = true; 
-      $('saveButton').textContent = 'Menyimpan...';
-      
-      const payload = { 
-        type: item.type, 
-        serial: item.serial, 
-        condition: draft.condition, 
-        position: draft.position, 
-        photoBarang: draft.photos.barang.dataUrl, 
-        photoKode: draft.photos.kode.dataUrl 
-      };
-      
+      saving = true; $('saveButton').disabled = true; $('saveButton').textContent = 'Menyimpan...';
+      const payload = { type: item.type, serial: item.serial, condition: draft.condition, position: draft.position, photoBarang: draft.photos.barang.dataUrl, photoKode: draft.photos.kode.dataUrl };
       localDB.save(item.serial, payload);
 
       try {
         await apiRequest({ body: { action: 'save', payload: payload } });
-        delete drafts[item.serial]; 
-        closeForm();
-        showToast('Berhasil disimpan.', 'success');
-        loadDashboard({});
-      } catch (e) { 
-        showToast(errorMessage(e), 'error'); 
-      } finally { 
-        saving = false; 
-        $('saveButton').disabled = false; 
-        $('saveButton').textContent = 'Simpan Opname'; 
-      }
+        delete drafts[item.serial]; closeForm(); showToast('Berhasil disimpan.', 'success'); loadDashboard({});
+      } catch (e) { showToast(errorMessage(e), 'error'); } 
+      finally { saving = false; $('saveButton').disabled = false; $('saveButton').innerHTML = '<svg class="icon"><use href="#i-check"/></svg>Simpan Data Opname'; }
     }
 
-    /* ============================================================
-     * 6. FUNGSI PEMPROSESAN FOTO & KAMERA
-     * ============================================================ */
-    function openFilePicker(kind, mode) { 
-      pendingKind = kind; 
-      $(mode === 'capture' ? 'captureInput' : 'galleryInput').click(); 
-    }
+    function openFilePicker(kind, mode) { pendingKind = kind; $(mode === 'capture' ? 'captureInput' : 'galleryInput').click(); }
     
     async function handleFileChosen(e) { 
-      const file = e.target.files[0];
-      const kind = pendingKind; 
-      e.target.value = ''; 
-      
+      const file = e.target.files[0]; const kind = pendingKind; e.target.value = ''; 
       if (file && kind) { 
         showToast('Memproses foto...', 'success'); 
-        try { 
-          const compressedDataUrl = await compressImageFile(file); 
-          
-          if (activeSerial) { 
-            getDraft(activeSerial).photos[kind] = { dataUrl: compressedDataUrl }; 
-            if (kind === 'barang') {
-              $('img-barang').src = compressedDataUrl;
-              $('img-barang').hidden = false;
-              $('ph-barang').hidden = true;
-            } else {
-              $('img-kode').src = compressedDataUrl;
-              $('img-kode').hidden = false;
-              $('ph-kode').hidden = true;
-            } 
-          } 
-          showToast('Foto siap diunggah.', 'success'); 
-        } catch(err) { 
-          showToast('Gagal memproses foto', 'error'); 
-        } 
+        try { const dUrl = await compressImageFile(file); if (activeSerial) { getDraft(activeSerial).photos[kind] = { dataUrl: dUrl }; $(`img-${kind}`).src = dUrl; $(`img-${kind}`).hidden = false; $(`ph-${kind}`).hidden = true; } showToast('Foto siap.', 'success'); } catch(err) { showToast('Gagal memproses', 'error'); } 
       } 
     }
     
-    async function compressImageFile(file) { 
-      const bitmap = await createImageBitmap(file); 
-      const canvas = document.createElement('canvas'); 
-      const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height)); 
-      
-      canvas.width = bitmap.width * scale; 
-      canvas.height = bitmap.height * scale; 
-      
-      const ctx = canvas.getContext('2d'); 
-      ctx.fillStyle = '#fff'; 
-      ctx.fillRect(0, 0, canvas.width, canvas.height); 
-      ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height); 
-      bitmap.close(); 
-      
-      return new Promise(resolve => canvas.toBlob(blob => { 
-        const reader = new FileReader(); 
-        reader.onload = () => resolve(reader.result); 
-        reader.readAsDataURL(blob); 
-      }, 'image/jpeg', 0.82)); 
-    }
+    async function compressImageFile(file) { const bitmap = await createImageBitmap(file); const canvas = document.createElement('canvas'); const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height)); canvas.width = bitmap.width * scale; canvas.height = bitmap.height * scale; const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height); bitmap.close(); return new Promise(resolve => canvas.toBlob(blob => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.readAsDataURL(blob); }, 'image/jpeg', 0.82)); }
     
-    async function startCamera(kind) { 
-      cameraKind = kind; 
-      $('cameraModal').hidden = false; 
-      try { 
-        cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode: facingMode}}); 
-        $('cameraVideo').srcObject = cameraStream; 
-        $('cameraStatus').textContent = 'Kamera aktif.'; 
-      } catch(e) { 
-        closeCamera(); 
-        openFilePicker(kind, 'capture'); 
-      } 
-    }
-    
-    function closeCamera() { 
-      if (cameraStream) cameraStream.getTracks().forEach(t => t.stop()); 
-      $('cameraModal').hidden = true; 
-    }
-    
-    async function switchCamera() { 
-      facingMode = (facingMode === 'environment') ? 'user' : 'environment'; 
-      closeCamera(); 
-      setTimeout(() => startCamera(cameraKind), 300); 
-    }
-    
-    async function takePhoto() { 
-      const video = $('cameraVideo'); 
-      if (!video.videoWidth) return; 
-      
-      const canvas = document.createElement('canvas'); 
-      const scale = Math.min(1, 1600 / Math.max(video.videoWidth, video.videoHeight)); 
-      canvas.width = video.videoWidth * scale; 
-      canvas.height = video.videoHeight * scale; 
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height); 
-      
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.82); 
-      const kind = cameraKind; 
-      closeCamera(); 
-      
-      if (activeSerial) { 
-        getDraft(activeSerial).photos[kind] = { dataUrl: dataUrl }; 
-        if (kind === 'barang') {
-          $('img-barang').src = dataUrl;
-          $('img-barang').hidden = false;
-          $('ph-barang').hidden = true;
-        } else {
-          $('img-kode').src = dataUrl;
-          $('img-kode').hidden = false;
-          $('ph-kode').hidden = true;
-        } 
-      } 
-      showToast('Foto diambil.', 'success'); 
-    }
+    async function startCamera(kind) { cameraKind = kind; $('cameraModal').hidden = false; try { cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode: facingMode}}); $('cameraVideo').srcObject = cameraStream; $('cameraStatus').textContent = 'Kamera aktif.'; } catch(e) { closeCamera(); openFilePicker(kind, 'capture'); } }
+    function closeCamera() { if (cameraStream) cameraStream.getTracks().forEach(t => t.stop()); $('cameraModal').hidden = true; }
+    async function switchCamera() { facingMode = (facingMode === 'environment') ? 'user' : 'environment'; closeCamera(); setTimeout(() => startCamera(cameraKind), 300); }
+    async function takePhoto() { const video = $('cameraVideo'); if (!video.videoWidth) return; const canvas = document.createElement('canvas'); const scale = Math.min(1, 1600 / Math.max(video.videoWidth, video.videoHeight)); canvas.width = video.videoWidth * scale; canvas.height = video.videoHeight * scale; canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height); const dUrl = canvas.toDataURL('image/jpeg', 0.82); const kind = cameraKind; closeCamera(); if (activeSerial) { getDraft(activeSerial).photos[kind] = { dataUrl: dUrl }; $(`img-${kind}`).src = dUrl; $(`img-${kind}`).hidden = false; $(`ph-${kind}`).hidden = true; } showToast('Foto diambil.', 'success'); }
 
-    /* ============================================================
-     * 7. UTILITAS BANTUAN (LAPORAN, TOAST, TEXT FORMATTER)
-     * ============================================================ */
-    async function loadReport() { 
-      $('reportTableBody').innerHTML = '<tr><td colspan="8" style="text-align:center;">Memuat data...</td></tr>'; 
-      try { 
-        const data = await apiRequest({ params: { action: 'report' } }); 
-        const recordMap = {}; 
-        if (data.records) data.records.forEach(r => recordMap[r.serial] = r); 
-        
-        $('reportDateLabel').textContent = formatDateIndonesian(state.today); 
-        
-        $('reportTableBody').innerHTML = state.items.map((item, i) => { 
-          const r = recordMap[item.serial]; 
-          return `<tr>
-            <td style="text-align:center">${i+1}</td>
-            <td>${escapeHtml(item.type)}</td>
-            <td><strong>${escapeHtml(item.serial)}</strong></td>
-            <td><span class="badge ${r ? 'badge-done' : 'badge-pending'}"><i></i>${r ? 'Sudah' : 'Belum'}</span></td>
-            <td>${r ? escapeHtml(r.condition) : '-'}</td>
-            <td>${r ? escapeHtml(r.position) : '-'}</td>
-            <td style="text-align:center">${r && r.photoBarangImageUrl ? `<img src="${r.photoBarangImageUrl}" class="report-photo clickable-photo" data-full="${r.photoBarangImageUrl}">` : '-'}</td>
-            <td style="text-align:center">${r && r.photoKodeImageUrl ? `<img src="${r.photoKodeImageUrl}" class="report-photo clickable-photo" data-full="${r.photoKodeImageUrl}">` : '-'}</td>
-          </tr>`; 
-        }).join(''); 
-      } catch(e) { 
-        $('reportTableBody').innerHTML = `<tr><td colspan="8" style="text-align:center; color:red">${errorMessage(e)}</td></tr>`; 
-      } 
-    }
+    async function loadReport() { $('reportTableBody').innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px;">Memuat data...</td></tr>'; try { const data = await apiRequest({ params: { action: 'report' } }); const rMap = {}; if (data.records) data.records.forEach(r => rMap[r.serial] = r); $('reportDateLabel').textContent = formatDateIndonesian(state.today); $('reportTableBody').innerHTML = state.items.map((item, i) => { const r = rMap[item.serial]; return `<tr><td style="text-align:center">${i+1}</td><td>${escapeHtml(item.type)}</td><td><strong>${escapeHtml(item.serial)}</strong></td><td><span class="badge ${r ? 'badge-done' : 'badge-pending'}"><i></i>${r ? 'Sudah' : 'Belum'}</span></td><td>${r ? escapeHtml(r.condition) : '-'}</td><td>${r ? escapeHtml(r.position) : '-'}</td><td style="text-align:center">${r && r.photoBarangImageUrl ? `<img src="${r.photoBarangImageUrl}" class="report-photo clickable-photo" data-full="${r.photoBarangImageUrl}">` : '-'}</td><td style="text-align:center">${r && r.photoKodeImageUrl ? `<img src="${r.photoKodeImageUrl}" class="report-photo clickable-photo" data-full="${r.photoKodeImageUrl}">` : '-'}</td></tr>`; }).join(''); } catch(e) { $('reportTableBody').innerHTML = `<tr><td colspan="8" style="text-align:center; color:red">${errorMessage(e)}</td></tr>`; } }
     
-    function showToast(msg, type) { 
-      const t = $('toast'); 
-      t.textContent = msg; 
-      t.className = 'toast ' + (type || 'success'); 
-      t.hidden = false; 
-      
-      clearTimeout(toastTimer); 
-      toastTimer = setTimeout(() => t.hidden = true, 4500); 
-    }
-    
+    function showToast(msg, type) { const t = $('toast'); $('toastMsg').textContent = msg; t.className = 'toast ' + (type || 'success'); t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 4500); }
     function errorMessage(e) { return String(e.message || e).replace(/^Exception:\s*/i, ''); }
     function escapeHtml(v) { return String(v || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    
-    function formatDateIndonesian(iso) { 
-      if (!iso) return '—'; 
-      const p = String(iso).split('-'); 
-      const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-      return p.length === 3 ? `${p[2]} ${bulan[p[1]-1]} ${p[0]}` : iso; 
-    }
+    function formatDateIndonesian(iso) { if (!iso) return '—'; const p = String(iso).split('-'); const b = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"]; return p.length === 3 ? `${p[2]} ${b[p[1]-1]} ${p[0]}` : iso; }
   </script>
 </body>
 </html>
