@@ -60,8 +60,11 @@
     .app-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--gold), #e6c777 40%, transparent 85%); }
     .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0 30px; }
     .brand { display: flex; align-items: center; gap: 18px; min-width: 0; }
-    .emblem { width: 54px; height: 54px; border-radius: 15px; display: grid; place-items: center; flex: 0 0 auto; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); }
-    .emblem .icon { width: 26px; height: 26px; }
+    .emblem { width: 68px; height: 68px; padding: 7px; border-radius: 16px; display: grid; place-items: center; flex: 0 0 auto; background: #fff; box-shadow: 0 2px 10px rgba(5, 18, 38, .28); }
+    .emblem img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .emblem .icon { display: none; width: 30px; height: 30px; color: var(--navy-700); }
+    .emblem.fallback img { display: none; }
+    .emblem.fallback .icon { display: block; }
     .kicker { font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #cfdcf0; }
     .app-title { margin-top: 4px; font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 800; line-height: 1.2; letter-spacing: -.015em; }
     .app-subtitle { margin-top: 3px; font-size: .92rem; color: #cfdcf0; }
@@ -234,7 +237,7 @@
     @media (max-width: 720px) {
       .wrap { padding: 0 16px; }
       .header-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px 0 24px; }
-      .emblem { width: 44px; height: 44px; border-radius: 12px; }
+      .emblem { width: 54px; height: 54px; padding: 5px; border-radius: 13px; }
       .brand { gap: 14px; }
       .date-chip { text-align: left; width: 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
       .main { padding-top: 18px; }
@@ -340,7 +343,10 @@
   <header class="app-header">
     <div class="wrap header-inner">
       <div class="brand">
-        <div class="emblem" aria-hidden="true"><svg class="icon"><use href="#i-clipboard"/></svg></div>
+        <div class="emblem">
+          <img src="logo-imigrasi.png" alt="Logo Imigrasi" onerror="this.parentNode.classList.add('fallback')">
+          <svg class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg>
+        </div>
         <div>
           <div class="kicker">Kantor Imigrasi Kelas II TPI Kediri</div>
           <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023<br>DI KANTOR IMIGRASI KEDIRI</h1>
@@ -577,7 +583,7 @@
      * Isi dengan URL Web App Google Apps Script (berakhiran /exec).
      * Contoh: https://script.google.com/macros/s/AKfycb.../exec
      * ============================================================ */
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyLJZySepDYrFYzqdB6lOm84CXnZXd0Ti53hqDqEzhmMe5mwZaVBqjG4zNYV9LyS1sd/exec';
+    const API_URL = 'GANTI_DENGAN_URL_WEB_APP_ANDA';
 
     const REFRESH_INTERVAL_MS = 30000;
     const MAX_CLIENT_PHOTO_BYTES = 950 * 1024; // di bawah batas 1 MB sisi server
