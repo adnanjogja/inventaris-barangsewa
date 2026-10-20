@@ -156,7 +156,7 @@
     .badge-done i { background: var(--done-dot); }
     .empty-state { padding: 38px 20px; text-align: center; color: var(--muted); border: 1px dashed #c9d5e4; border-radius: var(--radius); background: #fff; }
 
-    /* ---------- Modal ---------- */
+    /* ---------- Modal & Photo Pop-up ---------- */
     .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(11, 33, 66, .55); backdrop-filter: blur(2px); }
     .modal-card { width: min(660px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(5, 18, 38, .35); overflow: hidden; }
     .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f4f8fd); }
@@ -186,6 +186,12 @@
     .photo-empty .icon { width: 22px; height: 22px; }
     .photo-actions { display: flex; gap: 6px; margin-top: 9px; }
     .photo-actions .btn { flex: 1 1 0; padding: 0 8px; }
+
+    /* Pop-up Modal Khusus Preview Foto Laporan */
+    .photo-preview-overlay { position: fixed; inset: 0; z-index: 4000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.9); padding: 20px; }
+    .photo-preview-overlay img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .close-preview-btn { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; display: grid; place-items: center; cursor: pointer; transition: background 0.2s; }
+    .close-preview-btn:hover { background: rgba(255,255,255,0.3); }
 
     /* ---------- Camera ---------- */
     .camera-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(5, 14, 28, .88); }
@@ -222,11 +228,15 @@
     .report-table th { padding: 9px 8px; border: 1px solid #d3dce9; background: #eaf0f8; color: var(--navy-800); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; text-align: left; }
     .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; overflow-wrap: anywhere; }
     .report-table tbody tr:nth-child(even) { background: #fafbfd; }
-    .report-photo { display: block; width: 84px; height: 62px; margin: 0 auto 4px; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; }
+    
+    /* Gambar di tabel laporan dibuat utuh (contain) dan dapat di-klik */
+    .report-photo { display: block; width: 100px; height: 80px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; transition: opacity 0.2s; }
+    .report-photo:hover { opacity: 0.85; border-color: var(--navy-600); }
     .photo-cell { text-align: center; }
     .photo-fallback { display: block; font-size: .72rem; color: var(--muted); }
-    .report-link { display: block; font-size: .7rem; color: var(--navy-600); }
     .signature { display: none; }
+    
+    .report-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
 
     /* ---------- Footer ---------- */
     .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
@@ -279,6 +289,8 @@
       .report-head { padding: 20px 14px 14px; }
       .report-body { padding: 14px 12px 20px; }
       .report-controls .control { width: 100%; }
+      .report-actions { justify-content: center; }
+      .report-actions .btn { width: 100%; }
     }
     @media screen and (max-width: 720px) {
       .table-wrap { overflow: visible; }
@@ -296,7 +308,7 @@
     @page { size: A4 landscape; margin: 10mm; }
     @media print {
       html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; min-width: 0 !important; font-size: 9pt !important; }
-      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #cameraModal, #toast { display: none !important; }
+      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #cameraModal, #toast, .photo-preview-overlay { display: none !important; }
       .wrap { max-width: none !important; padding: 0 !important; }
       .main { padding: 0 !important; }
       #reportView, #reportView[hidden] { display: block !important; }
@@ -314,10 +326,8 @@
       .report-table th { background: #e9e9e9 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       .report-table tbody tr:nth-child(even) { background: #fff !important; }
       .report-photo { width: 58px !important; height: 42px !important; border: 0 !important; background: #fff !important; border-radius: 0 !important; }
-      .report-link { display: none !important; }
       .print-only { display: block !important; }
       .signature { display: block !important; width: 245px; margin: 18px 0 0 auto; text-align: center; font-size: 8pt; break-inside: avoid; }
-      a { color: #111 !important; text-decoration: none !important; }
     }
     .print-only { display: none; }
   </style>
@@ -419,7 +429,8 @@
         </div>
         <div class="toolbar-actions">
           <button id="refreshButton" class="btn btn-ghost" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Perbarui</button>
-          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan / PDF</button>
+          <!-- Tombol Laporan / PDF lama diubah menjadi Tab Laporan Daftar Lengkap -->
+          <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan Daftar Lengkap</button>
         </div>
       </section>
 
@@ -447,24 +458,23 @@
             </div>
             <div class="row">
               <button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button>
-              <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak / Unduh PDF</button>
             </div>
           </div>
           <div id="reportLoading" class="loading-line no-print" hidden style="margin:0 0 14px"></div>
           <div id="reportError" class="notice notice-error no-print" hidden role="alert" style="margin-bottom:14px"><div><strong>Laporan tidak dapat dimuat</strong><p id="reportErrorText"></p></div></div>
-          <div class="report-summary" id="reportSummary">Memuat data laporan…</div>
+          <div class="report-summary" id="reportSummary">Memuat data laporan lengkap…</div>
           <div class="table-wrap">
             <table class="report-table">
               <thead>
                 <tr>
                   <th style="width:4%">No.</th>
-                  <th style="width:11%">Waktu Input</th>
-                  <th style="width:11%">Jenis Barang</th>
-                  <th style="width:14%">Nomor Seri</th>
-                  <th style="width:13%">Kondisi</th>
-                  <th style="width:20%">Detail Posisi</th>
-                  <th style="width:13.5%">Foto Barang</th>
-                  <th style="width:13.5%">Foto Kode</th>
+                  <th style="width:14%">Jenis Barang</th>
+                  <th style="width:15%">Nomor Seri</th>
+                  <th style="width:12%">Status</th>
+                  <th style="width:12%">Kondisi</th>
+                  <th style="width:17%">Detail Posisi</th>
+                  <th style="width:13%">Foto Barang</th>
+                  <th style="width:13%">Foto Kode</th>
                 </tr>
               </thead>
               <tbody id="reportTableBody">
@@ -472,6 +482,12 @@
               </tbody>
             </table>
           </div>
+          
+          <!-- Tombol Laporan / PDF yang dipindahkan ke bawah tabel -->
+          <div class="report-actions no-print">
+            <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan / PDF</button>
+          </div>
+
           <div class="signature">
             Kediri, <span id="signatureDate">—</span><br>
             Petugas Pemeriksa,<br><br><br><br>
@@ -488,6 +504,12 @@
     <div>Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
     <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa · Data tersimpan pada Google Sheets dan Google Drive</div>
   </footer>
+
+  <!-- Modal Pop-up Khusus Preview Foto Laporan -->
+  <div id="photoPreviewModal" class="photo-preview-overlay" hidden role="dialog" aria-modal="true">
+    <button type="button" class="close-preview-btn" id="closePhotoPreview" aria-label="Tutup foto"><svg class="icon" style="width: 24px; height: 24px;"><use href="#i-x"/></svg></button>
+    <img id="photoPreviewImg" src="" alt="Foto Diperbesar">
+  </div>
 
   <!-- Formulir opname -->
   <div id="formModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="formTitle">
@@ -626,7 +648,6 @@
       try {
         let response;
         if (options.body) {
-          // text/plain menghindari preflight CORS yang tidak didukung Apps Script.
           response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -690,6 +711,30 @@
       $('backButton').addEventListener('click', showInventoryView);
       $('loadReportButton').addEventListener('click', loadReport);
       $('printButton').addEventListener('click', printReport);
+      
+      /* Event Preview Foto Modal Laporan */
+      $('reportTableBody').addEventListener('click', function (event) {
+        if (event.target.classList.contains('clickable-photo')) {
+          const fullSrc = event.target.getAttribute('data-full');
+          if (fullSrc) {
+            $('photoPreviewImg').src = fullSrc;
+            $('photoPreviewModal').hidden = false;
+          }
+        }
+      });
+      
+      $('closePhotoPreview').addEventListener('click', function() {
+        $('photoPreviewModal').hidden = true;
+        $('photoPreviewImg').src = '';
+      });
+      
+      $('photoPreviewModal').addEventListener('mousedown', function(event) {
+        if (event.target === this) {
+          $('photoPreviewModal').hidden = true;
+          $('photoPreviewImg').src = '';
+        }
+      });
+
       $('reportTableBody').addEventListener('error', function (event) {
         const img = event.target;
         if (img && img.classList && img.classList.contains('report-photo')) {
@@ -732,6 +777,10 @@
         if (event.key !== 'Escape') return;
         if (!$('cameraModal').hidden) closeCamera();
         else if (!$('formModal').hidden) closeForm();
+        else if (!$('photoPreviewModal').hidden) {
+          $('photoPreviewModal').hidden = true;
+          $('photoPreviewImg').src = '';
+        }
       });
     }
 
@@ -1209,22 +1258,41 @@
       $('reportDateLabel').textContent = dateLabel;
       $('reportGeneratedPrint').textContent = 'Dicetak pada: ' + (data.generatedAt || '—');
       $('signatureDate').textContent = dateLabel;
-      $('reportSummary').textContent = 'Jumlah catatan: ' + data.count + ' · Tanggal: ' + dateLabel + '. Foto ditampilkan sebagai thumbnail jika izin Google Drive memungkinkan akses.';
+      $('reportSummary').textContent = 'Total perangkat terdaftar: ' + state.items.length + ' · Tanggal: ' + dateLabel;
+      
       const tbody = $('reportTableBody');
-      if (!data.records || !data.records.length) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:26px;color:var(--muted)">Belum ada data opname pada tanggal ini.</td></tr>';
+      if (!state.items || !state.items.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:26px;color:var(--muted)">Data master barang belum dimuat dari server. Coba muat ulang halaman.</td></tr>';
         return;
       }
-      tbody.innerHTML = data.records.map(function (record, index) {
+
+      // Buat pemetaan data opname hari ini berdasar nomor seri
+      const recordMap = {};
+      if (data.records) {
+        data.records.forEach(function(r) { recordMap[r.serial] = r; });
+      }
+
+      // Menampilkan SELURUH BARANG dan disandingkan dengan laporan opname
+      tbody.innerHTML = state.items.map(function (item, index) {
+        const record = recordMap[item.serial];
+        const isDone = Boolean(record);
+        
+        const status = isDone ? 'Sudah opname' : 'Belum opname';
+        const badgeCls = isDone ? 'badge-done' : 'badge-pending';
+        const condition = isDone ? record.condition : '-';
+        const position = isDone ? record.position : '-';
+        const photoBarang = isDone ? reportPhoto(record.photoBarangImageUrl, record.photoBarangUrl, 'Foto barang') : '<span class="photo-fallback">Tidak ada foto</span>';
+        const photoKode = isDone ? reportPhoto(record.photoKodeImageUrl, record.photoKodeUrl, 'Foto kode') : '<span class="photo-fallback">Tidak ada foto</span>';
+
         return '<tr>' +
           cell('No.', String(index + 1), 'text-align:center') +
-          cell('Waktu Input', escapeHtml(record.timestamp)) +
-          cell('Jenis Barang', escapeHtml(record.type)) +
-          cell('Nomor Seri', '<strong>' + escapeHtml(record.serial) + '</strong>') +
-          cell('Kondisi', escapeHtml(record.condition)) +
-          cell('Detail Posisi', escapeHtml(record.position)) +
-          cell('Foto Barang', reportPhoto(record.photoBarangImageUrl, record.photoBarangUrl, 'Foto barang'), '', 'photo-cell') +
-          cell('Foto Kode', reportPhoto(record.photoKodeImageUrl, record.photoKodeUrl, 'Foto kode'), '', 'photo-cell') +
+          cell('Jenis Barang', escapeHtml(item.type)) +
+          cell('Nomor Seri', '<strong>' + escapeHtml(item.serial) + '</strong>') +
+          cell('Status', '<span class="badge ' + badgeCls + '"><i></i>' + status + '</span>') +
+          cell('Kondisi', escapeHtml(condition)) +
+          cell('Detail Posisi', escapeHtml(position)) +
+          cell('Foto Barang', photoBarang, '', 'photo-cell') +
+          cell('Foto Kode', photoKode, '', 'photo-cell') +
         '</tr>';
       }).join('');
     }
@@ -1235,11 +1303,10 @@
 
     function reportPhoto(imageUrl, fileUrl, alt) {
       if (!imageUrl && !fileUrl) return '<span class="photo-fallback">Tidak ada foto</span>';
-      const img = imageUrl
-        ? '<img class="report-photo" src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(alt) + '" referrerpolicy="no-referrer"><span class="photo-fallback" hidden>Pratinjau tidak tersedia</span>'
+      // imageUrl berisi link dari Google Drive
+      return imageUrl
+        ? '<img class="report-photo clickable-photo" src="' + escapeHtml(imageUrl) + '" data-full="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(alt) + '" referrerpolicy="no-referrer" title="Klik untuk memperbesar"><span class="photo-fallback" hidden>Pratinjau tidak tersedia</span>'
         : '<span class="photo-fallback">Pratinjau tidak tersedia</span>';
-      const link = fileUrl ? '<a class="report-link" href="' + escapeHtml(fileUrl) + '" target="_blank" rel="noopener">Buka foto</a>' : '';
-      return img + link;
     }
 
     function waitForReportImages(timeoutMs) {
