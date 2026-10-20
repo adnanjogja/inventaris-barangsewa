@@ -159,6 +159,7 @@
     /* ---------- Modal & Photo Pop-up ---------- */
     .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(11, 33, 66, .55); backdrop-filter: blur(2px); }
     .modal-card { width: min(660px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(5, 18, 38, .35); overflow: hidden; }
+    .modal-card.sm { width: min(400px, 100%); }
     .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fbfcfe, #f4f8fd); }
     .eyebrow { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
     .modal-head h2 { margin-top: 2px; font-family: var(--mono); font-size: 1.02rem; font-weight: 700; color: var(--navy-800); overflow-wrap: anywhere; }
@@ -166,7 +167,7 @@
     .icon-btn:hover { background: var(--line-2); }
     .modal-body { padding: 20px 22px; overflow-y: auto; }
     .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 22px; border-top: 1px solid var(--line); background: #fbfcfe; }
-    .modal-foot .actions { display: flex; gap: 8px; }
+    .modal-foot .actions { display: flex; gap: 8px; width: 100%; justify-content: flex-end; }
     .form-note { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 18px; padding: 11px 13px; border-radius: 10px; background: var(--done-bg); border: 1px solid var(--done-bd); color: var(--done-fg); font-size: .82rem; }
     .field + .field { margin-top: 18px; }
     .field label, .field .label { display: block; margin-bottom: 6px; font-size: .8rem; font-weight: 700; color: var(--ink-2); }
@@ -220,23 +221,26 @@
     .report-title { margin: 10px 0 6px; font-size: 1.3rem; font-weight: 800; line-height: 1.25; color: var(--navy-800); }
     .report-meta { font-size: .84rem; color: var(--ink-2); }
     .report-body { padding: 20px 24px 28px; }
-    .report-controls { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .report-controls { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-start; gap: 14px; margin-bottom: 16px; }
     .report-controls .row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .report-controls .control { width: 200px; }
     .report-summary { margin-bottom: 12px; font-size: .84rem; color: var(--ink-2); }
     .table-wrap { overflow-x: auto; }
+    
+    /* Strict layout control for print optimization */
+    .report-table { width: 100%; max-width: 100%; border-collapse: collapse; table-layout: fixed; }
     .report-table th { padding: 9px 8px; border: 1px solid #d3dce9; background: #eaf0f8; color: var(--navy-800); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; text-align: left; }
-    .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; overflow-wrap: anywhere; }
+    .report-table td { padding: 9px 8px; border: 1px solid #d3dce9; font-size: .8rem; vertical-align: middle; word-wrap: break-word; overflow-wrap: break-word; }
     .report-table tbody tr:nth-child(even) { background: #fafbfd; }
     
     /* Gambar di tabel laporan dibuat utuh (contain) dan dapat di-klik */
-    .report-photo { display: block; width: 100px; height: 80px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; transition: opacity 0.2s; }
+    .report-photo { display: block; width: 100%; max-width: 90px; height: 70px; margin: 0 auto; object-fit: contain; background: #f3f5f8; border: 1px solid #d8e0ea; border-radius: 5px; cursor: zoom-in; transition: opacity 0.2s; }
     .report-photo:hover { opacity: 0.85; border-color: var(--navy-600); }
     .photo-cell { text-align: center; }
     .photo-fallback { display: block; font-size: .72rem; color: var(--muted); }
-    .signature { display: none; }
     
-    .report-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
+    .report-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+    
+    .signature { display: none; }
 
     /* ---------- Footer ---------- */
     .app-footer { background: var(--navy-900); color: #b9c9e2; text-align: center; padding: 26px 16px 28px; font-size: .82rem; border-top: 3px solid var(--gold); }
@@ -281,15 +285,12 @@
       .modal-card { width: 100%; max-height: 94vh; border-radius: 18px 18px 0 0; }
       .modal-head, .modal-body, .modal-foot { padding-left: 16px; padding-right: 16px; }
       .modal-foot { flex-direction: column-reverse; align-items: stretch; }
-      .modal-foot .actions { width: 100%; }
-      .modal-foot .actions .btn { flex: 1 1 0; }
       .photo-grid { gap: 10px; }
       .photo-preview { height: 108px; }
       .photo-actions { flex-direction: column; }
       .report-head { padding: 20px 14px 14px; }
       .report-body { padding: 14px 12px 20px; }
-      .report-controls .control { width: 100%; }
-      .report-actions { justify-content: center; }
+      .report-actions { flex-direction: column; gap: 8px; }
       .report-actions .btn { width: 100%; }
     }
     @media screen and (max-width: 720px) {
@@ -305,10 +306,10 @@
     }
 
     /* ---------- Cetak / PDF ---------- */
-    @page { size: A4 landscape; margin: 10mm; }
+    @page { size: A4 landscape; margin: 8mm; }
     @media print {
       html, body { background: #fff !important; color: #111 !important; margin: 0 !important; padding: 0 !important; min-width: 0 !important; font-size: 9pt !important; }
-      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #cameraModal, #toast, .photo-preview-overlay { display: none !important; }
+      .app-header, .app-footer, #inventoryView, .no-print, #formModal, #officerModal, #cameraModal, #toast, .photo-preview-overlay { display: none !important; }
       .wrap { max-width: none !important; padding: 0 !important; }
       .main { padding: 0 !important; }
       #reportView, #reportView[hidden] { display: block !important; }
@@ -319,15 +320,19 @@
       .report-meta, .report-summary { font-size: 8pt !important; color: #222 !important; }
       .report-body { padding: 8px 0 0 !important; }
       .table-wrap { overflow: visible !important; }
-      .report-table { table-layout: fixed !important; }
+      
+      /* Pastikan tabel terkunci lebarnya agar tidak terpotong ke kanan */
+      .report-table { width: 100% !important; max-width: 100% !important; table-layout: fixed !important; }
       .report-table thead { display: table-header-group; }
       .report-table tr { break-inside: avoid; page-break-inside: avoid; }
-      .report-table th, .report-table td { border: 1px solid #555 !important; padding: 4px !important; font-size: 7.2pt !important; color: #111 !important; }
+      .report-table th, .report-table td { border: 1px solid #555 !important; padding: 4px !important; font-size: 7.2pt !important; color: #111 !important; word-wrap: break-word !important; overflow-wrap: break-word !important; }
       .report-table th { background: #e9e9e9 !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       .report-table tbody tr:nth-child(even) { background: #fff !important; }
-      .report-photo { width: 58px !important; height: 42px !important; border: 0 !important; background: #fff !important; border-radius: 0 !important; }
+      
+      /* Perkecil gambar saat dicetak agar tidak merusak lebar kolom tabel */
+      .report-photo { width: 55px !important; height: auto !important; max-height: 45px !important; border: 0 !important; background: transparent !important; border-radius: 0 !important; }
       .print-only { display: block !important; }
-      .signature { display: block !important; width: 245px; margin: 18px 0 0 auto; text-align: center; font-size: 8pt; break-inside: avoid; }
+      .signature { display: block !important; width: 260px; margin: 18px 0 0 auto; text-align: center; font-size: 8.5pt; break-inside: avoid; }
     }
     .print-only { display: none; }
   </style>
@@ -348,6 +353,7 @@
     <symbol id="i-back" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
     <symbol id="i-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
   </svg>
 
   <header class="app-header">
@@ -359,12 +365,12 @@
         </div>
         <div>
           <div class="kicker">Kantor Imigrasi Kelas II TPI Kediri</div>
-          <h3 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023<br>DI KANTOR IMIGRASI KEDIRI</h3>
+          <h1 class="app-title">DAFTAR PERANGKAT SEWA DITJEN IMIGRASI 2023<br>DI KANTOR IMIGRASI KEDIRI</h1>
           <p class="app-subtitle">Pencatatan kondisi, posisi, dan dokumentasi foto perangkat sewa harian</p>
         </div>
       </div>
       <div class="date-chip">
-        <small>Tanggal Opname</small>
+        <small>Tanggal Cetak</small>
         <strong id="headerDate">—</strong>
       </div>
     </div>
@@ -395,8 +401,8 @@
       <section class="card summary" aria-label="Ringkasan opname">
         <div class="summary-top">
           <div>
-            <h2 class="section-title">Ringkasan Opname Hari Ini</h2>
-            <p class="section-caption" id="todayCaption">Status diperiksa berdasarkan tanggal hari ini.</p>
+            <h2 class="section-title">Ringkasan Opname</h2>
+            <p class="section-caption" id="todayCaption">Status diperiksa berdasarkan semua data yang terekam.</p>
           </div>
           <div class="summary-pct"><span id="pctValue">0</span><small>%</small></div>
         </div>
@@ -429,7 +435,7 @@
         </div>
         <div class="toolbar-actions">
           <button id="refreshButton" class="btn btn-ghost" type="button"><svg class="icon"><use href="#i-refresh"/></svg>Perbarui</button>
-          <!-- Tombol Laporan / PDF lama diubah menjadi Tab Laporan Daftar Lengkap -->
+          <!-- Tab Laporan Daftar Lengkap -->
           <button id="openReportButton" class="btn btn-primary" type="button"><svg class="icon"><use href="#i-file"/></svg>Laporan Daftar Lengkap</button>
         </div>
       </section>
@@ -444,18 +450,11 @@
           <div class="report-org">Kementerian Imigrasi dan Pemasyarakatan Republik Indonesia</div>
           <div class="report-org">Kantor Imigrasi Kelas II TPI Kediri</div>
           <h2 class="report-title">LAPORAN OPNAME PERANGKAT SEWA DITJEN IMIGRASI 2023</h2>
-          <div class="report-meta">Lokasi: Kantor Imigrasi Kediri · Tanggal laporan: <strong id="reportDateLabel">—</strong></div>
+          <div class="report-meta">Lokasi: Kantor Imigrasi Kediri · Tanggal cetak laporan: <strong id="reportDateLabel">—</strong></div>
           <div class="report-meta print-only" id="reportGeneratedPrint">Dicetak pada: —</div>
         </div>
         <div class="report-body">
           <div class="report-controls no-print">
-            <div>
-              <label for="reportDateInput" class="label" style="display:block;margin-bottom:6px;font-size:.8rem;font-weight:700;color:var(--ink-2)">Pilih tanggal laporan</label>
-              <div class="row">
-                <input type="date" id="reportDateInput" class="control">
-                <button type="button" id="loadReportButton" class="btn btn-ghost">Tampilkan</button>
-              </div>
-            </div>
             <div class="row">
               <button type="button" id="backButton" class="btn btn-ghost"><svg class="icon"><use href="#i-back"/></svg>Kembali ke Daftar</button>
             </div>
@@ -469,12 +468,12 @@
                 <tr>
                   <th style="width:4%">No.</th>
                   <th style="width:14%">Jenis Barang</th>
-                  <th style="width:15%">Nomor Seri</th>
+                  <th style="width:16%">Nomor Seri</th>
                   <th style="width:12%">Status</th>
-                  <th style="width:12%">Kondisi</th>
-                  <th style="width:17%">Detail Posisi</th>
-                  <th style="width:13%">Foto Barang</th>
-                  <th style="width:13%">Foto Kode</th>
+                  <th style="width:14%">Kondisi</th>
+                  <th style="width:16%">Detail Posisi</th>
+                  <th style="width:12%">Foto Barang</th>
+                  <th style="width:12%">Foto Kode</th>
                 </tr>
               </thead>
               <tbody id="reportTableBody">
@@ -483,16 +482,17 @@
             </table>
           </div>
           
-          <!-- Tombol Laporan / PDF yang dipindahkan ke bawah tabel -->
+          <!-- Tombol Aksi di Bawah Laporan -->
           <div class="report-actions no-print">
+            <button type="button" id="openOfficerBtn" class="btn btn-ghost"><svg class="icon"><use href="#i-user"/></svg>Petugas Pemeriksa</button>
             <button type="button" id="printButton" class="btn btn-primary"><svg class="icon"><use href="#i-printer"/></svg>Cetak Laporan / PDF</button>
           </div>
 
           <div class="signature">
             Kediri, <span id="signatureDate">—</span><br>
             Petugas Pemeriksa,<br><br><br><br>
-            (........................................)<br>
-            NIP. ....................................
+            <strong style="text-decoration: underline;"><span id="printPetugasName">RISKY DIAH OKTAVIANTI</span></strong><br>
+            NIP. <span id="printPetugasNIP">198710012012122001</span>
           </div>
         </div>
       </div>
@@ -504,6 +504,35 @@
     <div>Jalan Jawa No. 135, Grogol, Kabupaten Kediri, Jawa Timur</div>
     <div class="small">Aplikasi Pencatatan Opname Perangkat Sewa · Data tersimpan pada Google Sheets dan Google Drive</div>
   </footer>
+
+  <!-- Modal Petugas Pemeriksa -->
+  <div id="officerModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="officerTitle">
+    <div class="modal-card sm">
+      <div class="modal-head">
+        <div>
+          <h2 id="officerTitle">Data Petugas Pemeriksa</h2>
+          <div class="eyebrow" style="margin-top:4px;">Digunakan untuk tanda tangan laporan</div>
+        </div>
+        <button type="button" class="icon-btn" id="closeOfficerBtn" aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="inputOfficerName">Nama Petugas</label>
+          <input id="inputOfficerName" class="control" type="text" value="RISKY DIAH OKTAVIANTI" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="inputOfficerNIP">NIP Petugas</label>
+          <input id="inputOfficerNIP" class="control" type="text" value="198710012012122001" autocomplete="off">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="cancelOfficerBtn">Batal</button>
+          <button type="button" class="btn btn-primary" id="saveOfficerBtn">Terapkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal Pop-up Khusus Preview Foto Laporan -->
   <div id="photoPreviewModal" class="photo-preview-overlay" hidden role="dialog" aria-modal="true">
@@ -620,7 +649,7 @@
     const state = {
       groups: [],
       items: [],
-      today: '',
+      today: '', // Hanya menyimpan tanggal cetak hari ini
       conditions: DEFAULT_CONDITIONS,
       filter: 'all',
       loaded: false
@@ -709,7 +738,6 @@
 
       $('openReportButton').addEventListener('click', showReportView);
       $('backButton').addEventListener('click', showInventoryView);
-      $('loadReportButton').addEventListener('click', loadReport);
       $('printButton').addEventListener('click', printReport);
       
       /* Event Preview Foto Modal Laporan */
@@ -744,6 +772,29 @@
         }
       }, true);
 
+      /* Event Modal Petugas Pemeriksa */
+      $('openOfficerBtn').addEventListener('click', function() {
+        $('inputOfficerName').value = $('printPetugasName').textContent;
+        $('inputOfficerNIP').value = $('printPetugasNIP').textContent;
+        $('officerModal').hidden = false;
+      });
+      
+      function closeOfficerModal() {
+        $('officerModal').hidden = true;
+      }
+      
+      $('closeOfficerBtn').addEventListener('click', closeOfficerModal);
+      $('cancelOfficerBtn').addEventListener('click', closeOfficerModal);
+      $('officerModal').addEventListener('mousedown', function (event) { if (event.target === this) closeOfficerModal(); });
+      
+      $('saveOfficerBtn').addEventListener('click', function() {
+        $('printPetugasName').textContent = $('inputOfficerName').value.trim() || '........................................';
+        $('printPetugasNIP').textContent = $('inputOfficerNIP').value.trim() || '....................................';
+        closeOfficerModal();
+        showToast('Data petugas berhasil diperbarui untuk cetak laporan.', 'success');
+      });
+
+      /* Event Form Opname */
       $('closeFormButton').addEventListener('click', closeForm);
       $('cancelFormButton').addEventListener('click', closeForm);
       $('formModal').addEventListener('mousedown', function (event) { if (event.target === this) closeForm(); });
@@ -777,6 +828,7 @@
         if (event.key !== 'Escape') return;
         if (!$('cameraModal').hidden) closeCamera();
         else if (!$('formModal').hidden) closeForm();
+        else if (!$('officerModal').hidden) closeOfficerModal();
         else if (!$('photoPreviewModal').hidden) {
           $('photoPreviewModal').hidden = true;
           $('photoPreviewImg').src = '';
@@ -823,7 +875,7 @@
         };
       });
       state.items = [].concat.apply([], state.groups.map(function (g) { return g.items; }));
-      state.today = data.today || state.today;
+      state.today = data.today || state.today; // Mengambil tanggal server (tanggal cetak)
       state.loaded = true;
       if (data.conditions && data.conditions.length) {
         state.conditions = data.conditions;
@@ -844,8 +896,6 @@
       $('progressFill').style.width = pct + '%';
       $('progressBar').setAttribute('aria-valuenow', pct);
       $('headerDate').textContent = formatDateIndonesian(state.today, true);
-      $('todayCaption').textContent = done + ' dari ' + total + ' perangkat sudah dicatat pada ' + formatDateIndonesian(state.today) + ' (waktu Asia/Jakarta).';
-      if (!$('reportDateInput').value && state.today) $('reportDateInput').value = state.today;
       renderGroups();
     }
 
@@ -882,11 +932,11 @@
         html += '<section class="card group">' +
           '<div class="group-head">' +
             '<span class="group-letter">' + String.fromCharCode(65 + groupIndex) + '</span>' +
-            '<div><h3>' + escapeHtml(group.type) + '</h3><p>' + doneCount + ' dari ' + group.items.length + ' unit sudah opname hari ini</p></div>' +
+            '<div><h3>' + escapeHtml(group.type) + '</h3><p>' + doneCount + ' dari ' + group.items.length + ' unit sudah opname</p></div>' +
             '<div class="group-meter"><div class="progress"><i style="width:' + pct + '%"></i></div></div>' +
           '</div>' +
           '<table class="dev-table"><thead><tr>' +
-            '<th class="col-no">No.</th><th>Nomor Seri</th><th class="col-status">Status</th><th>Catatan Hari Ini</th><th class="col-action"></th>' +
+            '<th class="col-no">No.</th><th>Nomor Seri</th><th class="col-status">Status</th><th>Catatan Terbaru</th><th class="col-action"></th>' +
           '</tr></thead><tbody>' + rows + '</tbody></table>' +
         '</section>';
       });
@@ -896,10 +946,10 @@
 
     function renderRow(item, number) {
       const done = item.completed;
-      let note = 'Belum ada input untuk hari ini';
+      let note = 'Belum ada input';
       if (done) {
         const time = item.lastInput ? (item.lastInput.split(' ')[1] || item.lastInput) : '';
-        note = 'Tercatat ' + item.todayCount + '× hari ini' + (time ? ' · terakhir pukul ' + time : '');
+        note = 'Tercatat ' + item.todayCount + '×' + (time ? ' · terakhir pukul ' + time : '');
       }
       return '<tr class="' + (done ? 'is-done' : 'is-pending') + '">' +
         '<td class="col-no">' + number + '</td>' +
@@ -928,7 +978,7 @@
       $('posCount').textContent = ($('fPosition').value || '').length;
       const note = $('formNote');
       if (item.completed) {
-        $('formNoteText').textContent = 'Perangkat ini sudah dicatat ' + item.todayCount + '× hari ini. Penyimpanan baru akan ditambahkan sebagai log tambahan.';
+        $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Penyimpanan baru akan ditambahkan sebagai log tambahan yang memperbarui status.';
         note.hidden = false;
       } else {
         note.hidden = true;
@@ -1012,7 +1062,7 @@
         if (result && result.sharingWarning) {
           showToast('Data tersimpan, tetapi kebijakan Google Drive mungkin membatasi akses publik ke foto. Periksa izin folder/file.', 'warning');
         } else {
-          showToast('Berhasil! ' + item.serial + ' tercatat pada ' + (result && result.timestamp ? result.timestamp : 'hari ini') + '.', 'success');
+          showToast('Berhasil! ' + item.serial + ' berhasil diperbarui.', 'success');
         }
         loadDashboard({});
         if (reportActive) loadReport();
@@ -1220,7 +1270,6 @@
       const view = $('reportView');
       view.hidden = false;
       view.classList.add('active');
-      if (!$('reportDateInput').value) $('reportDateInput').value = state.today;
       loadReport();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1236,29 +1285,29 @@
     }
 
     async function loadReport() {
-      const date = $('reportDateInput').value || state.today;
-      if (!date) { showToast('Tanggal laporan belum tersedia.', 'warning'); return; }
       $('reportLoading').hidden = false;
       $('reportError').hidden = true;
-      $('loadReportButton').disabled = true;
       try {
-        const data = await apiRequest({ params: { action: 'report', date: date } });
+        // Melakukan request untuk mengambil laporan master (semua data tanpa filter tanggal)
+        const data = await apiRequest({ params: { action: 'report' } });
         renderReport(data);
       } catch (error) {
         $('reportErrorText').textContent = errorMessage(error);
         $('reportError').hidden = false;
       } finally {
         $('reportLoading').hidden = true;
-        $('loadReportButton').disabled = false;
       }
     }
 
     function renderReport(data) {
-      const dateLabel = formatDateIndonesian(data.date);
+      // Menggunakan waktu hari ini untuk kebutuhan cetak karena laporan tidak lagi berbatas waktu
+      const printDate = state.today || new Date().toISOString().split('T')[0];
+      const dateLabel = formatDateIndonesian(printDate);
+      
       $('reportDateLabel').textContent = dateLabel;
-      $('reportGeneratedPrint').textContent = 'Dicetak pada: ' + (data.generatedAt || '—');
+      $('reportGeneratedPrint').textContent = 'Dicetak pada: ' + (data.generatedAt || dateLabel);
       $('signatureDate').textContent = dateLabel;
-      $('reportSummary').textContent = 'Total perangkat terdaftar: ' + state.items.length + ' · Tanggal: ' + dateLabel;
+      $('reportSummary').textContent = 'Total perangkat terdaftar: ' + state.items.length + ' · Menampilkan seluruh data opname perangkat.';
       
       const tbody = $('reportTableBody');
       if (!state.items || !state.items.length) {
@@ -1266,13 +1315,13 @@
         return;
       }
 
-      // Buat pemetaan data opname hari ini berdasar nomor seri
+      // Buat pemetaan data opname berdasar nomor seri
       const recordMap = {};
       if (data.records) {
         data.records.forEach(function(r) { recordMap[r.serial] = r; });
       }
 
-      // Menampilkan SELURUH BARANG dan disandingkan dengan laporan opname
+      // Menampilkan SELURUH BARANG yang disandingkan dengan laporan opname
       tbody.innerHTML = state.items.map(function (item, index) {
         const record = recordMap[item.serial];
         const isDone = Boolean(record);
@@ -1303,7 +1352,6 @@
 
     function reportPhoto(imageUrl, fileUrl, alt) {
       if (!imageUrl && !fileUrl) return '<span class="photo-fallback">Tidak ada foto</span>';
-      // imageUrl berisi link dari Google Drive
       return imageUrl
         ? '<img class="report-photo clickable-photo" src="' + escapeHtml(imageUrl) + '" data-full="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(alt) + '" referrerpolicy="no-referrer" title="Klik untuk memperbesar"><span class="photo-fallback" hidden>Pratinjau tidak tersedia</span>'
         : '<span class="photo-fallback">Pratinjau tidak tersedia</span>';
