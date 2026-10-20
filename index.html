@@ -551,6 +551,17 @@
         <button type="button" class="icon-btn" id="closeFormButton" aria-label="Tutup formulir"><svg class="icon"><use href="#i-x"/></svg></button>
       </div>
       <div class="modal-body">
+        
+        <!-- FITUR PINDAH TARGET BARANG -->
+        <div class="field" style="padding: 14px; background: #f3f6fa; border: 1.5px dashed #b9c7d8; border-radius: 12px; margin-bottom: 22px;">
+          <label for="moveSerialSelect" style="display: flex; align-items: center; gap: 8px; color: var(--navy-800); margin-bottom: 8px; font-weight: 700; font-size: .8rem;">
+            <svg class="icon" style="color: var(--navy-600);"><use href="#i-refresh"/></svg> 
+            Pindah Target Barang (Bila Salah Klik)
+          </label>
+          <select id="moveSerialSelect" class="control" style="background-color: #fff; border-color: #c4d7f2;"></select>
+          <div class="hint" style="margin-top: 6px;">Ubah pilihan ini untuk memindahkan semua isian dan foto pada form ini ke nomor seri lain.</div>
+        </div>
+
         <div class="form-note" id="formNote" hidden>
           <svg class="icon"><use href="#i-info"/></svg>
           <span id="formNoteText"></span>
@@ -811,6 +822,44 @@
         if (gal) openFilePicker(gal.dataset.gallery, 'gallery');
       });
 
+      /* Event Pindah Data Barang */
+      $('moveSerialSelect').addEventListener('change', function () {
+        const newSerial = this.value;
+        if (newSerial === activeSerial) return;
+        
+        const newItem = state.items.find(function (i) { return i.serial === newSerial; });
+        if (!newItem) return;
+        
+        // Ambil data dari draft item lama
+        const oldDraft = getDraft(activeSerial);
+        const newDraft = getDraft(newSerial);
+        
+        // Pindahkan data ke draft item baru
+        newDraft.condition = $('fCondition').value;
+        newDraft.position = $('fPosition').value;
+        newDraft.photos = oldDraft.photos;
+        
+        // Bersihkan draft item lama
+        delete drafts[activeSerial];
+        
+        // Terapkan serial baru menjadi target aktif
+        activeSerial = newSerial;
+        
+        // Perbarui UI form
+        $('formType').textContent = newItem.type;
+        $('formTitle').textContent = newItem.serial;
+        
+        const note = $('formNote');
+        if (newItem.completed) {
+          $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Penyimpanan baru akan ditambahkan sebagai log tambahan yang memperbarui status.';
+          note.hidden = false;
+        } else {
+          note.hidden = true;
+        }
+        
+        showToast('Isian formulir berhasil dipindahkan ke target: ' + newSerial, 'success');
+      });
+
       $('galleryInput').addEventListener('change', handleFileChosen);
       $('captureInput').addEventListener('change', handleFileChosen);
 
@@ -882,6 +931,9 @@
         populateConditions(data.conditions);
       }
 
+      // Populate opsi pindah data barang
+      populateMoveSelect();
+
       const total = Number(data.total || state.items.length);
       const done = Number(data.completed || 0);
       const pending = Number(data.pending != null ? data.pending : total - done);
@@ -897,6 +949,17 @@
       $('progressBar').setAttribute('aria-valuenow', pct);
       $('headerDate').textContent = formatDateIndonesian(state.today, true);
       renderGroups();
+    }
+
+    function populateMoveSelect() {
+      const select = $('moveSerialSelect');
+      select.innerHTML = state.groups.map(function(g) {
+        return '<optgroup label="' + escapeHtml(g.type) + '">' +
+          g.items.map(function(i) {
+            return '<option value="' + escapeHtml(i.serial) + '">' + escapeHtml(i.serial) + '</option>';
+          }).join('') +
+        '</optgroup>';
+      }).join('');
     }
 
     function populateConditions(list) {
@@ -976,6 +1039,10 @@
       $('fCondition').value = draft.condition || '';
       $('fPosition').value = draft.position || '';
       $('posCount').textContent = ($('fPosition').value || '').length;
+      
+      // Sinkronisasikan menu pindah data ke target aktif
+      $('moveSerialSelect').value = serial;
+
       const note = $('formNote');
       if (item.completed) {
         $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Penyimpanan baru akan ditambahkan sebagai log tambahan yang memperbarui status.';
