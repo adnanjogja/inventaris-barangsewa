@@ -642,8 +642,6 @@
 
     /* ============================================================
      * KONFIGURASI
-     * Isi dengan URL Web App Google Apps Script (berakhiran /exec).
-     * Contoh: https://script.google.com/macros/s/AKfycb.../exec
      * ============================================================ */
     const API_URL = 'https://script.google.com/macros/s/AKfycbyLJZySepDYrFYzqdB6lOm84CXnZXd0Ti53hqDqEzhmMe5mwZaVBqjG4zNYV9LyS1sd/exec';
 
@@ -656,6 +654,48 @@
     const MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
     const $ = function (id) { return document.getElementById(id); };
+
+    /* ============================================================
+     * LOCAL CACHE (INDEXED DB) UNTUK PENYIMPANAN FOTO SEMENTARA
+     * ============================================================ */
+    const localDB = {
+      db: null,
+      init: function() {
+        return new Promise(function(resolve) {
+          if (localDB.db) return resolve(localDB.db);
+          if (!window.indexedDB) return resolve(null); // Fallback browser lama
+          try {
+            const req = indexedDB.open('OpnameCacheDB', 1);
+            req.onupgradeneeded = function(e) {
+              e.target.result.createObjectStore('cache', { keyPath: 'serial' });
+            };
+            req.onsuccess = function(e) {
+              localDB.db = e.target.result;
+              resolve(localDB.db);
+            };
+            req.onerror = function() { resolve(null); };
+          } catch(e) { resolve(null); }
+        });
+      },
+      save: async function(serial, payload) {
+        try {
+          const db = await localDB.init();
+          if (!db) return;
+          db.transaction('cache', 'readwrite').objectStore('cache').put({ serial: serial, payload: payload, time: Date.now() });
+        } catch (e) { console.warn('Gagal menyimpan cache', e); }
+      },
+      get: async function(serial) {
+        try {
+          const db = await localDB.init();
+          if (!db) return null;
+          return new Promise(function(resolve) {
+            const req = db.transaction('cache', 'readonly').objectStore('cache').get(serial);
+            req.onsuccess = function(e) { resolve(e.target.result ? e.target.result.payload : null); };
+            req.onerror = function() { resolve(null); };
+          });
+        } catch (e) { return null; }
+      }
+    };
 
     const state = {
       groups: [],
@@ -774,15 +814,6 @@
         }
       });
 
-      $('reportTableBody').addEventListener('error', function (event) {
-        const img = event.target;
-        if (img && img.classList && img.classList.contains('report-photo')) {
-          img.hidden = true;
-          const fallback = img.parentNode.querySelector('.photo-fallback');
-          if (fallback) fallback.hidden = false;
-        }
-      }, true);
-
       /* Event Modal Petugas Pemeriksa */
       $('openOfficerBtn').addEventListener('click', function() {
         $('inputOfficerName').value = $('printPetugasName').textContent;
@@ -825,19 +856,20 @@
       /* Event Pindah Data Barang */
       $('moveSerialSelect').addEventListener('change', function () {
         const newSerial = this.value;
-        if (newSerial === activeSerial) return;
+        if (newSerial === activeSerial || !activeSerial) return;
         
         const newItem = state.items.find(function (i) { return i.serial === newSerial; });
         if (!newItem) return;
         
         // Ambil data dari draft item lama
-        const oldDraft = getDraft(activeSerial);
-        const newDraft = getDraft(newSerial);
+        if (!drafts[newSerial]) drafts[newSerial] = { condition: '', position: '', photos: {} };
+        const newDraft = drafts[newSerial];
+        const oldDraft = drafts[activeSerial] || { photos: {} };
         
         // Pindahkan data ke draft item baru
         newDraft.condition = $('fCondition').value;
         newDraft.position = $('fPosition').value;
-        newDraft.photos = oldDraft.photos;
+        newDraft.photos = oldDraft.photos; // foto ikut dipindah!
         
         // Bersihkan draft item lama
         delete drafts[activeSerial];
@@ -851,13 +883,14 @@
         
         const note = $('formNote');
         if (newItem.completed) {
-          $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Penyimpanan baru akan ditambahkan sebagai log tambahan yang memperbarui status.';
+          $('formNoteText').textContent = 'Peringatan: Target baru ini juga sudah pernah dicatat sebelumnya. Menyimpan akan menimpa log.';
           note.hidden = false;
         } else {
-          note.hidden = true;
+          $('formNoteText').textContent = 'Data (termasuk foto) berhasil dipindahkan ke form target baru. Silakan klik Simpan.';
+          note.hidden = false;
         }
         
-        showToast('Isian formulir berhasil dipindahkan ke target: ' + newSerial, 'success');
+        showToast('Isian dipindahkan ke target: ' + newSerial, 'success');
       });
 
       $('galleryInput').addEventListener('change', handleFileChosen);
@@ -1029,32 +1062,69 @@
       return drafts[serial];
     }
 
-    function openForm(serial) {
+    async function openForm(serial) {
       const item = state.items.find(function (i) { return i.serial === serial; });
       if (!item) return;
       activeSerial = serial;
-      const draft = getDraft(serial);
+      
+      if (!drafts[serial]) drafts[serial] = { condition: '', position: '', photos: {} };
+      const draft = drafts[serial];
+      
+      // Kosongkan form UI sementara
+      $('fCondition').value = '';
+      $('fPosition').value = '';
+      $('posCount').textContent = '0';
+      $('img-barang').hidden = true; $('ph-barang').hidden = false;
+      $('img-kode').hidden = true; $('ph-kode').hidden = false;
+
+      // Update Judul & Dropdown Target
       $('formType').textContent = item.type;
       $('formTitle').textContent = item.serial;
-      $('fCondition').value = draft.condition || '';
-      $('fPosition').value = draft.position || '';
-      $('posCount').textContent = ($('fPosition').value || '').length;
-      
-      // Sinkronisasikan menu pindah data ke target aktif
       $('moveSerialSelect').value = serial;
-
+      
       const note = $('formNote');
-      if (item.completed) {
-        $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Penyimpanan baru akan ditambahkan sebagai log tambahan yang memperbarui status.';
-        note.hidden = false;
-      } else {
-        note.hidden = true;
-      }
-      renderPhoto('barang');
-      renderPhoto('kode');
+      note.hidden = true;
+
+      // Buka modal secara visual ke user
       $('formModal').hidden = false;
       document.body.classList.add('modal-open');
       $('formModal').querySelector('.modal-body').scrollTop = 0;
+
+      // 💥 SISTEM AUTO-LOAD DARI CACHE LOKAL:
+      // Jika barang sudah 'Input Ulang' dan draft masih kosong, kita cari data dari pengisian sebelumnya!
+      if (item.completed && !draft.condition && !draft.photos.barang) {
+        $('formType').textContent = item.type + ' (Memuat foto sebelumnya...)';
+        
+        const cachedPayload = await localDB.get(serial);
+        
+        // Pastikan user belum menutup modal saat sistem loading
+        if (cachedPayload && activeSerial === serial) {
+          draft.condition = cachedPayload.condition;
+          draft.position = cachedPayload.position;
+          if (cachedPayload.photoBarang) draft.photos.barang = { dataUrl: cachedPayload.photoBarang, bytes: dataUrlByteLength(cachedPayload.photoBarang) };
+          if (cachedPayload.photoKode) draft.photos.kode = { dataUrl: cachedPayload.photoKode, bytes: dataUrlByteLength(cachedPayload.photoKode) };
+        }
+        
+        if (activeSerial === serial) {
+          $('formType').textContent = item.type; // Kembalikan teks asli
+        }
+      }
+
+      // Jika user keburu menutup form
+      if (activeSerial !== serial) return;
+
+      // Render data draft/cache ke UI
+      $('fCondition').value = draft.condition || '';
+      $('fPosition').value = draft.position || '';
+      $('posCount').textContent = ($('fPosition').value || '').length;
+      renderPhoto('barang');
+      renderPhoto('kode');
+
+      if (item.completed) {
+        $('formNoteText').textContent = 'Perangkat ini sudah pernah dicatat. Data keterangan & foto sebelumnya telah dimuat ulang. Jika salah klik, silakan gunakan menu "Pindah Target" di atas.';
+        note.hidden = false;
+      }
+      
       $('fCondition').focus();
     }
 
@@ -1108,29 +1178,37 @@
       const button = $('saveButton');
       button.disabled = true;
       button.textContent = 'Menyimpan…';
+      
+      const payload = {
+        type: item.type,
+        serial: item.serial,
+        condition: condition,
+        position: position,
+        photoBarang: photoBarang.dataUrl,
+        photoKode: photoKode.dataUrl
+      };
+
+      // 1. Simpan ke Cache Lokal browser sebelum dikirim agar bisa di-load jika Input Ulang
+      localDB.save(item.serial, payload);
+
+      // 2. Kirim ke Server
       try {
         const result = await apiRequest({
           timeout: 120000,
-          body: {
-            action: 'save',
-            payload: {
-              type: item.type,
-              serial: item.serial,
-              condition: condition,
-              position: position,
-              photoBarang: photoBarang.dataUrl,
-              photoKode: photoKode.dataUrl
-            }
-          }
+          body: { action: 'save', payload: payload }
         });
+        
+        // Hapus dari RAM (draft) setelah sukses supaya fresh
         delete drafts[item.serial];
         saving = false;
         closeForm();
+        
         if (result && result.sharingWarning) {
           showToast('Data tersimpan, tetapi kebijakan Google Drive mungkin membatasi akses publik ke foto. Periksa izin folder/file.', 'warning');
         } else {
-          showToast('Berhasil! ' + item.serial + ' berhasil diperbarui.', 'success');
+          showToast('Berhasil! ' + item.serial + ' berhasil disimpan.', 'success');
         }
+        
         loadDashboard({});
         if (reportActive) loadReport();
       } catch (error) {
